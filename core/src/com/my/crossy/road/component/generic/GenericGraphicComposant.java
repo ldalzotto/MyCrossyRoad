@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.assetManager.ModelManager;
@@ -76,6 +77,19 @@ public class GenericGraphicComposant extends GraphicsComponent {
         if (position.z < Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()){
             entity.set_isDetroyable();
         }
+
+        //For hitbox debugging
+        /**
+        if(entity.get_physicsComponent() != null){
+            ModelInstance modelInstance = _modelManager.getCubeFromColor(Color.CYAN, Configuration.TAILLE_BLOC.get_valeur());
+            Vector2 hitBoxPos = entity.get_physicsComponent().getHitbox().getPosition(new Vector2());
+            modelInstance.transform.translate(hitBoxPos.x, 0, hitBoxPos.y);
+            batch.begin(camera);
+            batch.render(modelInstance);
+            batch.end();
+        }
+         **/
+
         entity.set_position(position);
 
     }

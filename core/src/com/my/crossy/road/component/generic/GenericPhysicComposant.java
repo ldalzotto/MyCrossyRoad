@@ -48,6 +48,12 @@ public class GenericPhysicComposant extends PhysicsComponent {
                 Vector2 position = _hitBox.getPosition(new Vector2());
                 position.add(0, -Configuration.TAILLE_BLOC.get_valeur()/2);
                 _hitBox.setPosition(position);
+            }else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE.toString())){
+                Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
+                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE.toString() + " reveived with positionMin : " + positionMin);
+                Vector2 position = _hitBox.getPosition(new Vector2());
+                position.add(0, Configuration.TAILLE_BLOC.get_valeur()/2);
+                _hitBox.setPosition(position);
             }
         }
     }

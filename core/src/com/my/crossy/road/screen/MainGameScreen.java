@@ -29,6 +29,7 @@ import com.my.crossy.road.screen.viewport.GlobalViewport;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Created by ldalzotto on 12/11/2016.
@@ -102,24 +103,19 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
         //on vérifie si le joueur a effectué un mouvement
         if(_joueur.get_isMoving()){
-           // _entityList.forEach(entity1 ->
-             //       entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
-            //TODO vérification de la collision
-            //TODO actuellement, tous les blocs sont considérés comme des obstacles
-            List<Entity> entityToCompare = new ArrayList<>();
-            entityToCompare.addAll(_entityList);
-            //Il est nécessaire de supprimer le bloc sur la position actuelle du joueur
-            //TODO le bloc doit être supprimé pour toute la durée du déplacement ?
-
+            
+            List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
             /**
              * On supprime les blocs de l'environnement contenu dans le joueur puis on fait avancer l'environnement
              * fictif d'une demi position. Ensuite, on vérifie si il y a une collision entre le joueur
              * et l'environnement fictif
              */
-            entityToCompare.removeAll(getJoueurActualEnvironnementBloc());
+            //TODO améliorer la gesion des mouvements
             entityToCompare.forEach(entity1 ->
                     entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
             Boolean isCollision = checkCollision(_joueur, entityToCompare);
+            entityToCompare.forEach(entity1 ->
+                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
             if(!isCollision) {
                 //le déplacement est accepté
                 _entityList.forEach(entity1 ->
@@ -133,6 +129,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
             } else {
                 Gdx.app.debug(TAG, "Collision has been detected !");
             }
+            entityToCompare.clear();
             _joueur.hasMoved();
         }
 
@@ -171,20 +168,30 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         try {
             List<LigneAffichage> ligneAffichages = _intEnvironnementManager.getEnvironnementLignesPourAffichage().collect(Collectors.toList());
             IntStream.range(0, ligneAffichages.size())
-                    .mapToObj(MainGameScreenUtil.TYPE_LIGNE_AFFICHAGE_DEPUIS_LIGNE_AFFICHAGE(ligneAffichages))
-                    .map(MainGameScreenUtil.DETERMINER_POSITION(ligneAffichages, Configuration.TAILLE_BLOC.get_valeur()))
-                    .forEach(typeLigneAffichageVector3Map -> {
-                        typeLigneAffichageVector3Map.keySet()
-                                .forEach(typeLigneAffichage -> {
-                                    typeLigneAffichageVector3Map.get(typeLigneAffichage).forEach(vector3 -> {
-                                        Entity entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
-                                        entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(typeLigneAffichage),
-                                                _json.toJson(vector3), _json.toJson(size));
-                                        entity.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(vector3),
-                                                _json.toJson(size));
-                                        entities.add(entity);
+                    .mapToObj(MainGameScreenUtil.FORMAT_TYPE_LIGNE_AFFICHAGE(ligneAffichages))
+                    .map(MainGameScreenUtil.DETERMINER_POSITION(Configuration.TAILLE_BLOC.get_valeur()))
+                    .forEach(ligneIndexToLigneAffichageToTypeLigneAffichageToPosition -> {
+                        ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.forEach((integer, ligneAffichageMapMap) -> {
+                            ligneAffichageMapMap.forEach((ligneAffichage, typeLigneAffichageListMap) -> {
+                                typeLigneAffichageListMap.forEach((typeLigneAffichage, blocAndPosition) -> {
+                                    blocAndPosition.forEach(blocAffichageVector3Map -> {
+                                        blocAffichageVector3Map.forEach((blocAffichage, vector3) -> {
+                                            Entity entity = null;
+                                            if(blocAffichage.isAnObstacle()){
+                                                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
+                                            } else {
+                                                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
+                                            }
+                                            entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(typeLigneAffichage),
+                                                    _json.toJson(vector3), _json.toJson(size));
+                                            entity.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(vector3),
+                                                    _json.toJson(size));
+                                            entities.add(entity);
+                                        });
                                     });
                                 });
+                            });
+                        });
                     });
         } catch (Exception e) {
             e.printStackTrace();
@@ -293,6 +300,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private Boolean checkCollision(Entity entityATester, List<Entity> listeEntiteAComparer){
         return listeEntiteAComparer.stream()
                 .map(Entity::get_physicsComponent)
+                .filter(physicsComponent -> physicsComponent!=null)
                 .map(physicsComponent -> physicsComponent.isInCollitionWith(entityATester))
                 .filter(aBoolean -> aBoolean)
                 .findFirst().orElse(false);

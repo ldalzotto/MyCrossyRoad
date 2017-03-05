@@ -19,7 +19,7 @@ public abstract class PhysicsComponent implements Component {
                 .getHitbox().overlaps(_hitBox);
     }
 
-    protected Rectangle getHitbox(){
+    public Rectangle getHitbox(){
         return _hitBox;
     }
 
