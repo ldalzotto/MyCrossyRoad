@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
 import com.my.crossy.road.entity.component.abs.InputComponent;
@@ -30,6 +31,7 @@ public class Entity {
 
     protected Vector3 _position;
     protected Boolean _isMoving = false;
+    protected Direction _direction = null;
     protected Boolean _isDetroyable = false;
 
     private InputComponent _inputComponent;
@@ -123,5 +125,13 @@ public class Entity {
 
     public PhysicsComponent get_physicsComponent() {
         return _physicsComponent;
+    }
+
+    public Direction get_direction() {
+        return _direction;
+    }
+
+    public void set_direction(Direction _direction) {
+        this._direction = _direction;
     }
 }

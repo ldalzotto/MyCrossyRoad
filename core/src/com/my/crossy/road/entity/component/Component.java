@@ -14,8 +14,7 @@ public interface Component {
         PLAYER_MOVE_FORWARD,
         MOVE_DONE,
         ENVIRONNEMENT_MOVE,
-        ENVIRONNEMENT_FUTURE_MOVE,
-        ENVIRONNEMENT_FUTURE_MODE_REVERSE;
+        ENVIRONNEMENT_FUTURE_MOVE;
     }
     
     public void receiveMessage(String message);

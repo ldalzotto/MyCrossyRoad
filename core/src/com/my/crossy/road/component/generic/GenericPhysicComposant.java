@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.configuration.Configuration;
+import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
@@ -38,21 +39,53 @@ public class GenericPhysicComposant extends PhysicsComponent {
                 _hitBox = new Rectangle(vector3.x, vector3.z, size, size);
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin);
+                Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
+                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                        ", direction : " + direction.toString());
+
                 Vector2 position = _hitBox.getPosition(new Vector2());
-                position.add(0, -Configuration.TAILLE_BLOC.get_valeur());
+                switch (direction){
+                    case UP:
+                        position.add(0, -Configuration.TAILLE_BLOC.get_valeur());
+                        break;
+                    case DOWN:
+                        position.add(0, Configuration.TAILLE_BLOC.get_valeur());
+                        break;
+                    case LEFT:
+                        position.add(-Configuration.TAILLE_BLOC.get_valeur(), 0);
+                        break;
+                    case RIGHT:
+                        position.add(Configuration.TAILLE_BLOC.get_valeur(), 0);
+                        break;
+                    default:
+                        break;
+                }
+
                 _hitBox.setPosition(position);
             }  else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString() + " reveived with positionMin : " + positionMin);
+                Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
+                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                        ", direction : " + direction.toString());
+
                 Vector2 position = _hitBox.getPosition(new Vector2());
-                position.add(0, -Configuration.TAILLE_BLOC.get_valeur()/2);
-                _hitBox.setPosition(position);
-            }else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE.toString())){
-                Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE.toString() + " reveived with positionMin : " + positionMin);
-                Vector2 position = _hitBox.getPosition(new Vector2());
-                position.add(0, Configuration.TAILLE_BLOC.get_valeur()/2);
+                switch (direction){
+                    case UP:
+                        position.add(0, -Configuration.TAILLE_BLOC.get_valeur()/2);
+                        break;
+                    case DOWN:
+                        position.add(0, Configuration.TAILLE_BLOC.get_valeur()/2);
+                        break;
+                    case LEFT:
+                        position.add(-Configuration.TAILLE_BLOC.get_valeur()/2, 0);
+                        break;
+                    case RIGHT:
+                        position.add(Configuration.TAILLE_BLOC.get_valeur()/2, 0);
+                        break;
+                    default:
+                        break;
+                }
+
                 _hitBox.setPosition(position);
             }
         }

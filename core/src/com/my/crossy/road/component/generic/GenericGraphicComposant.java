@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.assetManager.ModelManager;
 import com.my.crossy.road.configuration.Configuration;
+import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
@@ -61,8 +62,25 @@ public class GenericGraphicComposant extends GraphicsComponent {
                 _3Dmodel.transform.translate(vector3);
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin);
-                _3Dmodel.transform.translate(new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur()));
+                Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
+                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                         ", direction : " + direction.toString());
+                switch (direction){
+                    case UP:
+                        _3Dmodel.transform.translate(new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur()));
+                        break;
+                    case DOWN:
+                        _3Dmodel.transform.translate(new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur()));
+                        break;
+                    case LEFT:
+                        _3Dmodel.transform.translate(new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0));
+                        break;
+                    case RIGHT:
+                        _3Dmodel.transform.translate(new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0));
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.assetManager.ModelManager;
 import com.my.crossy.road.configuration.Configuration;
+import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.EntityFactory;
 import com.my.crossy.road.entity.component.Component;
@@ -103,7 +104,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
         //on vérifie si le joueur a effectué un mouvement
         if(_joueur.get_isMoving()){
-            
+
             List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
             /**
              * On supprime les blocs de l'environnement contenu dans le joueur puis on fait avancer l'environnement
@@ -112,17 +113,24 @@ public class MainGameScreen extends GlobalViewport implements Screen{
              */
             //TODO améliorer la gesion des mouvements
             entityToCompare.forEach(entity1 ->
-                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
+                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                            _json.toJson(_joueur.get_direction())));
             Boolean isCollision = checkCollision(_joueur, entityToCompare);
             entityToCompare.forEach(entity1 ->
-                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MODE_REVERSE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
+                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                            _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
             if(!isCollision) {
                 //le déplacement est accepté
                 _entityList.forEach(entity1 ->
-                        entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur())));
+                        entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                                _json.toJson(_joueur.get_direction())));
                 try {
-                    List<Entity> entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
-                    _entityList.addAll(entities);
+                    //TODO création d'une ligne si la direction est UP
+                    //TODO amélioration de la gestion de la création des lignes (positions & mémoire)
+                    if(_joueur.get_direction().equals(Direction.UP)){
+                        List<Entity> entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
+                        _entityList.addAll(entities);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
