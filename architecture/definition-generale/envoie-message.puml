@@ -1,0 +1,20 @@
+@startuml
+allow_mixing
+
+    object Message
+    Message : en-tête
+    Message : contenu
+
+    component "Entité"
+    component "Composant 1"
+    component "Composant 2"
+
+    Message -> Entité : Envoi de message
+
+    Entité -down-> "Composant 1" : Transmission du message
+    Entité -down-> "Composant 2"
+
+    "Composant 1" -> "Composant 1" : en-tête \n accepté
+    "Composant 2" -> "Composant 2" : en-tête \n refusé
+
+@enduml

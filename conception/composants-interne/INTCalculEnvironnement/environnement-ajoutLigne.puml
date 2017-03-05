@@ -1,0 +1,32 @@
+@startuml
+hide footbox
+
+participant ext
+participant Environnement
+participant Configuration
+
+ext -> Environnement : int ajoutLigne(Ligne ligne)
+
+alt ligne != null
+    group Remise à 0 du curseur si nécessaire
+        alt _lignesCurseur >= _longueur
+            Environnement -> Environnement : _lignesCurseur = 0
+        end
+    end
+
+    alt _lignes.size() == _longueur
+        Environnement -> Environnement : _lignes.set(_lignesCurseur, ligne)
+    else
+        Environnement -> Environnement : _lignes.add(ligne)
+    end
+    Environnement -> Environnement : lignesCurseurAvant = _lignesCurseur
+    Environnement -> Environnement : _lignesCurseur++
+
+    ext <- Environnement : lignesCurseurAvant
+else ligne == null
+    ext <- Environnement : Erreur : ligne non renseignée
+end
+
+
+
+@enduml

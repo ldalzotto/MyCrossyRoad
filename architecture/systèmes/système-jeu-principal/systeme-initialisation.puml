@@ -1,0 +1,40 @@
+@startuml
+hide footbox
+
+participant "Système Jeu Principal" as systeme
+participant "SkyBox" as skyEnt
+participant "Joueur" as joueurEnt
+participant "Obstacle" as obsEnt
+participant "Menace" as menEnt
+participant "Décor" as decEnt
+participant "Score" as scoreEnt
+
+systeme -> systeme : Création des entités nécessaires au \n fonctionnement de l'application
+
+group Pour chaque entité
+    alt Initialisation SkyBox
+        systeme -> skyEnt : Envoi message : Initialisation graphique
+    else Initialisation Joueur
+        systeme -> joueurEnt : Envoi message : Initialisation hitbox
+        systeme -> joueurEnt : Envoi message : Initialisation position
+        systeme -> joueurEnt : Envoi message : Initialisation graphique
+        systeme -> joueurEnt : Envoi message : Initialisation contrôle
+    else Initialisation Obstacle
+        systeme -> obsEnt : Envoi message : Initialisation hitbox
+        systeme -> obsEnt : Envoi message : Initialisation position
+        systeme -> obsEnt : Envoi message : Initialisation graphique
+    else Initialisation Menace
+        systeme -> menEnt : Envoi message : Initialisation hitbox
+        systeme -> menEnt : Envoi message : Initialisation position
+        systeme -> menEnt : Envoi message : Initialisation graphique
+        systeme -> menEnt : Envoi message : Initialisation mouvement
+    else Initialisation Décor
+        systeme -> decEnt : Envoi message : Initialisation position
+        systeme -> decEnt : Envoi message : Initialisation graphique
+    else Initialisation Score
+        systeme -> scoreEnt : Envoi message : Initialisation graphique
+    end
+end
+
+
+@enduml

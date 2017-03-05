@@ -1,0 +1,11 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantGraphique3D" as compGraph
+
+joueur -> joueur : Envoie message : Initialisation graphique
+joueur -> joueur : Définition du modèle graphique associé : modelName
+joueur -> compGraph : Envoie message : Initialisation graphique
+
+@enduml

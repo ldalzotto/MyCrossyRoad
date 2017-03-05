@@ -1,0 +1,37 @@
+@startuml
+hide footbox
+
+participant "INT Calcul Environnement" as envCalcul
+
+envCalcul -> envCalcul : Création de ligne
+group Détermine la menace de la ligne
+    envCalcul -> envCalcul : Menace : 1 ou 0 aléatoirement
+end
+
+group Détermine le type de la ligne
+    alt Menace = 1
+        envCalcul -> envCalcul : Types de ligne "menace"
+        envCalcul -> envCalcul : Popule la ligne de Décors
+    else Menace = 0
+        envCalcul -> envCalcul : Types de ligne "sécurisé"
+        envCalcul -> envCalcul : Popule la ligne d'Obstacles
+    end
+    envCalcul -> envCalcul : Type aléatoire parmis le type de ligne
+
+end
+
+group Détermine Nombre d'Ouverture
+    alt plusieurs lignes successives avec le même nombre d'ouverture
+        envCalcul -> envCalcul : Nombre d'ouverture aléatoire
+    end
+end
+
+group Détermine position d'ouverture
+        envCalcul -> envCalcul : Positions aléatoire en fonction \n des positions de la ligne précédente
+end
+
+group Création des chemins
+    envCalcul -> envCalcul : Modifie l'environnement afin \n de créer un chemin entre les position d'ouverture
+end
+
+@enduml

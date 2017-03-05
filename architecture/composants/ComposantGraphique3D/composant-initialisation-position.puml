@@ -1,0 +1,10 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantGraphique3D" as compGraph
+
+joueur -> compGraph : Envoie message : Initialisation position
+compGraph -> compGraph : mise à jour de la position interne
+
+@enduml

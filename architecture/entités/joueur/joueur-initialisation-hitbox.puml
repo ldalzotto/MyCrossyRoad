@@ -1,0 +1,10 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantPhysique3D" as compPhys
+
+joueur -> joueur : Envoie message : Initialisation hitbox
+joueur -> compPhys : Envoie message : Initialisation hitbox
+
+@enduml

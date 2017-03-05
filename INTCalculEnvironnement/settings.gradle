@@ -1,0 +1,3 @@
+rootProject.name = 'INTCalculEnvironnement'
+include 'INTEnvironnementManager'
+

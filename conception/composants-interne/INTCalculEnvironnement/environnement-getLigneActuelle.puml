@@ -1,0 +1,15 @@
+@startuml
+hide footbox
+
+participant ext
+participant Environnement
+
+ext -> Environnement : getLigneActuelle()
+alt _lignesCurseur > _lignes.size()
+    ext <- Environnement : Erreur le curseur de ligne dépasse la longueur de l'environnement
+else
+    ext <- Environnement : _lignes.get(_lignesCurseur)
+end
+
+
+@enduml

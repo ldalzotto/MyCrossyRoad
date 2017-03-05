@@ -1,0 +1,20 @@
+@startuml
+hide footbox
+
+participant "Système Jeu Principal" as systeme
+participant "Joueur" as joueur
+participant "Menace" as menace
+
+group Mise à jour
+
+    systeme -> joueur : mise à jour
+    systeme -> menace : mise à jour
+
+    systeme -> systeme : Vérification collision Joueur
+    alt Collision détectée avec Menace
+        systeme -> systeme : Fin de partie
+    end
+end
+
+
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+
+component "Système" as syst
+component "Caméra" as cam
+component "Ecran" as ecran
+
+cam -* syst
+ecran -left-* syst
+
+@enduml

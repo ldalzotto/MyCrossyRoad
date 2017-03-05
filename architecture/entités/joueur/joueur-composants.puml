@@ -1,0 +1,15 @@
+@startuml
+
+component "Joueur" as joueur
+
+package Composants {
+    component "ComposantGraphique3D" as compGraph
+    component "ComposantPhysique3D" as compPhys
+    component "ComposantControle" as compInput
+}
+
+joueur *-down- compGraph
+joueur *-down- compPhys
+joueur *-down- compInput
+
+@enduml

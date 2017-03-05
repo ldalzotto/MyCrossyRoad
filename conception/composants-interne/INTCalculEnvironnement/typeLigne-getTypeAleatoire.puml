@@ -1,0 +1,25 @@
+@startuml
+hide footbox
+
+participant ext
+participant TypeLigne
+
+ext -> TypeLigne : getTypeAleatoire(int menace)
+TypeLigne -> TypeLigne : List<TypeLigne> menaceType initialisation de la liste d'énum
+group pour toutes les valeurs de l'énum TypeLigne
+    alt valeur.menace == menace
+        TypeLigne -> TypeLigne : menaceType.add(valeur)
+    end
+end
+
+alt !menaceType.isEmpty()
+    ext <- TypeLigne : menaceType.get(ThreadLocalRandom.nextInt(0, menaceType.size()))
+    note right
+        Retourne une valeur aléatoire
+        de l'énum
+    end note
+else menaceType.isEmpty()
+    ext <- TYpeLigne : Erreur : aucune valeur trouvée pour menace
+end
+
+@enduml

@@ -1,0 +1,71 @@
+# MyCrossyRoad #
+
+## Architecture générale ##
+
+MyCrossyRoad est un projet destiné à copier les grandes lignes du célèbre jeu mobile "Crossy Road". <br/>
+Il utilise dans son architecture un modèle "Entity - Component - System" (Entité - Composant - Système). <br/>
+Ce projet utilise le moteur java libGDX.
+
+![](entite-composant-systeme-with-libgdx.png)
+
+### Système ##
+
+On définit un système comme étant un **Conteneur** d'**Entités**. <br/>
+Le système a pour charge de mettre à jour l'état de chacune des entités et de les afficher à l' **Ecran** pour chaque frame. <br/>
+
+Un système est associé à un seul et unique écran. <br/>
+
+![](system-zoom.png)
+
+### Entité ##
+
+On définit une **Entité** comme étant la résultante de plusieurs **Composant**. <br/>
+Lorsque on demande à une entité de mettre à jour son état, l'entité met à jour l'état de ses composants. <br/>
+L'entité a pour mission de fournir les éléments nécessaires à ses composants pour qu'ils soient mis à jour. <br/>
+L'entité porte en son sein des informations globales et génériques communes à tous ses composants. <br/>
+
+![](entity-zoom.png)
+
+### Composant ##
+
+On définit un **Composant** comme étant une partie entièrement autonome d'une **Entité**. <br/>
+A chaque mise à jour du composant, ces caractéristiques internes sont mise à jour. En addition de cette mise à jour, il peut également modifier des caractéristiques globales à l'entité rattachée. Les caractéristiques de cette entitée sont globale et partagées par toutes les autres entités (exemple : sa position dans l'espace). <br/>
+Un composant est unitaire, il peut être attaché à toute entité. <br/>
+Un composant peut recevoir un message venant de l'extérieur, lui permettant d'exécuter un traitement spécifique.
+
+![](component-zoom.png)
+
+## Gestion des modèles graphiques ##
+
+La gestion des modèles graphiques est effectuée grâce à un gestionaire de modèle. <br/>
+Le chargement des modèles est effectué de manière asynchrone. <br/>
+Le chargement des modèles est initialisé depuis les composants graphiques. <br/>
+Le système gère le temps de chargement <br/>
+
+![](gestion-modele.png)
+
+## Modèle de communication ##
+
+La communication Entité-Application et Entité-Entité est possible. <br/>
+Le Système peut envoyer des messages aux entités afin d'appliquer un traitement spécifique. Ce message contient un en-tête ainsi que les données à trasmettres. <br/>
+
+![](message.png)
+
+Lorsqu'un message est enovyé à une entité, elle diffuse le message à tous ces composants. Si le composant accepte l'en-tête du message il est pris en compte, sinon il n'est pas lu. <br/>
+Lors de la lecture d'un message, les caractéristiques interne du composant peuvent être modifiées. <br/>
+
+![](envoie-message.png)
+
+## Gestion des systèmes ##
+
+Au sein d'un système, il n'est pas nécessaire pour toutes les entités d'être en permanence mis-à-jour. Il n'est également pas nécessaire de toujours mettre à jour toutes les entités de l'application. <br/>
+
+Pour cela, un gestionnaire de système est présent permettant de définir quel système est actuellement actif. Seules les entités associées au système actif seront mise-à-jour. <br/>
+
+## Gestion de la caméra ##
+
+MyCrossyRoad est une application entièrement 3D. Afin de pouvoir visualiser l'ensemble des informations d'un écran, on associe une caméra à un système. <br/>
+La caméra assocée est de type "perspective". <br/>
+Le cycle de vie associé à la caméra est entièrement lié au **Gestionnaire de système**. <br/>
+
+![](systeme-cmposition.png)

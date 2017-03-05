@@ -1,0 +1,11 @@
+@startuml
+
+component ComposantControle as compContr
+
+package Entités {
+    component "Joueur" as joueur
+}
+
+compContr *-down- joueur
+
+@enduml

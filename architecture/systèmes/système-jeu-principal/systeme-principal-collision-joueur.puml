@@ -1,0 +1,24 @@
+@startuml
+hide footbox
+
+    participant "Système Jeu Principal" as systeme
+    participant "Joueur" as joueurEnt
+    participant "Obstacle" as obsEnt
+    participant "Menace" as menEnt
+
+    systeme -> systeme : Vérification collision Joueur
+
+    systeme -> obsEnt : Vérification collision avec Obstacles
+
+    alt Collision avec Obstacle
+        systeme <- obsEnt : Collision de type Obstacle
+    else
+        systeme -> menEnt : Vérification collision avec Menaces
+        alt Collision avec Menace
+        systeme <- menEnt : Collision de type Menace
+        else Pas de collision
+        systeme -> systeme : Pas de collision
+        end
+    end
+
+@enduml

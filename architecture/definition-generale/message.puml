@@ -1,0 +1,7 @@
+@startuml
+
+    object Message
+    Message : en-tête : type de message
+    Message : contenu : données à transférer
+
+@enduml

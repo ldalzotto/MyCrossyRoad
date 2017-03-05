@@ -1,0 +1,12 @@
+@startuml
+hide footbox
+
+participant ext
+participant INTCalculEnvironement
+
+ext -> INTCalculEnvironement : Appel constructeur
+INTCalculEnvironement -> INTCalculEnvironement : _environnement = new Environnement()
+INTCalculEnvironement -> INTCalculEnvironement : _nbOuvertureModifiable = true
+INTCalculEnvironement -> INTCalculEnvironement : _nbLignesAJoute = 0
+
+@enduml

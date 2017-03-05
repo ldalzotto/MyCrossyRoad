@@ -1,0 +1,14 @@
+@startuml
+
+    component Conteneur as conteneur
+    component Ecran as ecran
+
+    package "Entités" as entites{
+        component "Arbre" as entite1
+        component "Personnage" as entite2
+    }
+
+    conteneur -left-> entites : Mise à jour de \n l'état des entités
+    conteneur <-right- ecran : Affichage des entités
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantGraphique3D" as compGraph
+participant "Gestionaire de modèle" as gestioMod
+
+joueur -> compGraph : Envoie message : Initialisation graphique
+compGraph -> gestioMod : Demande de chargement du modèle
+compGraph <- gestioMod : Sauvegarde du modèle 3D
+
+@enduml

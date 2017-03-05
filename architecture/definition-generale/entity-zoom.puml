@@ -1,0 +1,15 @@
+@startuml
+
+    component Conteneur as conteneur
+    component Entité as entite
+
+    component "Composant Graphique" as graphicsComp
+    component "Composant Physique" as physicsComp
+    component "Composant Contrôle" as controlComp
+
+    conteneur -down-> entite : Mise à jour de l'entité
+    entite -down-> graphicsComp : Mise à jour du \n composant graphique \n avec le batch graphique \n openGL
+    entite -down-> physicsComp : Mise à jour du \n composant physique \n avec la position
+    entite -down-> controlComp : Mise à jour du \n composant contrôle \n avec l'input du clavier
+
+@enduml

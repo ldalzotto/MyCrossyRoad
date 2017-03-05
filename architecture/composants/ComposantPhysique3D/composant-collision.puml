@@ -1,0 +1,14 @@
+@startuml
+hide footbox
+
+participant "Système Jeu Principal" as systeme
+participant "ComposantPhysique3D" as compPhys
+
+systeme -> compPhys : Vérification collision avec \n "Composant Cible"
+alt Composant Cible hitbox dans Composant Actuel hitbox
+    systeme <- compPhys : Collision true
+else Pas de collision
+    systeme <- compPhys : Collision false
+end
+
+@enduml

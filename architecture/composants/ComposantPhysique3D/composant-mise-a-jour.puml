@@ -1,0 +1,9 @@
+@startuml
+hide footbox
+
+participant "ComposantPhysique3D" as compPhys
+
+group mise à jour composant
+    compPhys -> compPhys : positionne la hitbox à la \n position définie
+end
+@enduml

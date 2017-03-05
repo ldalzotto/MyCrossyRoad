@@ -1,0 +1,104 @@
+@startuml
+
+interface IINTCalculEnvironnement {
+    .. Initialisation ..
+    + initialisationEnvironnement()
+    .. Création d'une ligne ..
+    + Ligne creationLigne()
+}
+class INTCalculEnvironnement {
+    .. Attributs ..
+    - Environnement _environnement
+    - bool _nbOuvertureModifiable
+    - int _nbLignesAjoute
+    .. Methodes ..
+    - List<Bloc> populeBlocs(TypeBloc typeBloc)
+}
+
+enum EnvironnementInit {
+    .. Description des premières lignes ..
+    + Ligne1(int menace, TypeLigne typeLigne, \n List<Bloc> blocs)
+    + Ligne2(int menace, TypeLigne typeLigne, \n List<Bloc> blocs)
+    + Ligne3
+    ...
+}
+
+enum TypeBloc {
+    .. Type du bloc ..
+    + Décor
+    + Obstacle
+}
+
+enum TypeLigne {
+    .. Constructeur ..
+    TypeLigne(int menace)
+    .. Type de ligne ..
+    + Route(1)
+    + Eau(1)
+    + Train(1)
+    + Arbre(0)
+    .. Type aléatoire depuis menace ..
+    getTypeAleatoire(int menace)
+}
+
+class Ligne {
+    .. Constructeur ..
+    + Ligne(int menace, TypeLigne typeLigne, \n , List<Bloc> blocs)
+    .. Attributs ..
+    - int _menace
+    - TypeLigne _typeLigne
+    - List<Bloc> _blocs
+    .. Récupération des blocs ouvertures ..
+    + List<Bloc> getOuvertures()
+    + List<int> getOuverturesIndex()
+}
+
+class Bloc {
+    .. Constructeur ..
+    + Bloc(TypeBloc typeBloc, bool isOuverture)
+    .. Attributs ..
+    - TypeBloc _typeBloc
+    - bool _isOuverture
+    .. Getters ..
+    + bool isOuverture()
+}
+
+Ligne -down-* TypeLigne
+Ligne -down-* Bloc
+Bloc -down-* TypeBloc
+
+
+package ConfigurationPackage {
+   enum Configuration {
+       .. Configuration ..
+       + EnvironnementLargeur
+       + EnvironnementLongueur
+       + DistanceDeltaOuverture
+   }
+}
+
+
+class Environnement{
+    .. Constructeur ..
+    + Environnement()
+    .. Attributs ..
+    - int _longueur
+    - int _largeur
+    - List<Ligne> _lignes
+    - int _lignesCurseur
+    .. Insertion ligne ..
+    + int ajoutLigne(Ligne ligne)
+    .. Récupération de la ligne actuelle ..
+    + Ligne getLigneActuelle()
+    .. Getter ..
+    + int getLignesCurseur()
+}
+
+IINTCalculEnvironnement -down-|> INTCalculEnvironnement
+INTCalculEnvironnement -down-* EnvironnementInit
+INTCalculEnvironnement -down-* Environnement
+Ligne *-down- Environnement
+
+
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+hide footbox
+participant "Joueur" as joueur
+
+participant "ComposantGraphique3D" as compGraph
+participant "ComposantPhysique3D" as compPhys
+participant "Système Jeu Principal" as syst
+
+joueur -> joueur : Envoi message : mise à jour position
+
+joueur -> compPhys : Envoi message : Mise à jour position
+joueur -> compGraph : Envoi message : Mise à jour position
+
+alt Déplacement vers l'avant de l'environnement
+    joueur -> syst : Envoi message : mise à jour Score
+end
+
+@enduml

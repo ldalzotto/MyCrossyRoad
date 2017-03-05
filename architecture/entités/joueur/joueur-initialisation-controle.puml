@@ -1,0 +1,10 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantControle" as compInput
+
+joueur -> joueur : Envoie message : Initialisation controle
+joueur -> compInput : Envoie message : Initialisation controle
+
+@enduml

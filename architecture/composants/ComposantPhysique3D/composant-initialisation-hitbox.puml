@@ -1,0 +1,10 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantPhysique3D" as compPhys
+
+joueur -> compPhys : Envoie message : Initialisation hitbox
+compPhys -> compPhys : Création de la hitbox de type Rectangle2D
+
+@enduml

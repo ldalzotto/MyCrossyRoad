@@ -1,0 +1,19 @@
+@startuml
+hide footbox
+
+participant ext
+participant INTCalculEnvironnement
+participant Configuration
+
+ext -> INTCalculEnvironnement : populeBlocs(List<Blocs> blocs, TypeBloc typeBloc)
+INTCalculEnvironnement -> Configuration : getEnvironnementLargeur
+INTCalculEnvironnement <- Configuration : environnementLargeur
+
+INTCalculEnvironnement -> INTCalculEnvironnement : List<Bloc> blocs = new ArrayList<> initialisation de la liste
+group Pour tous les entiers i de environnementLargeur
+    INTCalculEnvironnement -> INTCalculEnvironnement : blocs.add(new Bloc(typeBloc, false))
+end
+
+ext <- INTCalculEnvironnement : blocs
+
+@enduml

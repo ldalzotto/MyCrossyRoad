@@ -1,0 +1,15 @@
+@startuml
+
+component ComposantGraphique3D as compGraph
+
+package Messages {
+    component "Mise à jour position" as majPos
+    component "Message : Initialisation graphique" as initGraph
+    component "Message : Initialisation position" as initPos
+}
+
+compGraph *- majPos
+compGraph *- initGraph
+compGraph *- initPos
+
+@enduml

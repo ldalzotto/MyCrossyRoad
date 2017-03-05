@@ -1,0 +1,10 @@
+@startuml
+hide footbox
+
+participant "Joueur" as joueur
+participant "ComposantPhysique3D" as compPhys
+
+joueur -> compPhys : Envoie message : Initialisation position
+compPhys -> compPhys : mise à jour de la position de la hitbox
+
+@enduml

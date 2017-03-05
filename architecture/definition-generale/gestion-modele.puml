@@ -1,0 +1,19 @@
+@startuml
+
+  component "Composant Graphique 1" as compoGraph1
+  component "Composant Graphique 2" as compoGraph2
+
+  component "Gestionaire de modèle" as gestio
+
+  component "Système" as systeme
+
+  folder "Modèle.g3d" as modele
+
+  compoGraph1 -down- gestio : demande de \n chargement des modèles
+  compoGraph2 -down- gestio
+
+  gestio -> modele : chargement
+
+  systeme <- gestio : chargement \n des données en cours
+
+@enduml

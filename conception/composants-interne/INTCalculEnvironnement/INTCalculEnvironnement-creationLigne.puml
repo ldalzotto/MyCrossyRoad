@@ -1,0 +1,173 @@
+@startuml
+hide footbox
+
+participant ext
+participant INTCalculEnvironnement
+participant TypeLigne
+participant Environnement
+participant Ligne
+participant Configuration
+
+ext -> INTCalculEnvironnement : creationLigne()
+
+group Détermine menace
+    INTCalculEnvironnement -> INTCalculEnvironnement : menace = ThreadLocaalRandom.nextInt(0,1)
+end
+
+group Détermine type de ligne
+    INTCalculEnvironnement -> TypeLigne : getAleatoireDepuisMenace(menace)
+    INTCalculEnvironnement <- TypeLigne : TypeLigne typeLigne
+
+    alt menace == 0
+        INTCalculEnvironnement -> INTCalculEnvironnement : List<Bloc> blocs = populeBlocs(TypeBloc.Obstacle)
+        note left
+            Remplis blocs
+            de TypeBloc.Obstable
+        end note
+    else menace == 1
+        INTCalculEnvironnement -> INTCalculEnvironnement : List<Bloc> blocs = populeBlocs(TypeBloc.Décor)
+        note left
+            Remplis blocs
+            de TypeBloc.Décor
+        end note
+    end
+end
+
+INTCalculEnvironnement -> Environnement : getLigneActuelle()
+INTCalculEnvironnement <- Environnement : ligneActuelle
+
+group Determine nombre d'ouverture
+    alt _nbLignesAjoute > 5
+       INTCalculEnvironnement -> INTCalculEnvironnement : _nbOuvertureModifiable = true
+        note left
+            on modifie le nombre d'ouverture
+            toutes les 5 lignes
+        end note
+    end
+    alt _nbOuvertureModifiable
+        INTCalculEnvironnement -> INTCalculEnvironnement : _nbOuvertureModifiable = false
+        note left
+            dois-t'on modifier le nombre
+            d'ouverture ?
+        end note
+        INTCalculEnvironnement -> INTCalculEnvironnement : nombreOuverture = ThreadLocalRandom.nextInt(1, 2)
+    else
+        INTCalculEnvironnement -> INTCalculEnvironnement : nombreOuverture = ligneActuelle.getOuvertures().size()
+    end
+end
+
+group Détermine position d'ouverture
+    INTCalculEnvironnement -> Ligne : ligneActuelle.getOuverturesIndex()
+    INTCalculEnvironnement <- Ligne : List<int> ouvertures
+
+    group Calcul de l'étendue des ouvertures
+
+             INTCalculEnvironnement -> Configuration : getDistanceDeltaOuverture()
+             INTCalculEnvironnement <- Configuration : distanceDeltaOuverture
+
+             INTCalculEnvironnement -> Configuration : getEnvironnementLargeur()
+             INTCalculEnvironnement <- Configuration : environnementLargeur
+
+        alt ouvertures.min() != null && ouvertures.max() != null
+            INTCalculEnvironnement -> INTCalculEnvironnement : List<int> etendue = Arrays.asList(ouvertures.min(), ouvertures.max())
+        else
+            INTCalculEnvironnement -> INTCalculEnvironnement : int positionAleatoire = ThreadLocalRandom.nextInt(0, environnementLargeur)
+            INTCalculEnvironnement -> INTCalculEnvironnement : List<int> etendue = Arrays.asList(positionAleatoire, positionAleatoire+1)
+        end
+
+
+         INTCalculEnvironnement -> INTCalculEnvironnement : etendue.get(0) = etendue.get(0) - distanceDeltaOuverture
+         alt etendue.get(0) < 0
+            INTCalculEnvironnement -> INTCalculEnvironnement : etendue.get(0) = 0
+         end
+         INTCalculEnvironnement -> INTCalculEnvironnement : etendue.get(1) = etendue.get(1) + distanceDeltaOuverture
+         alt etendue.get(1) > environnementLargeur
+            INTCalculEnvironnement -> INTCalculEnvironnement : etendue.get(1) = environnementLargeur
+         end
+    end
+
+    group Calcul de position des ouvertures suviantes
+        INTCalculEnvironnement -> INTCalculEnvironnement : List<int> positionOuvertures = new List<>
+        note left
+            Variable permettant de sotcker
+            les ouvertures déjà créées
+        end note
+        group pour chaque ouvertures (nombreOuverture)
+            INTCalculEnvironnement -> INTCalculEnvironnement : position = ThreadLocalRandom.nextInt(etendue.min(), etendue.max())
+            INTCalculEnvironnement -> INTCalculEnvironnement : essaiInitialisationPosition = 1
+            alt positionOuvertures.contains(position)
+                INTCalculEnvironnement -> INTCalculEnvironnement : position = ThreadLocalRandom.nextInt(etendue.min(), etendue.max())
+                note left
+                    Tant que la condition n'a pas été
+                    vérifiée, on continue d'initialiser
+                    des positions
+                end note
+                INTCalculEnvironnement -> INTCalculEnvironnement : essaiInitialisationPosition ++
+                alt essaiInitialisationPosition == 10
+                    ext <- INTCalculEnvironnement : Erreur : nombre d'essai trop nombreux lors \n de la création des positions des ouvertures
+                end
+            else !positionOuvertures.contains(position)
+                INTCalculEnvironnement -> INTCalculEnvironnement : positionOuvertures.add(position)
+            end
+        end
+    end
+
+    group Création des blocs et modification de la ligne en cours
+        group pour chaque positionOuvertures.min() (inclusif) to positionOuvertures.max() (inclusif)
+            alt positionOuverture = positionOuvertures.min() || positionOuverture = positionOuvertures.min()
+                 INTCalculEnvironnement -> INTCalculEnvironnement : bloc = new Bloc(TypeBloc.Décor, true)
+                 INTCalculEnvironnement -> INTCalculEnvironnement : blocs.set(positionOuverture, bloc)
+            else
+                 INTCalculEnvironnement -> INTCalculEnvironnement : bloc = new Bloc(TypeBloc.Décor, false)
+                 INTCalculEnvironnement -> INTCalculEnvironnement : blocs.set(positionOuverture, bloc)
+                        note left
+                            On modifie la liste de bloc
+                            en cours
+                        end note
+            end
+        end
+
+        group Relier la ligne à créer avec la précedente si nécessaire
+            alt ouverture.max() < positionsOuvertures.min()
+
+                    group pour chaque ouverture.max() (exclusif) to positionsOuvertures.min() (exclusif)
+                             INTCalculEnvironnement -> INTCalculEnvironnement : bloc = new Bloc(TypeBloc.Décor, false)
+                             INTCalculEnvironnement -> INTCalculEnvironnement : blocs.set(positionOuverture, bloc)
+                                    note left
+                                        On modifie la liste de bloc
+                                        en cours
+                                    end note
+                    end
+
+            else positionsOuvertures.max() < ouverture.min()
+
+                 group pour chaque positionsOuvertures.max() (exclusif) to ouverture.min() (exclusif)
+                          INTCalculEnvironnement -> INTCalculEnvironnement : bloc = new Bloc(TypeBloc.Décor, false)
+                          INTCalculEnvironnement -> INTCalculEnvironnement : blocs.set(positionOuverture, bloc)
+                                note left
+                                   On modifie la liste de bloc
+                                   en cours
+                                 end note
+                  end
+
+            end
+        end
+
+    end
+
+end
+
+
+INTCalculEnvironnement -> INTCalculEnvironnement : ligne = new Ligne(menace, typeLigne, blocs)
+alt _ligneAAjouter != null
+    INTCalculEnvironnement -> Environnement : ajoutLigne(ligne)
+    INTCalculEnvironnement <- Environnement : lignePosition
+    INTCalculEnvironnement -> INTCalculEnvironnement : _nbLignesAjoute++
+
+    ext <- INTCalculEnvironnement : ligne
+else
+    ext <-INTCalculEnvironnement : Erreur : impossible de créer la ligne
+end
+
+
+@enduml

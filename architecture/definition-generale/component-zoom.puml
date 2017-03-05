@@ -1,0 +1,11 @@
+@startuml
+
+    component Composant as comp
+    component "Entité" as entity
+
+    Application -> comp : Envoi de message
+    comp -> comp : Mise à jour des \n caractéristiques internes
+    entity --> comp : Mise à jour du composant
+    comp --> entity : Mise à jour des caractériques \n globales de l'entité
+
+@enduml

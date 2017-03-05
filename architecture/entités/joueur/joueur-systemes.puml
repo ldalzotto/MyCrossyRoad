@@ -1,0 +1,11 @@
+@startuml
+
+component "Joueur" as joueur
+
+package Systèmes {
+    component "Système Jeu Principal" as syst
+}
+
+joueur -down-* syst
+
+@enduml

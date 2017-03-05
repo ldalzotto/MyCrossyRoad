@@ -1,0 +1,11 @@
+@startuml
+
+component "ComposantGraphique3D" as compGraph
+
+package Entités {
+    component "Joueur" as joueur
+}
+
+compGraph *-down- joueur
+
+@enduml

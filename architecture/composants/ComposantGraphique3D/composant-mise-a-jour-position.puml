@@ -1,0 +1,11 @@
+@startuml
+hide footbox
+
+participant "Mise à jour position" as majPos
+participant "ComposantGraphique3D" as compGraph
+
+
+majPos -> compGraph : Réception message Mise à jour position
+compGraph -> compGraph : Mise à jour de la position \n du modèle
+
+@enduml

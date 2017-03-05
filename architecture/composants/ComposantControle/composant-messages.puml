@@ -1,0 +1,10 @@
+@startuml
+component ComposantControle as compContr
+
+package Messages {
+    component "Message : Initialisation controle" as initContr
+}
+
+compContr *- initContr
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+
+component "Système Jeu Principal" as systeme
+
+package Entités {
+    component "SkyBox" as skyEnt
+    component "Joueur" as joueurEnt
+    component "Obstacle" as obsEnt
+    component "Menace" as menEnt
+    component "Décor" as decorEnt
+    component "Score" as scoreEnt
+}
+
+systeme *-down- skyEnt
+systeme *-down- joueurEnt
+systeme *-down- obsEnt
+systeme *-down- menEnt
+systeme *-down- decorEnt
+systeme *-down- scoreEnt
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+hide footbox
+
+participant ext
+participant Ligne
+participant Bloc
+
+ext -> Ligne : getOuvertures()
+Ligne -> Ligne : List<Bloc> blocs = new List<> : initialisation des blocs
+group Pour chaque _blocs
+    Ligne -> Bloc : getIsOuverture()
+    alt getIsOuverture()
+        Ligne -> Ligne : blocs.add(bloc)
+    end
+end
+ext <- Ligne : blocs
+
+@enduml

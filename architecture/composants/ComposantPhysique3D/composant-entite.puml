@@ -1,0 +1,11 @@
+@startuml
+
+component "ComposantPhysique3D" as compPhys
+
+package Entités {
+    component "Joueur" as joueur
+}
+
+compPhys *-down- joueur
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+hide footbox
+
+participant Environnement
+participant Configuration
+
+group Initialisation dimensions
+    Environnement -> Configuration : getEnvironnementLongueur()
+    Environnement <- Configuration : environnementLongueur
+        Environnement -> Configuration : getEnvironnementLargeur()
+        Environnement <- Configuration : environnementLargeur
+    Environnement -> Environnement : _longueur = environnementLongueur
+    Environnement -> Environnement : _largeur = environnementLargeur
+end
+
+Environnement -> Environnement : _lignes = new ArrayList<Ligne>
+Environnement -> Environnement : _lignesCurseur = 0;
+
+
+@enduml

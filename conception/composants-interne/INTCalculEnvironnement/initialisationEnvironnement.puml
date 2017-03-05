@@ -1,0 +1,22 @@
+@startuml
+hide footbox
+
+participant "Système Jeu Principal" as systeme
+participant INTCalculEnvironnement
+participant Environnement
+participant EnvironnementInit
+
+systeme -> INTCalculEnvironnement : initialisationEnvironnement()
+
+group Pour chaque valeurs de EnvironnementInit
+        INTCalculEnvironnement -> EnvironnementInit : Récupération des paramètres de la ligne en mémoire
+        INTCalculEnvironnement <- EnvironnementInit : EnvironnementInit ligneMemoire
+        INTCalculEnvironnement -> INTCalculEnvironnement : ligne = new Ligne()
+        note right
+            Tous les éléments du constructeur sont valorisés depuis
+            ligneMemoire. ouverturesPositions = empty
+        end note
+        INTCalculEnvironnement -> Environnement : _environnement.ajoutLigne(ligne)
+end
+
+@enduml

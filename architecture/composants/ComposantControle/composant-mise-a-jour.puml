@@ -1,0 +1,14 @@
+@startuml
+hide footbox
+
+participant "ComposantControle" as compContr
+participant "Joueur" as joueur
+
+group Mise à jour
+  compContr -> compContr : Récupération de l'input actuel
+  alt input == barre espace
+      compContr -> joueur : Evoi message : Mise à jour position \n (vers l'avant)
+  end
+end
+
+@enduml

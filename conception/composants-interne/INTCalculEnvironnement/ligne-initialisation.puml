@@ -1,0 +1,17 @@
+@startuml
+hide footbox
+
+participant ext
+participant Ligne
+participant Configuration
+
+group Initialisation ligne
+    ext -> Ligne : Ligne(int menace, TypeLigne typeLigne, \n List<Bloc> blocs)
+    Ligne -> Configuration : getEnvironnementLargeur()
+    Ligne <- Configuration : environnementLargeur
+    alt blocs == null || blocs.size() > environnementLargeur
+        ext <- Ligne : Erreur : Mauvais format initialisé
+    end
+end
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+component ComposantPhysique3D as compPhys
+
+package Messages {
+    component "Mise à jour position" as majPos
+    component "Message : Initialisation hitbox" as initHit
+    component "Message : Initialisation position" as initPos
+}
+
+compPhys *- majPos
+compPhys *- initHit
+compPhys *- initPos
+@enduml

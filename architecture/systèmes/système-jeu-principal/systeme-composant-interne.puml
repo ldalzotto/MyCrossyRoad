@@ -1,0 +1,12 @@
+@startuml
+
+component "Système Jeu Principal" as systeme
+
+package "Composants Interne" {
+    component "INTCalculEnvironnement" as calcEnv
+}
+
+systeme *-down- calcEnv
+
+
+@enduml

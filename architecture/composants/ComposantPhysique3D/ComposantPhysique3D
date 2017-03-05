@@ -1,0 +1,75 @@
+# ComposantPhysique3D #
+
+----------
+
+## Messages Associées ##
+
+<table border = "1">
+	<tr>
+		<th>Message</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>Mise à jour position</td>
+		<td>Met à jour la position du modèle physique.</td>
+	</tr>
+	<tr>
+		<td>Initialisation position</td>
+		<td>Initialise la position du modèle physique.</td>
+	</tr>
+	<tr>
+		<td>Initialisation hitbox</td>
+		<td>Initialise la hitbox du modèle physique. <br/> La hitbox est un simple Rectangle2D. </td>
+	</tr>
+</table>
+
+![](compsant-messages.png)
+
+## Entités Associées ##
+
+<table border = "1">
+	<tr>
+		<th>Entité</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>Joueur</td>
+		<td>Modèle de Joueur.</td>
+	</tr>
+</table>
+
+![](composant-entite.png)
+
+## Initialisation ##
+
+### Message : Initialisation Hitbox ###
+
+Lorsque le **ComposantPhysique3D** reçoit un message d'initalisation de hitbox, sa hitbox est initialisée :
+
+![](composant-initialisation-hitbox.png)
+
+### Message : Initialisation Position ###
+
+Lorsque le **ComposantPhysique3D** reçoit un message d'initialisation position, la position initiale de son **hitbox rectangle** est initialisé :
+
+![](composant-initialisation-position.png)
+
+## Mise à jour Composant ##
+
+Lorsque **ComposantPhysique3D** est mis à jour, la position de la hitbox est modifiée en conséquence :
+
+![](composant-mise-a-jour.png)
+
+## Périmètre ##
+
+### Collision ###
+
+Le **ComposantPhysique3D** permet de savoir si un autre composant rentre en collision avec lui. Le système de collision est un système simple en ayant une vue du dessus de l'environnement. Toutes les entités seront considérées commes des rectangles 2D.
+
+![](composant-collision.png)
+
+### Message : Mise à jour posisition ###
+
+Lors de la réception du message **Mise à jour posisition**, la position de la hitbox est mise à jour :
+
+![](composant-initialisation-position.png)

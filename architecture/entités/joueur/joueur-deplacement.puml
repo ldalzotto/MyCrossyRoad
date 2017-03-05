@@ -1,0 +1,24 @@
+@startuml
+hide footbox
+
+participant "Utilisateur" as user
+
+participant "ComposantControle" as compContr
+participant "Joueur" as joueur
+participant "Système Jeu Principal" as systeme
+
+
+user -> compContr : Je déplace mon Joueur
+compContr -> systeme : Vérification collision joueur
+
+alt Joueur entre en collision.
+    alt Collision avec Menace
+        joueur <- systeme : Fin de la partie
+    else Collision avec Obstacle
+        joueur <- systeme : Déplacement refusé
+    end
+else Joueur ne rentre pas en collision
+    compContr -> joueur : Envoi message : mise à jour position
+end
+
+@enduml

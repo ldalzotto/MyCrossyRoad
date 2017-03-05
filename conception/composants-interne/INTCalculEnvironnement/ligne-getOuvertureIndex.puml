@@ -1,0 +1,19 @@
+@startuml
+hide footbox
+
+participant ext
+participant Ligne
+
+ext -> Ligne : getOuvertureIndex()
+
+ext -> Ligne : getOuvertures()
+Ligne -> Ligne : List<int> positions = new List<> : initialisation des positions
+group Pour chaque _blocs
+    Ligne -> Bloc : getIsOuverture()
+    alt getIsOuverture()
+        Ligne -> Ligne : blocs.add(index)
+    end
+end
+ext <- Ligne : positions
+
+@enduml

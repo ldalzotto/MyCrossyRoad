@@ -1,0 +1,10 @@
+@startuml
+
+component Entité as entite
+component Composant as composant
+component Systeme as systeme
+
+systeme "1" *- "*" entite
+entite "1" *- "*" composant
+
+@enduml
