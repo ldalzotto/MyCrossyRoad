@@ -1,10 +1,8 @@
 package com.my.crossy.road.entity;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.component.Component;
@@ -15,7 +13,6 @@ import com.my.crossy.road.entity.component.abs.PhysicsComponent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by ldalzotto on 12/11/2016.
@@ -43,7 +40,7 @@ public class Entity {
     public Entity(InputComponent inputComponent, GraphicsComponent graphicsComponent, PhysicsComponent physicsComponent
                   ){
 
-        _componentList = new ArrayList<Component>();
+        _componentList = new ArrayList<>();
 
         _inputComponent = inputComponent;
         _graphicsComponent = graphicsComponent;

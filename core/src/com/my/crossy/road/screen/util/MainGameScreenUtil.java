@@ -4,12 +4,15 @@ import INTEnvironnementManager.enumeration.TypeLigneAffichage;
 import INTEnvironnementManager.modele.BlocAffichage;
 import INTEnvironnementManager.modele.LigneAffichage;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
+import com.my.crossy.road.entity.Entity;
+import com.my.crossy.road.entity.EntityFactory;
+import com.my.crossy.road.entity.component.Component;
+import com.my.crossy.road.exception.BadInstance;
 import com.my.crossy.road.exception.TypeLigneNonReconnu;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
@@ -19,19 +22,23 @@ import java.util.stream.IntStream;
  */
 public class MainGameScreenUtil {
 
+    private MainGameScreenUtil() throws BadInstance{
+        throw new BadInstance("This class cannot be instanciated !", null);
+    }
+
     /**
      * Permet de remonter le {@link TypeLigneAffichage} et son index depuis l'index de la {@link LigneAffichage}
      * @param ligneAffichages les lignes d'affichages à déterminer
      * @return le fonction consommatrice de récupération
      * @throws TypeLigneNonReconnu si la ligne n'a pas pu être identifée
      */
-    public static IntFunction<Map<TypeLigneAffichage, Integer>> TYPE_LIGNE_AFFICHAGE_DEPUIS_LIGNE_AFFICHAGE(List<LigneAffichage> ligneAffichages)
+    public static IntFunction<Map<TypeLigneAffichage, Integer>> typeLigneAffichageDepuisLigneAffichage(List<LigneAffichage> ligneAffichages)
             throws TypeLigneNonReconnu{
         IntFunction<Map<TypeLigneAffichage, Integer>> mapIntFunction = null;
         try {
             mapIntFunction = value -> {
                 LigneAffichage currentLigneAffichage = ligneAffichages.get(value);
-                Map<TypeLigneAffichage, Integer> typeLigneAffichageLigneAffichageMap = new HashMap<>();
+                Map<TypeLigneAffichage, Integer> typeLigneAffichageLigneAffichageMap = new EnumMap<>(TypeLigneAffichage.class);
                 typeLigneAffichageLigneAffichageMap.put(currentLigneAffichage.get_typeLigne(), value);
                 return typeLigneAffichageLigneAffichageMap;
             };
@@ -46,11 +53,9 @@ public class MainGameScreenUtil {
      * @param ligneAffichages la liste le {@link LigneAffichage} que l'on souhaite formatter
      * @return la fonction de calcul
      */
-    public static IntFunction<Map<Integer, Map<LigneAffichage, TypeLigneAffichage>>> FORMAT_TYPE_LIGNE_AFFICHAGE(List<LigneAffichage> ligneAffichages)
+    public static IntFunction<Map<Integer, Map<LigneAffichage, TypeLigneAffichage>>> formatTypeLigneAffichage(List<LigneAffichage> ligneAffichages)
             {
-        IntFunction<Map<Integer, Map<LigneAffichage, TypeLigneAffichage>>> mapIntFunction = null;
-        mapIntFunction = indexValue -> {
-            LigneAffichage currentLigneAffichage = ligneAffichages.get(indexValue);
+        return indexValue -> {
             //initialisation de la map
             Map<Integer, Map<LigneAffichage, TypeLigneAffichage>> mapIndexToLigneAffichageToTypeLigneAffichage = new HashMap<>();
             Map<LigneAffichage, TypeLigneAffichage> mapLigneAffichageToTypeLigneAffichage = new HashMap<>();
@@ -58,7 +63,6 @@ public class MainGameScreenUtil {
             mapIndexToLigneAffichageToTypeLigneAffichage.put(indexValue, mapLigneAffichageToTypeLigneAffichage);
             return mapIndexToLigneAffichageToTypeLigneAffichage;
         };
-        return mapIntFunction;
     }
 
 
@@ -74,7 +78,7 @@ public class MainGameScreenUtil {
      * @return la fonction permettant de fournir cette fonctionnalité
      */
     public static Function<Map<Integer, Map<LigneAffichage, TypeLigneAffichage>>, Map<Integer, Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>>>>
-                                DETERMINER_POSITION(Float size){
+                                    determinerPosition(Float size){
         return mapIndexToLigneAffichageToTypeLigneAffichage -> {
             //initialisation de la map à retourner
             Map<Integer, Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>>>
@@ -88,28 +92,83 @@ public class MainGameScreenUtil {
 
                         mapIndexToLigneAffichageToTypeLigneAffichage.get(index)
                                 .forEach((ligneAffichage, typeLigneAffichage) -> {
-                                    //initialisation
-                                    Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>> mapTypeLigneAffichageToPosition = new HashMap<>();
-                                    mapTypeLigneAffichageToPosition.put(typeLigneAffichage, new ArrayList<>());
-                                    Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>> mapLigneAffichageToTypeLigneAffichageToPosition = new HashMap<>();
-                                    mapLigneAffichageToTypeLigneAffichageToPosition.put(ligneAffichage, mapTypeLigneAffichageToPosition);
-                                    ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).put(ligneAffichage, mapTypeLigneAffichageToPosition);
-
+                                    mapInitialisation(ligneIndexToLigneAffichageToTypeLigneAffichageToPosition, index,
+                                            ligneAffichage, typeLigneAffichage);
 
                                     List<BlocAffichage> blocAffichages = ligneAffichage.get_blocList();
                                     IntStream.range(0, blocAffichages.size())
-                                            .forEach(blocAffichagesIndex -> {
-                                                //mise à jour ou initialisation de la liste des positions
-                                                List<Map<BlocAffichage, Vector3>> positionsList = ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).get(ligneAffichage).get(typeLigneAffichage);
-                                                Map<BlocAffichage, Vector3> mapBlocAffichageToVector = new HashMap<>();
-                                                mapBlocAffichageToVector.put(blocAffichages.get(blocAffichagesIndex), new Vector3(blocAffichagesIndex*size, 0, index*size));
-                                                positionsList.add(mapBlocAffichageToVector);
-                                                ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).get(ligneAffichage).put(typeLigneAffichage, positionsList);
-                                            });
+                                            .forEach(blocAffichagesIndex ->
+                                                updatePositions(size, ligneIndexToLigneAffichageToTypeLigneAffichageToPosition,
+                                                        index, ligneAffichage, typeLigneAffichage, blocAffichages, blocAffichagesIndex)
+                                            );
                                 });
                         });
                 return ligneIndexToLigneAffichageToTypeLigneAffichageToPosition;
              };
         }
+
+    /**
+     * Permet de mettre à jour la map de position ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.
+     * @param size la taille du bloc à créer
+     * @param ligneIndexToLigneAffichageToTypeLigneAffichageToPosition la map actuelle à mettre à jour
+     * @param index l'index actuel de la ligne
+     * @param ligneAffichage la ligne d'affichage actuelle
+     * @param typeLigneAffichage le type de ligne affichage actuel
+     * @param blocAffichages la liste des blocs de la ligneAffichage
+     * @param blocAffichagesIndex l'index actuel du bloc
+     */
+    private static void updatePositions(Float size, Map<Integer, Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>>> ligneIndexToLigneAffichageToTypeLigneAffichageToPosition,
+                                        Integer index, LigneAffichage ligneAffichage, TypeLigneAffichage typeLigneAffichage,
+                                        List<BlocAffichage> blocAffichages, int blocAffichagesIndex) {
+        //mise à jour ou initialisation de la liste des positions
+        List<Map<BlocAffichage, Vector3>> positionsList = ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).get(ligneAffichage).get(typeLigneAffichage);
+        Map<BlocAffichage, Vector3> mapBlocAffichageToVector = new HashMap<>();
+        mapBlocAffichageToVector.put(blocAffichages.get(blocAffichagesIndex), new Vector3(blocAffichagesIndex*size, 0, index*size));
+        positionsList.add(mapBlocAffichageToVector);
+        ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).get(ligneAffichage).put(typeLigneAffichage, positionsList);
+    }
+
+    /**
+     * Permet d'initialiser la map finale ligneIndexToLigneAffichageToTypeLigneAffichageToPosition avec les valeurs associées
+     * en entrée
+     * @param ligneIndexToLigneAffichageToTypeLigneAffichageToPosition la map à initialiser
+     * @param index l'index de la ligne
+     * @param ligneAffichage la ligne associé à l'index
+     * @param typeLigneAffichage le type de ligne associé à la ligne
+     */
+    private static void mapInitialisation(Map<Integer, Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>>> ligneIndexToLigneAffichageToTypeLigneAffichageToPosition,
+                                          Integer index, LigneAffichage ligneAffichage, TypeLigneAffichage typeLigneAffichage) {
+        //initialisation
+        Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>> mapTypeLigneAffichageToPosition = new EnumMap<>(TypeLigneAffichage.class);
+        mapTypeLigneAffichageToPosition.put(typeLigneAffichage, new ArrayList<>());
+        Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>> mapLigneAffichageToTypeLigneAffichageToPosition = new HashMap<>();
+        mapLigneAffichageToTypeLigneAffichageToPosition.put(ligneAffichage, mapTypeLigneAffichageToPosition);
+        ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.get(index).put(ligneAffichage, mapTypeLigneAffichageToPosition);
+    }
+
+    /**
+     * Permet de créer une entité de type BLOC_OBSTACLE ou BLOC_DECOR
+     * @param size la taille de l'entité
+     * @param entities la liste d'entités globale du système
+     * @param typeLigneAffichage le type de ligne
+     * @param json paramètre json
+     * @return la fonction de calcul
+     */
+    public static BiConsumer<BlocAffichage, Vector3> createGameBlocEntity(Float size, List<Entity> entities, TypeLigneAffichage typeLigneAffichage,
+                                                                    Json json) {
+        return (blocAffichage, vector3) -> {
+            Entity entity = null;
+            if(blocAffichage.isAnObstacle()){
+                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
+            } else {
+                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
+            }
+            entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, json.toJson(typeLigneAffichage),
+                    json.toJson(vector3), json.toJson(size));
+            entity.sendMessage(Component.MESSAGE.INIT_HITBOX, json.toJson(vector3),
+                    json.toJson(size));
+            entities.add(entity);
+        };
+    }
 
 }

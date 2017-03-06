@@ -28,9 +28,9 @@ import com.my.crossy.road.screen.viewport.GlobalViewport;
 
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Created by ldalzotto on 12/11/2016.
@@ -41,10 +41,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
     private Environment _environment;
 
-    private static final int MainGameScreenHeight = 800;
-    private static final int MainGameScreenWidth = 600;
-
-    private Map<Integer, List<Entity>> _entiteEnvironnementContainer;
+    private static final int MAIN_GAME_SCREEN_HEIGHT = 800;
+    private static final int MAIN_GAME_SCREEN_WIDTH = 600;
 
     private PerspectiveCamera _camera = null;
     private ModelBatch _batch = null;
@@ -63,7 +61,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
     public MainGameScreen(){
 
-        setupViewport(MainGameScreenWidth, MainGameScreenHeight);
+        setupViewport(MAIN_GAME_SCREEN_WIDTH, MAIN_GAME_SCREEN_HEIGHT);
 
         _json = new Json();
         _batch = new ModelBatch();
@@ -120,20 +118,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
                     entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                             _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
             if(!isCollision) {
-                //le déplacement est accepté
-                _entityList.forEach(entity1 ->
-                        entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                                _json.toJson(_joueur.get_direction())));
-                try {
-                    //TODO création d'une ligne si la direction est UP
-                    //TODO amélioration de la gestion de la création des lignes (positions & mémoire)
-                    if(_joueur.get_direction().equals(Direction.UP)){
-                        List<Entity> entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
-                        _entityList.addAll(entities);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //si le déplacement est accepté (pas de collision)
+                executeMove();
             } else {
                 Gdx.app.debug(TAG, "Collision has been detected !");
             }
@@ -143,7 +129,28 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
         //Entity garbage collector
         List<Entity> entitiesToDestroy = _entityList.stream().filter(Entity::get_isDetroyable).collect(Collectors.toList());
-        entitiesToDestroy.forEach(entity -> _entityList.remove(entity));
+        entitiesToDestroy.forEach(_entityList::remove);
+    }
+
+    /**
+     * Permet d'exécuter un mouvement du jouer. L'exécution d'un mouvement se traduit par le déplacement
+     * complet de l'environnement dans la position inverse au déplacement du joueur
+     */
+    private void executeMove() {
+        //le déplacement est accepté
+        _entityList.forEach(entity1 ->
+                entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                        _json.toJson(_joueur.get_direction())));
+        try {
+            //TODO création d'une ligne si la direction est UP
+            //TODO amélioration de la gestion de la création des lignes (positions & mémoire)
+            if(_joueur.get_direction().equals(Direction.UP)){
+                List<Entity> entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
+                _entityList.addAll(entities);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateEntity(){
@@ -176,26 +183,15 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         try {
             List<LigneAffichage> ligneAffichages = _intEnvironnementManager.getEnvironnementLignesPourAffichage().collect(Collectors.toList());
             IntStream.range(0, ligneAffichages.size())
-                    .mapToObj(MainGameScreenUtil.FORMAT_TYPE_LIGNE_AFFICHAGE(ligneAffichages))
-                    .map(MainGameScreenUtil.DETERMINER_POSITION(Configuration.TAILLE_BLOC.get_valeur()))
+                    .mapToObj(MainGameScreenUtil.formatTypeLigneAffichage(ligneAffichages))
+                    .map(MainGameScreenUtil.determinerPosition(Configuration.TAILLE_BLOC.get_valeur()))
                     .forEach(ligneIndexToLigneAffichageToTypeLigneAffichageToPosition -> {
                         ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.forEach((integer, ligneAffichageMapMap) -> {
                             ligneAffichageMapMap.forEach((ligneAffichage, typeLigneAffichageListMap) -> {
                                 typeLigneAffichageListMap.forEach((typeLigneAffichage, blocAndPosition) -> {
                                     blocAndPosition.forEach(blocAffichageVector3Map -> {
-                                        blocAffichageVector3Map.forEach((blocAffichage, vector3) -> {
-                                            Entity entity = null;
-                                            if(blocAffichage.isAnObstacle()){
-                                                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
-                                            } else {
-                                                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
-                                            }
-                                            entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(typeLigneAffichage),
-                                                    _json.toJson(vector3), _json.toJson(size));
-                                            entity.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(vector3),
-                                                    _json.toJson(size));
-                                            entities.add(entity);
-                                        });
+                                        blocAffichageVector3Map
+                                                .forEach(MainGameScreenUtil.createGameBlocEntity(size, entities, typeLigneAffichage, _json));
                                     });
                                 });
                             });
@@ -270,10 +266,6 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         }
     }
 
-    private void doneLoading(){
-
-    }
-
     @Override
     public void resize(int width, int height) {
 
@@ -308,24 +300,10 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private Boolean checkCollision(Entity entityATester, List<Entity> listeEntiteAComparer){
         return listeEntiteAComparer.stream()
                 .map(Entity::get_physicsComponent)
-                .filter(physicsComponent -> physicsComponent!=null)
+                .filter(Objects::nonNull)
                 .map(physicsComponent -> physicsComponent.isInCollitionWith(entityATester))
                 .filter(aBoolean -> aBoolean)
                 .findFirst().orElse(false);
-    }
-
-    /**
-     * Afin de détecter les collisions, il est nécessaire de ne pas prendre en compte le bloc
-     * sous le joueur. En effet, les collisions s'effectuent sur un plan 2D vue du dessus de l'environnement
-     * @return la liste d'entité située à la même position que le joueur
-     */
-    private List<Entity> getJoueurActualEnvironnementBloc(){
-        return _entityList.stream()
-                .filter(entity -> {
-                    return (entity.get_position().x == _joueur.get_position().x &&
-                            entity.get_position().z == _joueur.get_position().z);
-                })
-                .collect(Collectors.toList());
     }
 
 }
