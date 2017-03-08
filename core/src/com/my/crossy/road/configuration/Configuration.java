@@ -7,7 +7,7 @@ public enum Configuration {
 
     TAILLE_BLOC(5.0f),
     TAILLE_JOUEUR(5.0f),
-    POSITION_MIN_ENVIRONNEMENT(-30.0f),
+    POSITION_MIN_ENVIRONNEMENT(-30.0f), //correspond à la coordonnée à partir de laquelle les blocs seront supprimés
     ENVIRONNEMENT_SPEED(1.0f);
 
     private Float _valeur;

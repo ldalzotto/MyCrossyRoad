@@ -65,10 +65,10 @@ public class PlayerMovementManager implements IPlayerMovementManager {
             //on calcul la distance entre ce bloc et le joueur
             Float distance = Math.abs(rectangle.getY() - positionJoueur.y);
             //si cette distance est plus petite que la taille max, on ne créé pas de blocs
-            if(distance/Configuration.TAILLE_BLOC.get_valeur() < PlayerConfiguration.MAX_BLOX_INDEX_TO_CREATE_NEW_BLOC.getValue()){
+            if(distance/Configuration.TAILLE_BLOC.get_valeur() < PlayerConfiguration.MAX_LINES_NB_TO_CREATE_NEW_BLOC.getValue()){
                 Gdx.app.debug(TAG, "Pas de création de blocs pour ce mouvement : " +
                         Float.valueOf(distance/Configuration.TAILLE_BLOC.get_valeur()) + " < "
-                        + PlayerConfiguration.MAX_BLOX_INDEX_TO_CREATE_NEW_BLOC.getValue());
+                        + PlayerConfiguration.MAX_LINES_NB_TO_CREATE_NEW_BLOC.getValue());
                 isElligibleToCreate = false;
             }
         }
