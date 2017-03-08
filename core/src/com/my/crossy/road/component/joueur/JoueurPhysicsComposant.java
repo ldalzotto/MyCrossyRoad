@@ -22,12 +22,6 @@ public class JoueurPhysicsComposant extends PhysicsComponent {
     private static final String TAG = JoueurPhysicsComposant.class.getSimpleName();
     private Json _json = new Json();
 
-    /**
-     * La hitbox du joueur est un rectangle vu du dessus de l'environnement
-     */
-
-    private IINTEnvironnementManager _intEnvironnementManager = INTEnvironnementManager.getInstance();
-
     @Override
     public void update(Entity entity) {
 

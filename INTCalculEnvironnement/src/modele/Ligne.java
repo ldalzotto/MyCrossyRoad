@@ -3,10 +3,8 @@ package modele;
 import enumeration.Configuration;
 import enumeration.TypeLigne;
 import exception.MalformedLineException;
-import exception.PositionJoueruException;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**

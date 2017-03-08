@@ -36,8 +36,8 @@ public class GenericGraphicComposant extends GraphicsComponent {
                 TypeLigneAffichage typeLigneAffichage = _json.fromJson(TypeLigneAffichage.class, messageReceived[1]);
                 Vector3 vector3 = _json.fromJson(Vector3.class, messageReceived[2]);
                 Float size = _json.fromJson(Float.class, messageReceived[3]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_GRAPHICS.toString() + " reveived with typeLigneAffichage : "+typeLigneAffichage.name()+
-                        ", vector3" + vector3.toString() + ", size" + size);
+                //Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_GRAPHICS.toString() + " reveived with typeLigneAffichage : "+typeLigneAffichage.name()+
+                     //   ", vector3" + vector3.toString() + ", size" + size);
                 Color couleur = null;
                 switch (typeLigneAffichage){
                     case Arbre:
@@ -63,8 +63,8 @@ public class GenericGraphicComposant extends GraphicsComponent {
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
                 Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
-                         ", direction : " + direction.toString());
+               // Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                 //        ", direction : " + direction.toString());
                 switch (direction){
                     case UP:
                         _3Dmodel.transform.translate(new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur()));

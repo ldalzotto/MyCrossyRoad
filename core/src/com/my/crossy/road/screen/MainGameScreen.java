@@ -24,11 +24,12 @@ import com.my.crossy.road.entity.EntityFactory;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.exception.MaxPositionNonDeterminee;
 import com.my.crossy.road.screen.util.MainGameScreenUtil;
+import com.my.crossy.road.screen.util.player.movement.IPlayerMovementManager;
+import com.my.crossy.road.screen.util.player.movement.PlayerMovementManager;
 import com.my.crossy.road.screen.viewport.GlobalViewport;
 
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -48,6 +49,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private ModelBatch _batch = null;
 
     private ModelManager _modelManager = ModelManager.getInstance();
+    private IPlayerMovementManager _playerMovementManager = PlayerMovementManager.get_instance();
 
     private Json _json;
 
@@ -109,11 +111,11 @@ public class MainGameScreen extends GlobalViewport implements Screen{
              * fictif d'une demi position. Ensuite, on vérifie si il y a une collision entre le joueur
              * et l'environnement fictif
              */
-            //TODO améliorer la gesion des mouvements
+            //TODO améliorer la gestion des mouvements
             entityToCompare.forEach(entity1 ->
                     entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                             _json.toJson(_joueur.get_direction())));
-            Boolean isCollision = checkCollision(_joueur, entityToCompare);
+            Boolean isCollision = MainGameScreenUtil.checkCollision(_joueur, entityToCompare);
             entityToCompare.forEach(entity1 ->
                     entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                             _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
@@ -141,16 +143,22 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         _entityList.forEach(entity1 ->
                 entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                         _json.toJson(_joueur.get_direction())));
+        List<Entity> entityToCreate = createNewBlocsIfAvailable();
+        _entityList.addAll(entityToCreate);
+    }
+
+    private List<Entity> createNewBlocsIfAvailable() {
+        List<Entity> entities = new ArrayList<>();
         try {
-            //TODO création d'une ligne si la direction est UP
-            //TODO amélioration de la gestion de la création des lignes (positions & mémoire)
-            if(_joueur.get_direction().equals(Direction.UP)){
-                List<Entity> entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
-                _entityList.addAll(entities);
+            //TODO il y a un bug dans le manager, les lignes ne veulent plus se créer au bout d'un moment
+            if(_joueur.get_direction().equals(Direction.UP) && _playerMovementManager.isAbleToCreateNewBlocs(_entityList, _joueur)){
+                entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
             }
+            return entities;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return entities;
     }
 
     private void populateEntity(){
@@ -212,7 +220,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private List<Entity> createBlocsToLastPosition(Float size){
         List<Entity> entities = new ArrayList<>();
         try {
-            Float position = getMaxBlocPosition();
+            Float position = MainGameScreenUtil.getMaxBlocPosition(_entityList);
             LigneAffichage ligneAffichageCree = _intEnvironnementManager.creationLigne();
             IntStream.range(0, ligneAffichageCree.get_blocList().size())
                     .forEach(value -> {
@@ -244,28 +252,6 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         ));
     }
 
-    /**
-     * Permet de retourner la position maximale des lignes de blocs actuels
-     * @return la position maximale des lignes de blocs
-     * @throws MaxPositionNonDeterminee
-     */
-    private Float getMaxBlocPosition() throws MaxPositionNonDeterminee{
-        Optional<Float> position =_entityList.stream()
-                .max((o1, o2) -> {
-                    Float value = o1.get_position().z - o2.get_position().z;
-                    if(value >= 0){
-                        return 1;
-                    }else{
-                        return -1;
-                    }
-                }).map(entity -> entity.get_position().z);
-        if(position.isPresent()){
-            return position.get();
-        } else {
-            throw new MaxPositionNonDeterminee("La position maximale des entités n'a pas pu être déterminé", null);
-        }
-    }
-
     @Override
     public void resize(int width, int height) {
 
@@ -291,19 +277,5 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
     }
 
-    /**
-     * Vérifie si l'entité renseignée en entrée rentre en collision avec les blocs
-     * @param entityATester l'entité pour laquelle nous voulons vérifier si elle rentre en collision
-     * @param listeEntiteAComparer la liste d'entité contre laquelle nous voulons check la collision
-     * @return true = collision, false = pas de collision
-     */
-    private Boolean checkCollision(Entity entityATester, List<Entity> listeEntiteAComparer){
-        return listeEntiteAComparer.stream()
-                .map(Entity::get_physicsComponent)
-                .filter(Objects::nonNull)
-                .map(physicsComponent -> physicsComponent.isInCollitionWith(entityATester))
-                .filter(aBoolean -> aBoolean)
-                .findFirst().orElse(false);
-    }
 
 }

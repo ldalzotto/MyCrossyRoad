@@ -34,14 +34,14 @@ public class GenericPhysicComposant extends PhysicsComponent {
             if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){
                 Vector3 vector3 = _json.fromJson(Vector3.class, messageReceived[1]);
                 Float size = _json.fromJson(Float.class, messageReceived[2]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_HITBOX.toString() + " reveived with " +
-                        "vector3" + vector3.toString() + ", size" + size);
+                //Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_HITBOX.toString() + " reveived with " +
+                  //      "vector3" + vector3.toString() + ", size" + size);
                 _hitBox = new Rectangle(vector3.x, vector3.z, size, size);
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
                 Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
-                        ", direction : " + direction.toString());
+                //Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                  //      ", direction : " + direction.toString());
 
                 Vector2 position = _hitBox.getPosition(new Vector2());
                 switch (direction){
@@ -65,8 +65,8 @@ public class GenericPhysicComposant extends PhysicsComponent {
             }  else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
                 Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
-                        ", direction : " + direction.toString());
+                //Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
+                  //      ", direction : " + direction.toString());
 
                 Vector2 position = _hitBox.getPosition(new Vector2());
                 switch (direction){

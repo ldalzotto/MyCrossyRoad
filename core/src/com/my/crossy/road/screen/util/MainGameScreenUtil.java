@@ -9,6 +9,7 @@ import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.EntityFactory;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.exception.BadInstance;
+import com.my.crossy.road.exception.MaxPositionNonDeterminee;
 import com.my.crossy.road.exception.TypeLigneNonReconnu;
 
 import java.util.*;
@@ -169,6 +170,44 @@ public class MainGameScreenUtil {
                     json.toJson(size));
             entities.add(entity);
         };
+    }
+
+    /**
+     * Vérifie si l'entité renseignée en entrée rentre en collision avec les blocs
+     * @param entityATester l'entité pour laquelle nous voulons vérifier si elle rentre en collision
+     * @param listeEntiteAComparer la liste d'entité contre laquelle nous voulons check la collision
+     * @return true = collision, false = pas de collision
+     */
+    public static Boolean checkCollision(Entity entityATester, List<Entity> listeEntiteAComparer){
+        return listeEntiteAComparer.stream()
+                .map(Entity::get_physicsComponent)
+                .filter(Objects::nonNull)
+                .map(physicsComponent -> physicsComponent.isInCollitionWith(entityATester))
+                .filter(aBoolean -> aBoolean)
+                .findFirst().orElse(false);
+    }
+
+    /**
+     * Permet de retourner la position maximale des entités fournies en entrée de cette méthode
+     * @param  listeBloc la liste des entités que l'on souhaite avoir la position max
+     * @return la position maximale des lignes de blocs
+     * @throws MaxPositionNonDeterminee
+     */
+    public static Float getMaxBlocPosition(List<Entity> listeBloc) throws MaxPositionNonDeterminee{
+        Optional<Float> position =listeBloc.stream()
+                .max((o1, o2) -> {
+                    Float value = o1.get_position().z - o2.get_position().z;
+                    if(value >= 0){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                }).map(entity -> entity.get_position().z);
+        if(position.isPresent()){
+            return position.get();
+        } else {
+            throw new MaxPositionNonDeterminee("La position maximale des entités n'a pas pu être déterminé", null);
+        }
     }
 
 }

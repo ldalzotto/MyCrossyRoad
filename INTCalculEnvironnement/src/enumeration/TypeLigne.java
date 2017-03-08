@@ -1,10 +1,8 @@
 package enumeration;
 
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BinaryOperator;
-import java.util.function.Predicate;
 
 /**
  * Created by ldalzotto on 19/02/2017.

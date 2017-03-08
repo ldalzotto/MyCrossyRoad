@@ -1,14 +1,10 @@
 package enumeration;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.function.BinaryOperator;
-
-import static enumeration.TypeLigne.Arbre;
 
 /**
  * Created by ldalzotto on 20/02/2017.
