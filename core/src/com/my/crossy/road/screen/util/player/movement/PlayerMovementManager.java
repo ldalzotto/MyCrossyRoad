@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.my.crossy.road.configuration.Configuration;
 import com.my.crossy.road.configuration.PlayerConfiguration;
+import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
 import com.my.crossy.road.exception.MaxPositionNonDeterminee;
@@ -25,6 +26,11 @@ public class PlayerMovementManager implements IPlayerMovementManager {
     private static PlayerMovementManager _instance = null;
 
     private Float _lastMaxBlocPosition = null;
+
+    /**
+     * Le nombre de bloc de largeur décalé par le joueur
+     */
+    private Integer _playerBlocWidthIndex = 0;
 
     public static PlayerMovementManager get_instance(){
         if(_instance == null){
@@ -86,6 +92,18 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         return isElligibleToCreate;
     }
 
+    public void updatePlayerWidthIndex(Direction direction){
+        if(direction.equals(Direction.LEFT)){
+            _playerBlocWidthIndex--;
+        } else if(direction.equals(Direction.RIGHT)){
+            _playerBlocWidthIndex++;
+        }
+    }
+
+    public Integer getPlayerWidthIndex(){
+        return _playerBlocWidthIndex;
+    }
+
     private Comparator<Rectangle> minRectangleCompoarator() {
         return (o1, o2) -> {
             if(o1.getY() >= o2.getY()){
@@ -95,5 +113,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
             }
         };
     }
+
+
 
 }

@@ -188,7 +188,7 @@ public class MainGameScreenUtil {
     }
 
     /**
-     * Permet de retourner la position maximale des entités fournies en entrée de cette méthode
+     * Permet de retourner la position des dernières entités de l'environnement fournies en entrée de cette méthode
      * @param  listeBloc la liste des entités que l'on souhaite avoir la position max
      * @return la position maximale des lignes de blocs
      * @throws MaxPositionNonDeterminee

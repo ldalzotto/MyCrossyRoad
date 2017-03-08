@@ -22,7 +22,6 @@ import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.EntityFactory;
 import com.my.crossy.road.entity.component.Component;
-import com.my.crossy.road.exception.MaxPositionNonDeterminee;
 import com.my.crossy.road.screen.util.MainGameScreenUtil;
 import com.my.crossy.road.screen.util.player.movement.IPlayerMovementManager;
 import com.my.crossy.road.screen.util.player.movement.PlayerMovementManager;
@@ -106,12 +105,12 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         if(_joueur.get_isMoving()){
 
             List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
+
             /**
              * On supprime les blocs de l'environnement contenu dans le joueur puis on fait avancer l'environnement
              * fictif d'une demi position. Ensuite, on vérifie si il y a une collision entre le joueur
              * et l'environnement fictif
              */
-            //TODO améliorer la gestion des mouvements
             entityToCompare.forEach(entity1 ->
                     entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                             _json.toJson(_joueur.get_direction())));
@@ -140,6 +139,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
      */
     private void executeMove() {
         //le déplacement est accepté
+        //mise à jour de l'index width du joueur
+        _playerMovementManager.updatePlayerWidthIndex(_joueur.get_direction());
         _entityList.forEach(entity1 ->
                 entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
                         _json.toJson(_joueur.get_direction())));
@@ -232,7 +233,9 @@ public class MainGameScreen extends GlobalViewport implements Screen{
                             entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
                         }
 
-                        Vector3 entityPosition = new Vector3(value * Configuration.TAILLE_BLOC.get_valeur(), 0, position);
+                        float widthPlayerPosition = ((value+_playerMovementManager.getPlayerWidthIndex()) * Configuration.TAILLE_BLOC.get_valeur());
+                        Vector3 entityPosition = new Vector3(widthPlayerPosition, 0, position);
+
                         entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(ligneAffichageCree.get_typeLigne()),
                                 _json.toJson(entityPosition), _json.toJson(size));
                         entity.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(entityPosition), _json.toJson(size));
