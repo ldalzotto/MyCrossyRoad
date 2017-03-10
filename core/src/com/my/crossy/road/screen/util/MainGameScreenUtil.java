@@ -158,18 +158,25 @@ public class MainGameScreenUtil {
     public static BiConsumer<BlocAffichage, Vector3> createGameBlocEntity(Float size, List<Entity> entities, TypeLigneAffichage typeLigneAffichage,
                                                                     Json json) {
         return (blocAffichage, vector3) -> {
-            Entity entity = null;
-            if(blocAffichage.isAnObstacle()){
-                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
-            } else {
-                entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
-            }
+            Entity entity = generateEntity(blocAffichage);
             entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, json.toJson(typeLigneAffichage),
                     json.toJson(vector3), json.toJson(size));
             entity.sendMessage(Component.MESSAGE.INIT_HITBOX, json.toJson(vector3),
                     json.toJson(size));
             entities.add(entity);
         };
+    }
+
+    public static Entity generateEntity(BlocAffichage blocAffichage) {
+        Entity entity = null;
+        if(blocAffichage.isAnObstacle()){
+            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
+        } else if(blocAffichage.isAPhantomObstacle()){
+            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE_INVISIBLE);
+        } else {
+            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
+        }
+        return entity;
     }
 
     /**
@@ -187,6 +194,7 @@ public class MainGameScreenUtil {
                 .findFirst().orElse(false);
     }
 
+
     /**
      * Permet de retourner la position des dernières entités de l'environnement fournies en entrée de cette méthode
      * @param  listeBloc la liste des entités que l'on souhaite avoir la position max
@@ -195,6 +203,7 @@ public class MainGameScreenUtil {
      */
     public static Float getMaxBlocPosition(List<Entity> listeBloc) throws MaxPositionNonDeterminee{
         Optional<Float> position =listeBloc.stream()
+                .filter(entity -> entity.get_position() != null)
                 .max((o1, o2) -> {
                     Float value = o1.get_position().z - o2.get_position().z;
                     if(value >= 0){
@@ -209,5 +218,6 @@ public class MainGameScreenUtil {
             throw new MaxPositionNonDeterminee("La position maximale des entités n'a pas pu être déterminé", null);
         }
     }
+
 
 }

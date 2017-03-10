@@ -56,9 +56,8 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             blocs = populeBlocs(TypeBloc.Decor);
         }
 
-
         try {
-            Ligne ligneActuelle = getLigneActuelle();
+            Ligne ligneActuelle = removePhatomCollisionBlocsFromLigne(getLigneActuelle());
 
             //détermine nombre d'ouverture pour la ligne suivante
             int nombreOuverture = calculNombreOuverture(ligneActuelle);
@@ -82,6 +81,9 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
             //relier la ligne à créer avec la précedente si nécessaire
             additionCheminEntreLigne(blocs, positionOuvertures, ouvertures);
+
+            //ajouter des blocs de collision invisible aux extrémités de la ligne
+            addPhatomCollisionBlocsAtEnd(blocs);
 
             Ligne ligne = new Ligne(menace, typeLigne, blocs);
             Integer positionLigne =  _environnement.ajoutLigne(ligne);
@@ -226,6 +228,25 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
                 "minPosition : "+minPosition+", maxPosition : "+maxPosition+"] ");
 
         return Arrays.asList(minPosition, maxPosition);
+    }
+
+    /**
+     * Permet d'ajouter deux phantom blocs aux extrémités de la liste de blocs
+     * @param blocs la liste de blocs sur laquelle on souhaite ajouter les blocs phantom
+     */
+    private void addPhatomCollisionBlocsAtEnd(List<Bloc> blocs){
+        blocs.add(new Bloc(TypeBloc.PhantomObstacle, false));
+        blocs.add(0, new Bloc(TypeBloc.PhantomObstacle, false));
+    }
+
+    private Ligne removePhatomCollisionBlocsFromLigne(Ligne ligne){
+        ligne.get_blocs().removeIf(bloc -> {
+            if(bloc.get_typeBloc().equals(TypeBloc.PhantomObstacle)){
+                return true;
+            }
+            return false;
+        });
+        return ligne;
     }
 
     private List<Bloc> populeBlocs(TypeBloc typeBloc){

@@ -26,15 +26,11 @@ public class Main {
         blocList.add(new Bloc(TypeBloc.Decor, true));
 
         Ligne ligne = null;
-        try {
+
             ligne = new Ligne(1, TypeLigne.Eau, blocList);
             List<Bloc> blocs = ligne.getOuvertures();
             List<Integer> integers = ligne.getOuverturesIndex();
             System.out.println(integers);
-
-        } catch (MalformedLineException e) {
-            e.printStackTrace();
-        }
 
         INTCalculEnvironnement intCalculEnvironnement = new INTCalculEnvironnement();
         intCalculEnvironnement.initialisationEnvironnement();

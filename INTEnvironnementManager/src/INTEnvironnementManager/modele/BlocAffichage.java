@@ -27,4 +27,8 @@ public class BlocAffichage {
         return _typeBloc.equals(TypeBlocAffichage.Obstacle) && !_isOuverture;
     }
 
+    public Boolean isAPhantomObstacle(){
+        return _typeBloc.equals(TypeBlocAffichage.PhantomObstacle);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.my.crossy.road.screen;
 import INTEnvironnementManager.INTEnvironnementManager;
 import INTEnvironnementManager.exception.JoueurNonPlace;
 import INTEnvironnementManager.interfaceManger.IINTEnvironnementManager;
+import INTEnvironnementManager.modele.BlocAffichage;
 import INTEnvironnementManager.modele.LigneAffichage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -225,13 +226,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
             LigneAffichage ligneAffichageCree = _intEnvironnementManager.creationLigne();
             IntStream.range(0, ligneAffichageCree.get_blocList().size())
                     .forEach(value -> {
-                        Entity entity = null;
-
-                        if(ligneAffichageCree.get_blocList().get(value).isAnObstacle()){
-                            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
-                        } else {
-                            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
-                        }
+                        BlocAffichage blocToCreate = ligneAffichageCree.get_blocList().get(value);
+                        Entity entity = MainGameScreenUtil.generateEntity(blocToCreate);
 
                         float widthPlayerPosition = ((value+_playerMovementManager.getPlayerWidthIndex()) * Configuration.TAILLE_BLOC.get_valeur());
                         Vector3 entityPosition = new Vector3(widthPlayerPosition, 0, position);

@@ -23,7 +23,8 @@ public class Entity {
         PLAYER,
         ENVIRONNEMENT,
         BLOC_OBSTACLE,
-        BLOC_DECOR;
+        BLOC_DECOR,
+        BLOC_OBSTACLE_INVISIBLE;
     }
 
     protected Vector3 _position;

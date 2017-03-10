@@ -16,13 +16,9 @@ public class Ligne {
     private TypeLigne _typeLigne;
     private List<Bloc> _blocs;
 
-    public Ligne(int menace, TypeLigne typeLigne, List<Bloc> blocs) throws MalformedLineException{
+    public Ligne(int menace, TypeLigne typeLigne, List<Bloc> blocs) {
 
         int environnementLargeur = Configuration.EnvironnementLargeur.get_valeur();
-
-        if(blocs == null || blocs.size() > environnementLargeur){
-            throw new MalformedLineException("La ligne possède un format incorrect", null);
-        }
 
         _menace = menace;
         _typeLigne = typeLigne;

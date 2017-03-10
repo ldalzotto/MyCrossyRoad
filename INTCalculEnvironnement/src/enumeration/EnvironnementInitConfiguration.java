@@ -15,9 +15,11 @@ public class EnvironnementInitConfiguration{
     public static Ligne ligne_1, ligne_2, ligne_3, ligne_4, ligne_5, ligne_6, ligne_7, ligne_8, ligne_9, ligne_10;
 
     static {
-        try {
             List<Bloc> initBlocList = new ArrayList<>();
-            initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
+        initBlocList.add(new Bloc(TypeBloc.PhantomObstacle, false));
+
+
+        initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
             initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
             initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
 
@@ -29,6 +31,8 @@ public class EnvironnementInitConfiguration{
             initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
             initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
             initBlocList.add(new Bloc(TypeBloc.Obstacle, false));
+
+        initBlocList.add(new Bloc(TypeBloc.PhantomObstacle, false));
 
             ligne_1 = new Ligne(0, TypeLigne.Arbre, initBlocList);
             ligne_2 = new Ligne(0, TypeLigne.Arbre, initBlocList);
@@ -40,9 +44,6 @@ public class EnvironnementInitConfiguration{
             ligne_8 = new Ligne(0, TypeLigne.Arbre, initBlocList);
             ligne_9 = new Ligne(0, TypeLigne.Arbre, initBlocList);
             ligne_10 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-        } catch (MalformedLineException e) {
-            e.printStackTrace();
-        }
     }
 
 }

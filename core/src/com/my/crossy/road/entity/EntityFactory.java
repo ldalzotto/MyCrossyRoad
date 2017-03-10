@@ -29,6 +29,8 @@ public class EntityFactory {
             case BLOC_DECOR:
                 entity = new Entity(null, new GenericGraphicComposant(), null);
                 break;
+            case BLOC_OBSTACLE_INVISIBLE:
+                entity = new Entity(null, null, new GenericPhysicComposant());
             default:
                 break;
         }
