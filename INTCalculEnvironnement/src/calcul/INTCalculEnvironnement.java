@@ -15,6 +15,7 @@ import modele.Ligne;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -144,7 +145,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             _nbOuvertureModifiable = true;
         }
 
-        int nombreOuverture = 0;
+        int nombreOuverture;
         if(_nbOuvertureModifiable){
             _nbOuvertureModifiable = false;
             nombreOuverture = ThreadLocalRandom.current().nextInt(1,3);
@@ -166,8 +167,22 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     }
 
     private void creationChemin(List<Bloc> blocs, List<Integer> positionOuvertures) {
-        Integer minPositionOuverture = positionOuvertures.stream().min((i1, i2) -> Integer.compare(i1, i2)).get();
-        Integer maxPositionOuverture = positionOuvertures.stream().max((i1, i2) -> Integer.compare(i1, i2)).get();
+        Optional<Integer> oMinPositionOuverture = positionOuvertures.stream().min(Integer::compare);
+        Optional<Integer> oMaxPositionOuverture = positionOuvertures.stream().max(Integer::compare);
+
+        Integer minPositionOuverture;
+        Integer maxPositionOuverture;
+
+        if(oMinPositionOuverture.isPresent()){
+            minPositionOuverture = oMinPositionOuverture.get();
+        } else {
+            minPositionOuverture = null;
+        }
+        if(oMaxPositionOuverture.isPresent()){
+            maxPositionOuverture = oMaxPositionOuverture.get();
+        } else {
+            maxPositionOuverture = null;
+        }
 
         System.out.println("Création de chemin entre "+minPositionOuverture+" et "+maxPositionOuverture+"");
         List<Bloc> blocCopy = blocs;

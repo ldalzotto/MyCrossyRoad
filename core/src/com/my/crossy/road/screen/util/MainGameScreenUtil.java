@@ -66,7 +66,19 @@ public class MainGameScreenUtil {
         };
     }
 
-
+    /**
+     * Depuis une liste de {@link LigneAffichage}, permet de renvoyer le triplet Index, {@link LigneAffichage} et {@link TypeLigneAffichage}
+     * @param ligneAffichages la liste le {@link LigneAffichage} que l'on souhaite formatter
+     * @return la fonction de calcul
+     */
+    public static IntFunction<Table3D<Integer, LigneAffichage, TypeLigneAffichage>> formatTypeLigneAffichageV2(List<LigneAffichage> ligneAffichages)
+    {
+        return indexValue -> {
+            Table3D<Integer, LigneAffichage, TypeLigneAffichage> table3D = new Table3D<>();
+            table3D.put(indexValue, ligneAffichages.get(indexValue), ligneAffichages.get(indexValue).get_typeLigne());
+            return table3D;
+        };
+    }
 
     /**
      * Permet de déterminer la position des {@link BlocAffichage} de lignesAffichages sous forme de {@link Vector3}
@@ -108,6 +120,7 @@ public class MainGameScreenUtil {
              };
         }
 
+
     /**
      * Permet de mettre à jour la map de position ligneIndexToLigneAffichageToTypeLigneAffichageToPosition.
      * @param size la taille du bloc à créer
@@ -139,7 +152,6 @@ public class MainGameScreenUtil {
      */
     private static void mapInitialisation(Map<Integer, Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>>> ligneIndexToLigneAffichageToTypeLigneAffichageToPosition,
                                           Integer index, LigneAffichage ligneAffichage, TypeLigneAffichage typeLigneAffichage) {
-        //initialisation
         Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>> mapTypeLigneAffichageToPosition = new EnumMap<>(TypeLigneAffichage.class);
         mapTypeLigneAffichageToPosition.put(typeLigneAffichage, new ArrayList<>());
         Map<LigneAffichage, Map<TypeLigneAffichage, List<Map<BlocAffichage, Vector3>>>> mapLigneAffichageToTypeLigneAffichageToPosition = new HashMap<>();

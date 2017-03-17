@@ -14,6 +14,7 @@ import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
+import com.my.crossy.road.screen.util.MovePositionHandler;
 
 /**
  * Created by ldalzotto on 27/02/2017.
@@ -23,8 +24,15 @@ public class GenericGraphicComposant extends GraphicsComponent {
     private static final String TAG = GenericGraphicComposant.class.getSimpleName();
     private Json _json = new Json();
 
+    private Vector3 _endPositionMovement = null;
+    private Vector3 _displacementVector = null;
+
+    private Float _tempsDuMouvement = null;
+    private Float _tempsEcoule = null;
+
     private ModelInstance _3Dmodel = null;
 
+    private MovePositionHandler _movePositionHandler = null;
     private ModelManager _modelManager = ModelManager.getInstance();
 
     @Override
@@ -65,28 +73,49 @@ public class GenericGraphicComposant extends GraphicsComponent {
                 Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
                // Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
                  //        ", direction : " + direction.toString());
+
+                Vector3 speedVector = null;
+                //récupération de la position actuelle
+                _endPositionMovement = _3Dmodel.transform.getTranslation(new Vector3());
                 switch (direction){
                     case UP:
-                        _3Dmodel.transform.translate(new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur()));
+                        _displacementVector = new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur());
+                        _endPositionMovement.add(_displacementVector);
+                        speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                         break;
                     case DOWN:
-                        _3Dmodel.transform.translate(new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur()));
+                        _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
+                        _endPositionMovement.add(_displacementVector);
+                        speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                         break;
                     case LEFT:
-                        _3Dmodel.transform.translate(new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0));
+                        _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0);
+                        _endPositionMovement.add(_displacementVector);
+                        speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
                         break;
                     case RIGHT:
-                        _3Dmodel.transform.translate(new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0));
+                        _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0);
+                        _endPositionMovement.add(_displacementVector);
+                        speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
                         break;
                     default:
                         break;
                 }
+
+                _movePositionHandler = new MovePositionHandler(_3Dmodel.transform.getTranslation(new Vector3()),
+                        _endPositionMovement, speedVector);
+
             }
         }
     }
 
     @Override
-    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment) {
+    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
+
+        if(_movePositionHandler != null && _movePositionHandler.reEvaluate() != null){
+            _3Dmodel.transform.setTranslation(_movePositionHandler.updatePosition(delta));
+        }
+
         batch.begin(camera);
         batch.render(_3Dmodel);
         batch.end();

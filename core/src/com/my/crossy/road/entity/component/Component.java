@@ -5,9 +5,9 @@ package com.my.crossy.road.entity.component;
  */
 public interface Component {
 
-    public static String MESSAGE_TOKEN = ";;;;;;;;;;;;";
+    String MESSAGE_TOKEN = ";;;;;;;;;;;;";
 
-    public enum MESSAGE{
+    enum MESSAGE{
         SET_MODEL_PATH,
         INIT_GRAPHICS,
         INIT_HITBOX,
@@ -17,6 +17,6 @@ public interface Component {
         ENVIRONNEMENT_FUTURE_MOVE;
     }
     
-    public void receiveMessage(String message);
+    void receiveMessage(String message);
 
 }

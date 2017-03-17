@@ -13,6 +13,6 @@ import com.my.crossy.road.entity.component.Component;
  */
 public abstract class GraphicsComponent implements Component {
 
-    public abstract void update(Entity entity, ModelBatch batch, Camera camera, Environment environment);
+    public abstract void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta);
 
 }

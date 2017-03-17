@@ -63,7 +63,7 @@ public class Entity {
             _inputComponent.update(this, camera, delta);
         }
         if(_graphicsComponent != null){
-            _graphicsComponent.update(this, batch, camera, environment);
+            _graphicsComponent.update(this, batch, camera, environment, delta);
         }
         if(_physicsComponent != null){
             _physicsComponent.update(this);

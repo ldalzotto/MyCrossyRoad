@@ -46,7 +46,7 @@ public class JoueurGraphiqueComposant extends GraphicsComponent {
     }
 
     @Override
-    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment) {
+    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
         batch.begin(camera);
         batch.render(_3dModel);
         batch.end();
