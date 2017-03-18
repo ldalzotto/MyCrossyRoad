@@ -1,1 +1,1 @@
-include 'desktop', 'core', 'INTCalculEnvironnement'
+include 'desktop', 'core', 'INTCalculEnvironnement', 'INTEnvironnementManager'
