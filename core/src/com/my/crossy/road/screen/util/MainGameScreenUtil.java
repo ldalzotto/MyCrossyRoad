@@ -180,15 +180,13 @@ public class MainGameScreenUtil {
     }
 
     public static Entity generateEntity(BlocAffichage blocAffichage) {
-        Entity entity = null;
         if(blocAffichage.isAnObstacle()){
-            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
+            return EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE);
         } else if(blocAffichage.isAPhantomObstacle()){
-            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE_INVISIBLE);
+            return EntityFactory.getEntity(Entity.EntityType.BLOC_OBSTACLE_INVISIBLE);
         } else {
-            entity = EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
+            return EntityFactory.getEntity(Entity.EntityType.BLOC_DECOR);
         }
-        return entity;
     }
 
     /**

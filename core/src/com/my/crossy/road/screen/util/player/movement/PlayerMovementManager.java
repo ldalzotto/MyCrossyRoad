@@ -49,7 +49,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         try {
             maxPosition = MainGameScreenUtil.getMaxBlocPosition(blocs);
         } catch (MaxPositionNonDeterminee maxPositionNonDeterminee) {
-            maxPositionNonDeterminee.printStackTrace();
+            Gdx.app.debug(TAG, maxPositionNonDeterminee.getMessage());
         }
         if(_lastMaxBlocPosition == null){
             _lastMaxBlocPosition = maxPosition;
@@ -92,6 +92,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         return isElligibleToCreate;
     }
 
+    @Override
     public void updatePlayerWidthIndex(Direction direction){
         if(direction.equals(Direction.LEFT)){
             _playerBlocWidthIndex--;
@@ -100,6 +101,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         }
     }
 
+    @Override
     public Integer getPlayerWidthIndex(){
         return _playerBlocWidthIndex;
     }
