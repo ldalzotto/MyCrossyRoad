@@ -32,7 +32,6 @@ public class GenericGraphicComposant extends GraphicsComponent {
 
     private ModelInstance _3Dmodel = null;
 
-    private MovePositionHandler _movePositionHandler = null;
     private ModelManager _modelManager = ModelManager.getInstance();
 
     @Override
@@ -74,37 +73,40 @@ public class GenericGraphicComposant extends GraphicsComponent {
                // Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
                  //        ", direction : " + direction.toString());
 
-                Vector3 speedVector = null;
-                //récupération de la position actuelle
-                _endPositionMovement = _3Dmodel.transform.getTranslation(new Vector3());
-                switch (direction){
-                    case UP:
-                        _displacementVector = new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur());
-                        _endPositionMovement.add(_displacementVector);
-                        speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
-                        break;
-                    case DOWN:
-                        _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
-                        _endPositionMovement.add(_displacementVector);
-                        speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
-                        break;
-                    case LEFT:
-                        _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0);
-                        _endPositionMovement.add(_displacementVector);
-                        speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
-                        break;
-                    case RIGHT:
-                        _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0);
-                        _endPositionMovement.add(_displacementVector);
-                        speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
-                        break;
-                    default:
-                        break;
+                //si le dernier mouvement est terminé
+                if(_movePositionHandler == null){
+                    Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
+                    Vector3 speedVector = null;
+                    //récupération de la position actuelle
+                    _endPositionMovement = _3Dmodel.transform.getTranslation(new Vector3());
+                    switch (direction){
+                        case UP:
+                            _displacementVector = new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur());
+                            _endPositionMovement.add(_displacementVector);
+                            speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
+                            break;
+                        case DOWN:
+                            _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
+                            _endPositionMovement.add(_displacementVector);
+                            speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
+                            break;
+                        case LEFT:
+                            _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0);
+                            _endPositionMovement.add(_displacementVector);
+                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
+                            break;
+                        case RIGHT:
+                            _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0);
+                            _endPositionMovement.add(_displacementVector);
+                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    _movePositionHandler = new MovePositionHandler(_3Dmodel.transform.getTranslation(new Vector3()),
+                            _endPositionMovement, speedVector);
                 }
-
-                _movePositionHandler = new MovePositionHandler(_3Dmodel.transform.getTranslation(new Vector3()),
-                        _endPositionMovement, speedVector);
-
             }
         }
     }
@@ -112,8 +114,12 @@ public class GenericGraphicComposant extends GraphicsComponent {
     @Override
     public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
 
-        if(_movePositionHandler != null && _movePositionHandler.reEvaluate() != null){
+        if(_movePositionHandler != null){
+            entity.isMoving();
             _3Dmodel.transform.setTranslation(_movePositionHandler.updatePosition(delta));
+            _movePositionHandler = _movePositionHandler.reEvaluate();
+        } else {
+            entity.hasMoved();
         }
 
         batch.begin(camera);
@@ -134,8 +140,8 @@ public class GenericGraphicComposant extends GraphicsComponent {
             batch.begin(camera);
             batch.render(modelInstance);
             batch.end();
-        }
-         **/
+        }**/
+
 
         entity.set_position(position);
 

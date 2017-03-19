@@ -23,7 +23,7 @@ public class JoueurPhysicsComposant extends PhysicsComponent {
     private Json _json = new Json();
 
     @Override
-    public void update(Entity entity) {
+    public void update(Entity entity, float delta) {
 
     }
 

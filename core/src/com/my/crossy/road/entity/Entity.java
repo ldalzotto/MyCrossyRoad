@@ -9,10 +9,13 @@ import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
 import com.my.crossy.road.entity.component.abs.InputComponent;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
+import com.my.crossy.road.screen.util.MovePositionHandler;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by ldalzotto on 12/11/2016.
@@ -21,7 +24,6 @@ public class Entity {
 
     public enum EntityType {
         PLAYER,
-        ENVIRONNEMENT,
         BLOC_OBSTACLE,
         BLOC_DECOR,
         BLOC_OBSTACLE_INVISIBLE;
@@ -66,7 +68,7 @@ public class Entity {
             _graphicsComponent.update(this, batch, camera, environment, delta);
         }
         if(_physicsComponent != null){
-            _physicsComponent.update(this);
+            _physicsComponent.update(this, delta);
         }
 
     }

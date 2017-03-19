@@ -105,28 +105,33 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         //on vérifie si le joueur a effectué un mouvement
         if(_joueur.get_isMoving()){
 
-            List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
+            //si les composants de l'environnement ne bougent pas
+            if(!_entityList.stream().findFirst().get().get_isMoving()) {
 
-            /**
-             * On supprime les blocs de l'environnement contenu dans le joueur puis on fait avancer l'environnement
-             * fictif d'une demi position. Ensuite, on vérifie si il y a une collision entre le joueur
-             * et l'environnement fictif
-             */
-            entityToCompare.forEach(entity1 ->
-                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                            _json.toJson(_joueur.get_direction())));
-            Boolean isCollision = MainGameScreenUtil.checkCollision(_joueur, entityToCompare);
-            entityToCompare.forEach(entity1 ->
-                    entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                            _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
-            if(!isCollision) {
-                //si le déplacement est accepté (pas de collision)
-                executeMove();
-            } else {
-                Gdx.app.debug(TAG, "Collision has been detected !");
+                List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
+
+                /**
+                 * On supprime les blocs de l'environnement contenu dans le joueur puis on fait avancer l'environnement
+                 * fictif d'une demi position. Ensuite, on vérifie si il y a une collision entre le joueur
+                 * et l'environnement fictif
+                 */
+                entityToCompare.forEach(entity1 ->
+                        entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                                _json.toJson(_joueur.get_direction())));
+                Boolean isCollision = MainGameScreenUtil.checkCollision(_joueur, entityToCompare);
+                entityToCompare.forEach(entity1 ->
+                        entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                                _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
+                if(!isCollision) {
+                    //si le déplacement est accepté (pas de collision)
+                    executeMove();
+                } else {
+                    Gdx.app.debug(TAG, "Collision has been detected !");
+                }
+                entityToCompare.clear();
+                _joueur.hasMoved();
+
             }
-            entityToCompare.clear();
-            _joueur.hasMoved();
         }
 
         //Entity garbage collector
