@@ -90,10 +90,6 @@ public class Environnement {
             lignesOrdonnees.addAll(avantCurseurLignes);
             lignesOrdonnees.add(curseurLigne);
 
-            if(lignesOrdonnees.size() != lignes.size()){
-                throw new ConstructionLigneOrdonnee("La ligne ordonee ne possède pas le bon format", null);
-            }
-
             return lignesOrdonnees.stream();
 
         } catch (Exception ex) {

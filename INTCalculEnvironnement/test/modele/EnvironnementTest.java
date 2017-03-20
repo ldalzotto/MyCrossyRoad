@@ -3,6 +3,7 @@ package modele;
 import common.enumeration.TypeLigne;
 import enumeration.Configuration;
 import enumeration.TypeBloc;
+import exception.ConstructionLigneOrdonnee;
 import exception.EnvironnementLigneNonRenseignee;
 import exception.LigneNonRenseignee;
 import org.junit.Assert;
@@ -161,6 +162,18 @@ public class EnvironnementTest {
                 .forEach(value -> {
                     Assert.assertTrue(lignes.get(value).getBlocs().equals(lists.get(value)));
                 });
+    }
+
+    @Test
+    public void getLignesDepuisCruseur_SansLignesInserees() throws Exception {
+        Environnement environnement = new Environnement();
+
+        try {
+            environnement.getLignesDepuisCurseur();
+            Assert.assertFalse(true);
+        } catch (ConstructionLigneOrdonnee constructionLigneOrdonnee) {
+            Assert.assertTrue(true);
+        }
     }
 
     @Test
