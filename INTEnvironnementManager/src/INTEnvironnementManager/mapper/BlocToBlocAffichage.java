@@ -4,7 +4,6 @@ import INTEnvironnementManager.enumeration.TypeBlocAffichage;
 import INTEnvironnementManager.mapper.interfaceMapper.IConverter;
 import INTEnvironnementManager.modele.BlocAffichage;
 import enumeration.TypeBloc;
-import enumeration.TypeLigne;
 import modele.Bloc;
 
 /**
