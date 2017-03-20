@@ -1,6 +1,5 @@
 package com.my.crossy.road.component.joueur;
 
-import INTEnvironnementManager.enumeration.TypeLigneAffichage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;

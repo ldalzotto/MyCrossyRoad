@@ -1,11 +1,9 @@
 package com.my.crossy.road.component.generic;
 
-import INTEnvironnementManager.enumeration.TypeLigneAffichage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.assetManager.ModelManager;
@@ -15,6 +13,7 @@ import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
 import com.my.crossy.road.screen.util.MovePositionHandler;
+import common.enumeration.TypeLigne;
 
 /**
  * Created by ldalzotto on 27/02/2017.
@@ -40,23 +39,23 @@ public class GenericGraphicComposant extends GraphicsComponent {
 
         if(messageReceived.length > 1){
             if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_GRAPHICS.toString())){
-                TypeLigneAffichage typeLigneAffichage = _json.fromJson(TypeLigneAffichage.class, messageReceived[1]);
+                TypeLigne typeLigneAffichage = _json.fromJson(TypeLigne.class, messageReceived[1]);
                 Vector3 vector3 = _json.fromJson(Vector3.class, messageReceived[2]);
                 Float size = _json.fromJson(Float.class, messageReceived[3]);
                 //Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_GRAPHICS.toString() + " reveived with typeLigneAffichage : "+typeLigneAffichage.name()+
                      //   ", vector3" + vector3.toString() + ", size" + size);
                 Color couleur = null;
                 switch (typeLigneAffichage){
-                    case Arbre:
+                    case ARBRE:
                         couleur = Color.GREEN;
                         break;
-                    case Eau:
+                    case EAU:
                         couleur = Color.BLUE;
                         break;
-                    case Route:
+                    case ROUTE:
                         couleur = Color.GRAY;
                         break;
-                    case Train:
+                    case TRAIN:
                         couleur = Color.RED;
                         break;
                     default:

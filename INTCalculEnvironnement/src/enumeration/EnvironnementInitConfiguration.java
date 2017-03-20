@@ -1,6 +1,6 @@
 package enumeration;
 
-import exception.MalformedLineException;
+import common.enumeration.TypeLigne;
 import modele.Bloc;
 import modele.Ligne;
 
@@ -34,16 +34,16 @@ public class EnvironnementInitConfiguration{
 
         initBlocList.add(new Bloc(TypeBloc.PhantomObstacle, false));
 
-            ligne_1 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_2 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_3 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_4 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_5 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_6 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_7 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_8 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_9 = new Ligne(0, TypeLigne.Arbre, initBlocList);
-            ligne_10 = new Ligne(0, TypeLigne.Arbre, initBlocList);
+            ligne_1 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_2 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_3 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_4 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_5 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_6 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_7 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_8 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_9 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
+            ligne_10 = new Ligne(0, TypeLigne.ARBRE, initBlocList);
     }
 
 }

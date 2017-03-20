@@ -1,10 +1,10 @@
 package calcul;
 
 import calcul.interfaces.IINTCalculEnvironnement;
+import common.enumeration.TypeLigne;
 import enumeration.Configuration;
 import enumeration.EnvironnementInit;
 import enumeration.TypeBloc;
-import enumeration.TypeLigne;
 import exception.EnvironnementLigneNonRenseignee;
 import exception.LigneNonCree;
 import exception.PositionNonCree;

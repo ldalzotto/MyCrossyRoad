@@ -1,10 +1,9 @@
 package main;
 
 import calcul.INTCalculEnvironnement;
+import common.enumeration.TypeLigne;
 import enumeration.TypeBloc;
-import enumeration.TypeLigne;
 import exception.LigneNonCree;
-import exception.MalformedLineException;
 import modele.Bloc;
 import modele.Ligne;
 
@@ -27,7 +26,7 @@ public class Main {
 
         Ligne ligne = null;
 
-            ligne = new Ligne(1, TypeLigne.Eau, blocList);
+            ligne = new Ligne(1, TypeLigne.EAU, blocList);
             List<Bloc> blocs = ligne.getOuvertures();
             List<Integer> integers = ligne.getOuverturesIndex();
             System.out.println(integers);

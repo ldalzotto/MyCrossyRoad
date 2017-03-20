@@ -1,7 +1,6 @@
 package INTEnvironnementManager.modele;
 
-import INTEnvironnementManager.enumeration.TypeLigneAffichage;
-import enumeration.TypeLigne;
+import common.enumeration.TypeLigne;
 import modele.Bloc;
 
 import java.util.List;
@@ -11,17 +10,17 @@ import java.util.List;
  */
 public class LigneAffichage {
 
-    public LigneAffichage(TypeLigneAffichage typeLigne, List<BlocAffichage> blocs, Integer menace){
+    public LigneAffichage(TypeLigne typeLigne, List<BlocAffichage> blocs, Integer menace){
         _blocList = blocs;
         _typeLigne = typeLigne;
         _menace = menace;
     }
 
-    private TypeLigneAffichage _typeLigne;
+    private TypeLigne _typeLigne;
     private List<BlocAffichage> _blocList;
     private Integer _menace;
 
-    public TypeLigneAffichage get_typeLigne() {
+    public TypeLigne get_typeLigne() {
         return _typeLigne;
     }
 

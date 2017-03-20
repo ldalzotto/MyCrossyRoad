@@ -1,18 +1,16 @@
 package INTEnvironnementManager;
 
-import INTEnvironnementManager.enumeration.TypeLigneAffichage;
 import INTEnvironnementManager.exception.EnvironnementNonAffichable;
 import INTEnvironnementManager.exception.CreationLigne;
 import INTEnvironnementManager.exception.JoueurNonPlace;
 import INTEnvironnementManager.interfaceManger.IINTEnvironnementManager;
 import INTEnvironnementManager.mapper.BlocToBlocAffichage;
-import INTEnvironnementManager.mapper.TypeLigneToTypeLigneAffichage;
 import INTEnvironnementManager.mapper.interfaceMapper.IConverter;
 import INTEnvironnementManager.modele.BlocAffichage;
 import INTEnvironnementManager.modele.LigneAffichage;
 import calcul.INTCalculEnvironnement;
 import calcul.interfaces.IINTCalculEnvironnement;
-import enumeration.TypeLigne;
+import common.enumeration.TypeLigne;
 import exception.ConstructionLigneOrdonnee;
 import exception.LigneNonCree;
 import modele.Bloc;
@@ -31,7 +29,6 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
     private IINTCalculEnvironnement _intCalculEnvironnement;
 
     private IConverter<Bloc, BlocAffichage> _blocBlocAffichageIConverter = BlocToBlocAffichage.getInstance();
-    private IConverter<TypeLigne, TypeLigneAffichage> _typeLigneTypeLigneAffichageIConverter = TypeLigneToTypeLigneAffichage.getInstance();
 
     private static INTEnvironnementManager _instance = null;
 
@@ -60,8 +57,8 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
             Ligne ligneCree = _intCalculEnvironnement.creationLigne();
             List<BlocAffichage> blocAffichages = ligneCree.get_blocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc))
                     .collect(Collectors.toList());
-            TypeLigneAffichage typeLigneAffichage = _typeLigneTypeLigneAffichageIConverter.apply(ligneCree.get_typeLigne());
-            return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.get_menace());
+            TypeLigne typeLigneAffichage = ligneCree.get_typeLigne();
+            return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.getMenace());
         } catch (LigneNonCree ligneNonCree) {
             throw new CreationLigne("La ligne n'a pas été créé", ligneNonCree);
         }
@@ -77,8 +74,8 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
                 return _intCalculEnvironnement.recuperationEnvironneement().getLignesDepuisCurseur()
                         .map(ligne -> {
                             List<BlocAffichage> blocAffichages = ligne.get_blocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc)).collect(Collectors.toList());
-                            TypeLigneAffichage typeLigneAffichage = _typeLigneTypeLigneAffichageIConverter.apply(ligne.get_typeLigne());
-                            return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.get_menace());
+                            TypeLigne typeLigneAffichage = ligne.get_typeLigne();
+                            return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.getMenace());
                         });
             } catch (ConstructionLigneOrdonnee constructionLigneOrdonnee) {
                 throw new EnvironnementNonAffichable("L'environnement ne peut pas être affiché", constructionLigneOrdonnee);

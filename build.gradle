@@ -41,6 +41,7 @@ project(":desktop") {
 
 
     dependencies {
+        compile project(":common")
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -54,6 +55,7 @@ project(":core") {
 
 
     dependencies {
+        compile project(":common")
         compile project(":INTEnvironnementManager")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -67,6 +69,7 @@ project(":INTEnvironnementManager") {
     apply plugin: "java"
 
     dependencies {
+        compile project(":common")
         compile project(":INTCalculEnvironnement")
         testCompile group: 'junit', name: 'junit', version: '4.11'
     }
@@ -76,6 +79,7 @@ project(":INTCalculEnvironnement") {
     apply plugin: "java"
 
     dependencies {
+        compile project(":common")
         testCompile group: 'junit', name: 'junit', version: '4.11'
     }
 }

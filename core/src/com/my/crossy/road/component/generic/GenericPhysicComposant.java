@@ -1,8 +1,6 @@
 package com.my.crossy.road.component.generic;
 
-import INTEnvironnementManager.enumeration.TypeLigneAffichage;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;

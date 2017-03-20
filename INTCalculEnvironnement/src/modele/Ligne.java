@@ -1,7 +1,7 @@
 package modele;
 
+import common.enumeration.TypeLigne;
 import enumeration.Configuration;
-import enumeration.TypeLigne;
 import exception.MalformedLineException;
 
 import java.util.List;

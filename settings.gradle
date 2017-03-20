@@ -1,1 +1,3 @@
 include 'desktop', 'core', 'INTCalculEnvironnement', 'INTEnvironnementManager'
+include 'common'
+
