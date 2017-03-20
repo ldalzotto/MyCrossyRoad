@@ -76,29 +76,26 @@ public class GenericGraphicComposant extends GraphicsComponent {
                 //si le dernier mouvement est terminé
                 if(_movePositionHandler == null){
                     Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
-                    Vector3 speedVector = null;
+                    Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0 ,
+                            Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                     //récupération de la position actuelle
                     _endPositionMovement = _3Dmodel.transform.getTranslation(new Vector3());
                     switch (direction){
                         case UP:
                             _displacementVector = new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur());
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                             break;
                         case DOWN:
                             _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(0, 0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                             break;
                         case LEFT:
                             _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(), 0,0);
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
                             break;
                         case RIGHT:
                             _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(), 0,0);
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0, 0);
                             break;
                         default:
                             break;
@@ -130,18 +127,6 @@ public class GenericGraphicComposant extends GraphicsComponent {
         if (position.z < Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()){
             entity.set_isDetroyable();
         }
-
-        //For hitbox debugging
-        /**
-        if(entity.get_physicsComponent() != null){
-            ModelInstance modelInstance = _modelManager.getCubeFromColor(Color.CYAN, Configuration.TAILLE_BLOC.get_valeur());
-            Vector2 hitBoxPos = entity.get_physicsComponent().getHitbox().getPosition(new Vector2());
-            modelInstance.transform.translate(hitBoxPos.x, 0, hitBoxPos.y);
-            batch.begin(camera);
-            batch.render(modelInstance);
-            batch.end();
-        }**/
-
 
         entity.set_position(position);
 

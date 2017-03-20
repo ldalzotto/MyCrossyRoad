@@ -16,6 +16,7 @@ plugins {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
+    apply plugin: "jacoco"
 
     version = '1.0'
     ext {
@@ -78,6 +79,22 @@ project(":INTCalculEnvironnement") {
         testCompile group: 'junit', name: 'junit', version: '4.11'
     }
 }
+
+sonarqube {
+    properties {
+        property "sonar.host.url", "https://sonarqube.com"
+        property "sonar.organization", "ldalzotto-github"
+        property "sonar.login", "3de383a29e65a2ced56e986c7f8a1b86e57be572"
+        property "sonar.jacoco.reportPaths", "$buildDir/jacoco/test.exec"
+    }
+}
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+
 
 tasks.eclipse.doLast {
     delete ".project"

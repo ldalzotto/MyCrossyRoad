@@ -45,7 +45,8 @@ public class GenericPhysicComposant extends PhysicsComponent {
                 //si le dernier mouvement est terminé
                 if(_movePositionHandler == null){
                     Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
-                    Vector3 speedVector = null;
+                    Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0,
+                            Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                     //récupération de la position actuelle
                     Vector2 hitBoxPosition = _hitBox.getPosition(new Vector2());
                     _endPositionMovement = new Vector3(hitBoxPosition.x, 0 , hitBoxPosition.y);
@@ -53,22 +54,18 @@ public class GenericPhysicComposant extends PhysicsComponent {
                         case UP:
                             _displacementVector = new Vector3(0,0, -Configuration.TAILLE_BLOC.get_valeur());
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(0,0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                             break;
                         case DOWN:
                             _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(0,0, Configuration.ENVIRONNEMENT_SPEED.get_valeur());
                             break;
                         case LEFT:
                             _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(),0, 0);
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(),0,0);
                             break;
                         case RIGHT:
                             _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(),0, 0);
                             _endPositionMovement.add(_displacementVector);
-                            speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(),0,0);
                             break;
                         default:
                             break;
