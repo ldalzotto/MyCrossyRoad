@@ -55,9 +55,9 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
     public LigneAffichage creationLigne() throws CreationLigne{
         try {
             Ligne ligneCree = _intCalculEnvironnement.creationLigne();
-            List<BlocAffichage> blocAffichages = ligneCree.get_blocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc))
+            List<BlocAffichage> blocAffichages = ligneCree.getBlocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc))
                     .collect(Collectors.toList());
-            TypeLigne typeLigneAffichage = ligneCree.get_typeLigne();
+            TypeLigne typeLigneAffichage = ligneCree.getTypeLigne();
             return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.getMenace());
         } catch (LigneNonCree ligneNonCree) {
             throw new CreationLigne("La ligne n'a pas été créé", ligneNonCree);
@@ -69,12 +69,12 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
      * @throws EnvironnementNonAffichable si l'environneme nt n'est pas affichable
      */
     public Stream<LigneAffichage> getEnvironnementLignesPourAffichage() throws EnvironnementNonAffichable{
-        if(_intCalculEnvironnement.recuperationEnvironneement() != null && _intCalculEnvironnement.recuperationEnvironneement().get_lignes() != null){
+        if(_intCalculEnvironnement.recuperationEnvironneement() != null && _intCalculEnvironnement.recuperationEnvironneement().getLignes() != null){
             try {
                 return _intCalculEnvironnement.recuperationEnvironneement().getLignesDepuisCurseur()
                         .map(ligne -> {
-                            List<BlocAffichage> blocAffichages = ligne.get_blocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc)).collect(Collectors.toList());
-                            TypeLigne typeLigneAffichage = ligne.get_typeLigne();
+                            List<BlocAffichage> blocAffichages = ligne.getBlocs().stream().map(bloc -> _blocBlocAffichageIConverter.apply(bloc)).collect(Collectors.toList());
+                            TypeLigne typeLigneAffichage = ligne.getTypeLigne();
                             return new LigneAffichage(typeLigneAffichage, blocAffichages, typeLigneAffichage.getMenace());
                         });
             } catch (ConstructionLigneOrdonnee constructionLigneOrdonnee) {
@@ -96,7 +96,7 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
 
     public List<Integer> getLigneOuvertureIndexDepuisIndex(Integer index) throws EnvironnementNonAffichable{
         try {
-            return _intCalculEnvironnement.recuperationEnvironneement().get_lignes().get(index).getOuverturesIndex();
+            return _intCalculEnvironnement.recuperationEnvironneement().getLignes().get(index).getOuverturesIndex();
         } catch (Exception e) {
             throw new EnvironnementNonAffichable("Une erreur est survenue lors d'une opération sur l'environnement", e);
         }

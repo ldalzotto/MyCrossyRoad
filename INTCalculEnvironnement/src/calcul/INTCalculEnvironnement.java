@@ -86,7 +86,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             //ajouter des blocs de collision invisible aux extrémités de la ligne
             addPhatomCollisionBlocsAtEnd(blocs);
 
-            Ligne ligne = new Ligne(menace, typeLigne, blocs);
+            Ligne ligne = new Ligne(typeLigne, blocs);
             Integer positionLigne =  _environnement.ajoutLigne(ligne);
             System.out.println("Ligne ajoutée sur la position " + positionLigne);
             _nbLignesAjoute++;
@@ -255,8 +255,8 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     }
 
     private Ligne removePhatomCollisionBlocsFromLigne(Ligne ligne){
-        ligne.get_blocs().removeIf(bloc -> {
-            if(bloc.get_typeBloc().equals(TypeBloc.PhantomObstacle)){
+        ligne.getBlocs().removeIf(bloc -> {
+            if(bloc.getTypeBloc().equals(TypeBloc.PhantomObstacle)){
                 return true;
             }
             return false;

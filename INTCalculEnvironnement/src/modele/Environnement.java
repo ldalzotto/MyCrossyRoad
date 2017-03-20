@@ -14,16 +14,14 @@ import java.util.stream.Stream;
  */
 public class Environnement {
 
-    private int _longueur;
-    private int _largeur;
-    private List<Ligne> _lignes;
-    private int _lignesCurseur;
+    private int longueur;
+    private List<Ligne> lignes;
+    private int lignesCurseur;
 
     public Environnement(){
-        _largeur = Configuration.EnvironnementLargeur.get_valeur();
-        _longueur = Configuration.EnvironnementLongueur.get_valeur();
-        _lignes = new ArrayList<>();
-        _lignesCurseur = 0;
+        longueur = Configuration.EnvironnementLongueur.get_valeur();
+        lignes = new ArrayList<>();
+        lignesCurseur = 0;
     }
 
     /**
@@ -35,22 +33,17 @@ public class Environnement {
      */
     public int ajoutLigne(Ligne ligne) throws LigneNonRenseignee{
         if(ligne != null){
-
-            if(_lignesCurseur == 49){
-                System.out.println("feef");
+            if(lignesCurseur >= longueur){
+                lignesCurseur = 0;
             }
 
-            if(_lignesCurseur >= _longueur){
-                _lignesCurseur = 0;
-            }
-
-            if(_lignes.size() == _longueur){
-                _lignes.set(_lignesCurseur, ligne);
+            if(lignes.size() == longueur){
+                lignes.set(lignesCurseur, ligne);
             } else {
-                _lignes.add(ligne);
+                lignes.add(ligne);
             }
-            int lignesCurseurAvant = _lignesCurseur;
-            _lignesCurseur ++;
+            int lignesCurseurAvant = lignesCurseur;
+            lignesCurseur++;
             return lignesCurseurAvant;
         } else {
             throw new LigneNonRenseignee("La ligne à ajouter est nulle", null);
@@ -63,16 +56,16 @@ public class Environnement {
      * @throws EnvironnementLigneNonRenseignee si l'{@link Environnement} n'est pas correctement renseigné
      */
     public Ligne getLigneActuelle() throws EnvironnementLigneNonRenseignee {
-        if(_lignesCurseur-1 > _lignes.size() || _lignesCurseur == 0){
+        if(lignesCurseur -1 > lignes.size() || lignesCurseur == 0){
             throw new EnvironnementLigneNonRenseignee("Le curseur de ligne est hors de la liste de ligne !", null);
         } else {
-            return _lignes.get(_lignesCurseur-1);
+            return lignes.get(lignesCurseur -1);
         }
     }
 
     /**
      * Permet de renvoyer un stream de ligne. Le premier index de ce stream correspond à la ligne associée
-     * à _lignesCurseur
+     * à lignesCurseur
      * @return Le stream de ligne ordonné
      */
     public Stream<Ligne> getLignesDepuisCurseur() throws ConstructionLigneOrdonnee{
@@ -82,14 +75,14 @@ public class Environnement {
 
             //Ligne après le curseur
             List<Ligne> apresCurseurLignes = new ArrayList<>();
-            if(_lignesCurseur != _lignes.size()-1){
-                apresCurseurLignes = _lignes.subList(_lignesCurseur, _lignes.size());
+            if(lignesCurseur != lignes.size()-1){
+                apresCurseurLignes = lignes.subList(lignesCurseur, lignes.size());
             }
 
             //Ligne avant le curseur
             List<Ligne> avantCurseurLignes = new ArrayList<>();
-            if(_lignesCurseur-1 > 0){
-                avantCurseurLignes = _lignes.subList(0, _lignesCurseur-1);
+            if(lignesCurseur -1 > 0){
+                avantCurseurLignes = lignes.subList(0, lignesCurseur -1);
             }
 
             List<Ligne> lignesOrdonnees = new ArrayList<>();
@@ -97,7 +90,7 @@ public class Environnement {
             lignesOrdonnees.addAll(avantCurseurLignes);
             lignesOrdonnees.add(curseurLigne);
 
-            if(lignesOrdonnees.size() != _lignes.size()){
+            if(lignesOrdonnees.size() != lignes.size()){
                 throw new ConstructionLigneOrdonnee("La ligne ordonee ne possède pas le bon format", null);
             }
 
@@ -108,9 +101,9 @@ public class Environnement {
         }
     }
 
-    public int get_lignesCurseur(){
-        return _lignesCurseur;
+    public int getLignesCurseur(){
+        return lignesCurseur;
     }
 
-    public List<Ligne> get_lignes() {return _lignes;}
+    public List<Ligne> getLignes() {return lignes;}
 }

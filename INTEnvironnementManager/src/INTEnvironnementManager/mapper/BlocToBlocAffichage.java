@@ -22,7 +22,7 @@ public class BlocToBlocAffichage implements IConverter<Bloc, BlocAffichage>{
 
     @Override
     public BlocAffichage apply(Bloc bloc) {
-        TypeBloc typeBloc = bloc.get_typeBloc();
+        TypeBloc typeBloc = bloc.getTypeBloc();
         TypeBlocAffichage typeBlocAffichage = TypeBlocAffichage.getValueFromString(typeBloc.name());
         return new BlocAffichage(typeBlocAffichage, bloc.getIsOuverture());
     }

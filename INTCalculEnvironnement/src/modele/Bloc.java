@@ -7,19 +7,19 @@ import enumeration.TypeBloc;
  */
 public class Bloc {
 
-    private TypeBloc _typeBloc;
-    private boolean _isOuverture;
+    private TypeBloc typeBloc;
+    private boolean isOuverture;
 
     public Bloc(TypeBloc typeBloc, boolean isOuverture){
-        _typeBloc = typeBloc;
-        _isOuverture = isOuverture;
+        this.typeBloc = typeBloc;
+        this.isOuverture = isOuverture;
     }
 
     public boolean getIsOuverture(){
-        return _isOuverture;
+        return isOuverture;
     }
 
-    public TypeBloc get_typeBloc() {
-        return _typeBloc;
+    public TypeBloc getTypeBloc() {
+        return typeBloc;
     }
 }

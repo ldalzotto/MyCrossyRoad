@@ -1,8 +1,6 @@
 package modele;
 
 import common.enumeration.TypeLigne;
-import enumeration.Configuration;
-import exception.MalformedLineException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,39 +10,38 @@ import java.util.stream.Collectors;
  */
 public class Ligne {
 
-    private int _menace;
-    private TypeLigne _typeLigne;
-    private List<Bloc> _blocs;
+    private TypeLigne typeLigne;
+    private List<Bloc> blocs;
 
-    public Ligne(int menace, TypeLigne typeLigne, List<Bloc> blocs) {
-
-        int environnementLargeur = Configuration.EnvironnementLargeur.get_valeur();
-
-        _menace = menace;
-        _typeLigne = typeLigne;
-        _blocs = blocs;
+    public Ligne(TypeLigne typeLigne, List<Bloc> blocs) {
+        this.typeLigne = typeLigne;
+        this.blocs = blocs;
     }
 
     public List<Bloc> getOuvertures(){
-        return _blocs.stream().filter((bloc -> bloc.getIsOuverture()))
+        return blocs.stream().filter(Bloc::getIsOuverture)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Retoure les index d'ouvertures.
+     * Retoure les index d'ouvertures. L'index est relatif et démarre à 0
      * @return valeur de 0 à environnementLargeur-1
      */
     public List<Integer> getOuverturesIndex(){
         return getOuvertures().stream()
-                .map((bloc -> _blocs.indexOf(bloc)))
+                .map(this::indexOfBloc)
                 .collect(Collectors.toList());
     }
 
-    public TypeLigne get_typeLigne() {
-        return _typeLigne;
+    public TypeLigne getTypeLigne() {
+        return typeLigne;
     }
 
-    public List<Bloc> get_blocs() {
-        return _blocs;
+    public List<Bloc> getBlocs() {
+        return blocs;
+    }
+
+    private int indexOfBloc(Bloc bloc){
+        return blocs.indexOf(bloc);
     }
 }

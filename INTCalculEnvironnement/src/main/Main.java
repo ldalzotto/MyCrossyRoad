@@ -26,7 +26,7 @@ public class Main {
 
         Ligne ligne = null;
 
-            ligne = new Ligne(1, TypeLigne.EAU, blocList);
+            ligne = new Ligne(TypeLigne.EAU, blocList);
             List<Bloc> blocs = ligne.getOuvertures();
             List<Integer> integers = ligne.getOuverturesIndex();
             System.out.println(integers);
