@@ -23,4 +23,11 @@ public class TypeLigneTest {
         Assert.assertTrue(typeLigne.getMenace() == 1);
     }
 
+    @Test
+    public void getTypeAleatoire_UnknownMenace() throws Exception {
+        TypeLigne typeLigne = TypeLigne.getTypeAleatoire(-1);
+        Assert.assertTrue(typeLigne == null);
+    }
+
+
 }

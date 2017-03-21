@@ -23,6 +23,11 @@ public class INTCalculEnvironnementUtil {
         throw new IllegalAccessError("Utility class");
     }
 
+    /**
+     * Ajout d'une ligne de {@link Environnement} depuis celle classe utilitaire
+     * @param environnement la ligne est insérée dans le paramètre environnement sous la méthode {@link Environnement#ajoutLigne(Ligne)}
+     * @return le consumer
+     */
     public static Consumer<Ligne> AJOUT_LIGNE(Environnement environnement){
         return ((ligne -> {
             try {

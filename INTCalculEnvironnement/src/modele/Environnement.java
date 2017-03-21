@@ -56,7 +56,7 @@ public class Environnement {
      * @throws EnvironnementLigneNonRenseignee si l'{@link Environnement} n'est pas correctement renseigné
      */
     public Ligne getLigneActuelle() throws EnvironnementLigneNonRenseignee {
-        if(lignesCurseur -1 > lignes.size() || lignesCurseur == 0){
+        if(lignesCurseur == 0){
             throw new EnvironnementLigneNonRenseignee("Le curseur de ligne est hors de la liste de ligne !", null);
         } else {
             return lignes.get(lignesCurseur -1);
@@ -80,10 +80,7 @@ public class Environnement {
             }
 
             //Ligne avant le curseur
-            List<Ligne> avantCurseurLignes = new ArrayList<>();
-            if(lignesCurseur -1 > 0){
-                avantCurseurLignes = lignes.subList(0, lignesCurseur -1);
-            }
+            List<Ligne> avantCurseurLignes = lignes.subList(0, lignesCurseur -1);
 
             List<Ligne> lignesOrdonnees = new ArrayList<>();
             lignesOrdonnees.addAll(apresCurseurLignes);

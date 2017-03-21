@@ -177,6 +177,43 @@ public class EnvironnementTest {
     }
 
     @Test
+    public void getLignesDepuisCurseur_LongueurMax() throws Exception {
+        Environnement environnement = new Environnement();
+
+        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+
+        List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
+
+        IntStream.range(0, Configuration.EnvironnementLongueur.get_valeur())
+            .forEach(value -> {
+                try {
+                    environnement.ajoutLigne(new Ligne(TypeLigne.EAU, blocs1));
+                } catch (LigneNonRenseignee ligneNonRenseignee) {
+                    ligneNonRenseignee.printStackTrace();
+                }
+            });
+
+        Assert.assertTrue(environnement.getLignesCurseur() == Configuration.EnvironnementLongueur.get_valeur());
+
+        //on ajoute une ligne supplémentaire
+        Ligne derniereLigne = new Ligne(TypeLigne.ROUTE, blocs1);
+        environnement.ajoutLigne(derniereLigne);
+        Assert.assertTrue(environnement.getLignesCurseur() == 1);
+
+        List<Ligne> lignes = environnement.getLignesDepuisCurseur().collect(Collectors.toList());
+        Assert.assertTrue(lignes.size() == 50);
+        Assert.assertTrue(lignes.get(lignes.size()-1).equals(derniereLigne));
+
+    }
+
+    @Test
     public void getLignesCurseur() throws Exception {
         Environnement environnement = new Environnement();
         Assert.assertTrue(environnement.getLignesCurseur() == 0);
