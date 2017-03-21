@@ -36,7 +36,9 @@ class INTCalculEnvironnementUtil {
 
     static final Function<Integer, Integer> SET_MIN_0 = integer -> {
         if(integer < 0){
-            LOGGER.log(Level.INFO, "Valeur %s réduite à la valeur minimale 0", integer);
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Valeur %s réduite à la valeur minimale 0", integer));
+            }
             return 0;
         } else {
             return integer;

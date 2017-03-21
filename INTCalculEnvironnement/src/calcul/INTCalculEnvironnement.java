@@ -260,12 +260,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     }
 
     private Ligne removePhatomCollisionBlocsFromLigne(Ligne ligne){
-        ligne.getBlocs().removeIf(bloc -> {
-            if(bloc.getTypeBloc().equals(TypeBloc.PhantomObstacle)){
-                return true;
-            }
-            return false;
-        });
+        ligne.getBlocs().removeIf(bloc -> bloc.getTypeBloc().equals(TypeBloc.PhantomObstacle));
         return ligne;
     }
 

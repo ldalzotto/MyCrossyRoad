@@ -75,9 +75,7 @@ public class Environnement {
 
             //Ligne après le curseur
             List<Ligne> apresCurseurLignes = new ArrayList<>();
-            if(lignesCurseur != lignes.size()-1){
-                apresCurseurLignes = lignes.subList(lignesCurseur, lignes.size());
-            }
+            apresCurseurLignes = lignes.subList(lignesCurseur, lignes.size());
 
             //Ligne avant le curseur
             List<Ligne> avantCurseurLignes = lignes.subList(0, lignesCurseur -1);
