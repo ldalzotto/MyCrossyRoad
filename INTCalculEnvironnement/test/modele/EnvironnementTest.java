@@ -201,15 +201,17 @@ public class EnvironnementTest {
             });
 
         Assert.assertTrue(environnement.getLignesCurseur() == Configuration.EnvironnementLongueur.get_valeur());
+        List<Ligne> lignes = environnement.getLignesDepuisCurseur().collect(Collectors.toList());
+        Assert.assertTrue(lignes.size() == 50);
 
         //on ajoute une ligne supplémentaire
         Ligne derniereLigne = new Ligne(TypeLigne.ROUTE, blocs1);
         environnement.ajoutLigne(derniereLigne);
         Assert.assertTrue(environnement.getLignesCurseur() == 1);
 
-        List<Ligne> lignes = environnement.getLignesDepuisCurseur().collect(Collectors.toList());
-        Assert.assertTrue(lignes.size() == 50);
-        Assert.assertTrue(lignes.get(lignes.size()-1).equals(derniereLigne));
+        List<Ligne> lignes2 = environnement.getLignesDepuisCurseur().collect(Collectors.toList());
+        Assert.assertTrue(lignes2.size() == 50);
+        Assert.assertTrue(lignes2.get(lignes2.size()-1).equals(derniereLigne));
 
     }
 

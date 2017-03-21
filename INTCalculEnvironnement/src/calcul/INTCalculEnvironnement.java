@@ -15,8 +15,9 @@ import modele.Ligne;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,21 +26,23 @@ import java.util.stream.IntStream;
  */
 public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
-    private Environnement _environnement;
-    private boolean _nbOuvertureModifiable;
-    private int _nbLignesAjoute;
+    private static final Logger LOGGER = Logger.getLogger(INTCalculEnvironnement.class.getSimpleName());
+
+    private Environnement environnement;
+    private boolean nbOuvertureModifiable;
+    private int nbLignesAjoute;
 
     public INTCalculEnvironnement(){
-        _environnement = new Environnement();
-        _nbOuvertureModifiable = true;
-        _nbLignesAjoute = 0;
+        environnement = new Environnement();
+        nbOuvertureModifiable = true;
+        nbLignesAjoute = 0;
     }
 
     @Override
     public void initialisationEnvironnement() {
             IntStream.range(0, EnvironnementInit.values().length)
                     .mapToObj(index -> EnvironnementInit.values()[index].get_ligne())
-                    .forEach(INTCalculEnvironnementUtil.AJOUT_LIGNE(_environnement));
+                    .forEach(INTCalculEnvironnementUtil.ajoutLigne(environnement));
     }
 
     @Override
@@ -62,20 +65,30 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
             //détermine nombre d'ouverture pour la ligne suivante
             int nombreOuverture = calculNombreOuverture(ligneActuelle);
-            System.out.println("Nombre d'ouverture calculées : " + nombreOuverture);
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Nombre d'ouverture calculées : %s", nombreOuverture));
+            }
 
             //détermine position d'ouverture de la ligne actuelle
             List<Integer> ouvertures = ligneActuelle.getOuverturesIndex();
-            System.out.println("Position des ouvertures de la dernière ligne insérée : " + ouvertures);
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Position des ouvertures de la dernière ligne insérée : %s", ouvertures));
+            }
 
             //calcul de l'étendue des positions possibles
-            System.out.println("Calcul de l'étendue ...");
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, "Calcul de l'étendue ...");
+            }
             List<Integer> etendue = calculEtendue(ouvertures);
-            System.out.println("Calcul de l'étendue, END. Etendue : " + etendue.toString());
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Calcul de l'étendue, END. Etendue : %s" , etendue.toString()));
+            }
 
             //calcl position des ouvertures suivantes
             List<Integer> positionOuvertures = calculPositionOverturesSuivantes(nombreOuverture, etendue);
-            System.out.println("Positions calculées : " + positionOuvertures);
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Positions calculées : %s" , positionOuvertures));
+            }
 
             //création des blocs
             creationChemin(blocs, positionOuvertures);
@@ -87,12 +100,14 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             addPhatomCollisionBlocsAtEnd(blocs);
 
             Ligne ligne = new Ligne(typeLigne, blocs);
-            Integer positionLigne =  _environnement.ajoutLigne(ligne);
-            System.out.println("Ligne ajoutée sur la position " + positionLigne);
-            _nbLignesAjoute++;
+            Integer positionLigne =  environnement.ajoutLigne(ligne);
+            if(LOGGER.isLoggable(Level.FINEST)){
+                LOGGER.log(Level.FINEST, String.format("Ligne ajoutée sur la position %s" , positionLigne));
+            }
+
+            nbLignesAjoute++;
             return ligne;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new LigneNonCree("La ligne n'a pas été créé", e);
         }
     }
@@ -106,30 +121,30 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
      */
     private void additionCheminEntreLigne(List<Bloc> blocs, List<Integer> positionOuvertures, List<Integer> ouvertures) {
         //max & min des positionD'ouvertures -> ouvertures de la nouvelle ligne
-        Integer minPositionOuverture = positionOuvertures.stream().min((o1, o2) -> Integer.compare(o1, o2)).get();
-        Integer maxPositionOuverture = positionOuvertures.stream().max((o1, o2) -> Integer.compare(o1, o2)).get();
+        Integer minPositionOuverture = positionOuvertures.stream().min(Integer::compare).orElse(null);
+        Integer maxPositionOuverture = positionOuvertures.stream().max(Integer::compare).orElse(null);
 
         //max & min des ouvertures -> ouvertures de l'ancienne ligne
-        Integer minOuverture = ouvertures.stream().min(Integer::compare).get();
-        Integer maxOuverture = ouvertures.stream().max(Integer::compare).get();
-
-        List<Bloc> blocCopy = blocs;
+        Integer minOuverture = ouvertures.stream().min(Integer::compare).orElse(null);
+        Integer maxOuverture = ouvertures.stream().max(Integer::compare).orElse(null);
 
         //addition sur la valeur min
-        if(minOuverture < minPositionOuverture){
-            IntStream.range(minOuverture, minPositionOuverture-1).forEach(value -> blocCopy.set(value, new Bloc(TypeBloc.Decor, false)));
-        } else if(minOuverture > minPositionOuverture) {
-            if(minOuverture-1 > minPositionOuverture){
-                IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocCopy.set(value, new Bloc(TypeBloc.Decor, false)));
+        if(minOuverture != null && minPositionOuverture != null){
+            if(minOuverture < minPositionOuverture){
+                IntStream.range(minOuverture, minPositionOuverture-1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
+            } else if(minOuverture > minPositionOuverture &&
+                    minOuverture-1 > minPositionOuverture){
+                    IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
             }
         }
 
         //addition sur la valeur max
-        if(maxOuverture < maxPositionOuverture){
-            IntStream.range(maxOuverture, maxPositionOuverture-1).forEach(value -> blocCopy.set(value, new Bloc(TypeBloc.Decor, false)));
-        } else if(maxOuverture > maxPositionOuverture) {
-            if(maxOuverture-1 > maxPositionOuverture){
-                IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocCopy.set(value, new Bloc(TypeBloc.Decor, false)));
+        if(maxOuverture != null && maxPositionOuverture != null){
+            if(maxOuverture < maxPositionOuverture){
+                IntStream.range(maxOuverture, maxPositionOuverture-1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
+            } else if(maxOuverture > maxPositionOuverture &&
+                    maxOuverture-1 > maxPositionOuverture){
+                    IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
             }
         }
 
@@ -137,17 +152,17 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
     /**
      * Détermine le nombre d'ouverture
-     * @param ligneActuelle
+     * @param ligneActuelle la ligne où l'on souhaite déterminer le nombre d'ouverture
      * @return nombreOuverture (valeur entre 1 et 2)
      */
     private int calculNombreOuverture(Ligne ligneActuelle) {
-        if(_nbLignesAjoute > 5){
-            _nbOuvertureModifiable = true;
+        if(nbLignesAjoute > 5){
+            nbOuvertureModifiable = true;
         }
 
         int nombreOuverture;
-        if(_nbOuvertureModifiable){
-            _nbOuvertureModifiable = false;
+        if(nbOuvertureModifiable){
+            nbOuvertureModifiable = false;
             nombreOuverture = ThreadLocalRandom.current().nextInt(1,3);
         } else {
             nombreOuverture = ligneActuelle.getOuvertures().size();
@@ -158,41 +173,29 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     private Ligne getLigneActuelle() throws LigneNonCree {
         Ligne ligneActuelle = null;
         try {
-            ligneActuelle = _environnement.getLigneActuelle();
+            ligneActuelle = environnement.getLigneActuelle();
         } catch (EnvironnementLigneNonRenseignee environnementLigneNonRenseignee) {
-            environnementLigneNonRenseignee.printStackTrace();
             throw new LigneNonCree(environnementLigneNonRenseignee);
         }
         return ligneActuelle;
     }
 
     private void creationChemin(List<Bloc> blocs, List<Integer> positionOuvertures) {
-        Optional<Integer> oMinPositionOuverture = positionOuvertures.stream().min(Integer::compare);
-        Optional<Integer> oMaxPositionOuverture = positionOuvertures.stream().max(Integer::compare);
+        Integer minPositionOuverture = positionOuvertures.stream().min(Integer::compare).orElse(null);
+        Integer maxPositionOuverture = positionOuvertures.stream().max(Integer::compare).orElse(null);
 
-        Integer minPositionOuverture;
-        Integer maxPositionOuverture;
-
-        if(oMinPositionOuverture.isPresent()){
-            minPositionOuverture = oMinPositionOuverture.get();
-        } else {
-            minPositionOuverture = null;
-        }
-        if(oMaxPositionOuverture.isPresent()){
-            maxPositionOuverture = oMaxPositionOuverture.get();
-        } else {
-            maxPositionOuverture = null;
+        if(LOGGER.isLoggable(Level.FINEST)){
+            LOGGER.log(Level.FINEST,String.format("Création de chemin entre %s et %s ", minPositionOuverture, maxPositionOuverture));
         }
 
-        System.out.println("Création de chemin entre "+minPositionOuverture+" et "+maxPositionOuverture+"");
-        List<Bloc> blocCopy = blocs;
-        if(!minPositionOuverture.equals(maxPositionOuverture)){
+        if(minPositionOuverture != null && maxPositionOuverture != null){
+            if(!minPositionOuverture.equals(maxPositionOuverture)){
+                IntStream.range(minPositionOuverture, maxPositionOuverture+1)
+                        .forEach(INTCalculEnvironnementUtil.creationBlocChemin(minPositionOuverture, maxPositionOuverture, blocs));
 
-            IntStream.range(minPositionOuverture, maxPositionOuverture+1)
-                    .forEach(INTCalculEnvironnementUtil.CREATION_BLOC_CHEMIN(minPositionOuverture, maxPositionOuverture, blocCopy));
-
-        } else {
-            blocCopy.set(minPositionOuverture, new Bloc(TypeBloc.Decor, true));
+            } else {
+                blocs.set(minPositionOuverture, new Bloc(TypeBloc.Decor, true));
+            }
         }
     }
 
@@ -203,12 +206,12 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
      * @param etendue l'étendue permise pour la création d'ouverture, valeurs entre 0 et {@link Configuration} EnvironnementLargeur - 1
      * @return liste des position des cuvertures
      */
-    private List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) throws Exception{
+    private List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) throws PositionNonCree{
         List<Integer> positionOuvertures = new ArrayList<>();
 
         try {
             IntStream.range(0, nombreOuverture)
-                    .forEach(INTCalculEnvironnementUtil.CREATION_POSITION_UNIQUE_SUR_ETENDUE(positionOuvertures, etendue));
+                    .forEach(INTCalculEnvironnementUtil.creationPositionUniqueSurEtendue(positionOuvertures, etendue));
         } catch (RuntimeException e) {
             throw new PositionNonCree("Les positions n'ont pas pu être calculées.", e);
         }
@@ -236,11 +239,13 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
         Integer maxPosition = ouvertures.stream().max(Integer::compare)
                 .map(i1 -> i1 + positionDistanceAleatoire)
-                .map(INTCalculEnvironnementUtil.SET_MAX_AS_LARGEUR)
+                .map(INTCalculEnvironnementUtil.setMaxAsLargeur)
                 .orElse(positionDebutAleatoire);
 
-        System.out.println("Calcul de l'étendue terminé : [positionDebutAleatoire : "+positionDebutAleatoire+", " +
-                "minPosition : "+minPosition+", maxPosition : "+maxPosition+"] ");
+        if(LOGGER.isLoggable(Level.FINEST)){
+            LOGGER.log(Level.FINEST, "Calcul de l'étendue terminé : [positionDebutAleatoire : "+positionDebutAleatoire+", " +
+                    "minPosition : "+minPosition+", maxPosition : "+maxPosition+"] ");
+        }
 
         return Arrays.asList(minPosition, maxPosition);
     }
@@ -273,6 +278,6 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
     @Override
     public Environnement recuperationEnvironneement() {
-        return _environnement;
+        return environnement;
     }
 }
