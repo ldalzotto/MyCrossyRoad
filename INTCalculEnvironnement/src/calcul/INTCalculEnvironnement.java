@@ -8,6 +8,7 @@ import enumeration.TypeBloc;
 import exception.EnvironnementLigneNonRenseignee;
 import exception.LigneNonCree;
 import exception.PositionNonCree;
+import logging.LoggerCalculEnvironnement;
 import modele.Bloc;
 import modele.Environnement;
 import modele.Ligne;
@@ -65,30 +66,20 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
             //détermine nombre d'ouverture pour la ligne suivante
             int nombreOuverture = calculNombreOuverture(ligneActuelle);
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Nombre d'ouverture calculées : %s", nombreOuverture));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Nombre d'ouverture calculées : %s", nombreOuverture);
 
             //détermine position d'ouverture de la ligne actuelle
             List<Integer> ouvertures = ligneActuelle.getOuverturesIndex();
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Position des ouvertures de la dernière ligne insérée : %s", ouvertures));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Position des ouvertures de la dernière ligne insérée : %s", ouvertures);
 
             //calcul de l'étendue des positions possibles
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, "Calcul de l'étendue ...");
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Calcul de l'étendue ...");
             List<Integer> etendue = calculEtendue(ouvertures);
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Calcul de l'étendue, END. Etendue : %s" , etendue.toString()));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Calcul de l'étendue, END. Etendue : %s" , etendue.toString());
 
             //calcl position des ouvertures suivantes
             List<Integer> positionOuvertures = calculPositionOverturesSuivantes(nombreOuverture, etendue);
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Positions calculées : %s" , positionOuvertures));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Positions calculées : %s" , positionOuvertures);
 
             //création des blocs
             creationChemin(blocs, positionOuvertures);
@@ -101,9 +92,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
             Ligne ligne = new Ligne(typeLigne, blocs);
             Integer positionLigne =  environnement.ajoutLigne(ligne);
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Ligne ajoutée sur la position %s" , positionLigne));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Ligne ajoutée sur la position %s" , positionLigne);
 
             nbLignesAjoute++;
             return ligne;
@@ -184,9 +173,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         Integer minPositionOuverture = positionOuvertures.stream().min(Integer::compare).orElse(null);
         Integer maxPositionOuverture = positionOuvertures.stream().max(Integer::compare).orElse(null);
 
-        if(LOGGER.isLoggable(Level.FINEST)){
-            LOGGER.log(Level.FINEST,String.format("Création de chemin entre %s et %s ", minPositionOuverture, maxPositionOuverture));
-        }
+        LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Création de chemin entre %s et %s ", minPositionOuverture, maxPositionOuverture);
 
         if(minPositionOuverture != null && maxPositionOuverture != null){
             if(!minPositionOuverture.equals(maxPositionOuverture)){
@@ -242,10 +229,8 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
                 .map(INTCalculEnvironnementUtil.setMaxAsLargeur)
                 .orElse(positionDebutAleatoire);
 
-        if(LOGGER.isLoggable(Level.FINEST)){
-            LOGGER.log(Level.FINEST, "Calcul de l'étendue terminé : [positionDebutAleatoire : "+positionDebutAleatoire+", " +
-                    "minPosition : "+minPosition+", maxPosition : "+maxPosition+"] ");
-        }
+        LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Calcul de l'étendue terminé : [positionDebutAleatoire : "+positionDebutAleatoire+", " +
+                "minPosition : "+minPosition+", maxPosition : "+maxPosition+"] ");
 
         return Arrays.asList(minPosition, maxPosition);
     }

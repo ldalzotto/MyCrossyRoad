@@ -4,6 +4,7 @@ import enumeration.Configuration;
 import enumeration.TypeBloc;
 import exception.EssaiTropNombreuxSurCreationPosition;
 import exception.LigneNonRenseignee;
+import logging.LoggerCalculEnvironnement;
 import modele.Bloc;
 import modele.Environnement;
 import modele.Ligne;
@@ -25,9 +26,7 @@ class INTCalculEnvironnementUtil {
 
     static Function<Integer, Integer> setMaxAsLargeur = integer -> {
         if(integer >= Configuration.EnvironnementLargeur.get_valeur()){
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Valeur %s réduite à la valeur maximale %s", integer, Configuration.EnvironnementLargeur.get_valeur()));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Valeur %s réduite à la valeur maximale %s", integer, Configuration.EnvironnementLargeur.get_valeur());
             return Configuration.EnvironnementLargeur.get_valeur()-1;
         } else {
             return integer;
@@ -36,9 +35,7 @@ class INTCalculEnvironnementUtil {
 
     static final Function<Integer, Integer> SET_MIN_0 = integer -> {
         if(integer < 0){
-            if(LOGGER.isLoggable(Level.FINEST)){
-                LOGGER.log(Level.FINEST, String.format("Valeur %s réduite à la valeur minimale 0", integer));
-            }
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Valeur %s réduite à la valeur minimale 0", integer);
             return 0;
         } else {
             return integer;
