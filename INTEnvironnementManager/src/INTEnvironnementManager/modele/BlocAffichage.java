@@ -24,11 +24,11 @@ public class BlocAffichage {
     }
 
     public Boolean isAnObstacle(){
-        return _typeBloc.equals(TypeBlocAffichage.Obstacle) && !_isOuverture;
+        return _typeBloc.equals(TypeBlocAffichage.OBSTACLE) && !_isOuverture;
     }
 
     public Boolean isAPhantomObstacle(){
-        return _typeBloc.equals(TypeBlocAffichage.PhantomObstacle);
+        return _typeBloc.equals(TypeBlocAffichage.PHANTOM_OBSTACLE);
     }
 
 }

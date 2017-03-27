@@ -66,7 +66,6 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         setupViewport(MAIN_GAME_SCREEN_WIDTH, MAIN_GAME_SCREEN_HEIGHT);
 
         _json = new Json();
-        _batch = new ModelBatch();
 
         _environment = new Environment();
         _environment.set(new ColorAttribute(ColorAttribute.AmbientLight, Color.BLACK));
@@ -82,6 +81,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
 
     @Override
     public void show() {
+        _batch = createModelBatch();
+
         _camera = new PerspectiveCamera(67, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
         _camera.position.set(-20f, 70f, -20f);
         _camera.lookAt(5,0,5);
@@ -157,7 +158,6 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private List<Entity> createNewBlocsIfAvailable() {
         List<Entity> entities = new ArrayList<>();
         try {
-            //TODO il y a un bug dans le manager, les lignes ne veulent plus se créer au bout d'un moment
             if(_joueur.get_direction().equals(Direction.UP) && _playerMovementManager.isAbleToCreateNewBlocs(_entityList, _joueur)){
                 entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
             }
@@ -254,6 +254,10 @@ public class MainGameScreen extends GlobalViewport implements Screen{
                 "D:\\Profiles\\ldalzotto\\IdeaProjects\\MyCrossyRoad\\core\\assets\\block.obj",
                 "D:\\Profiles\\ldalzotto\\IdeaProjects\\MyCrossyRoad\\core\\assets\\invader.obj"
         ));
+    }
+
+    public ModelBatch createModelBatch(){
+        return new ModelBatch();
     }
 
     @Override

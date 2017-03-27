@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class MainGameScreenUtilTest {
     @Test
     public void generateEntity() throws Exception {
-        BlocAffichage blocAffichage = new BlocAffichage(TypeBlocAffichage.Decor, false);
+        BlocAffichage blocAffichage = new BlocAffichage(TypeBlocAffichage.DECOR, false);
         Entity entity = MainGameScreenUtil.generateEntity(blocAffichage);
 
         Assert.assertTrue(entity != null);
