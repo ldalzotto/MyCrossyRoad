@@ -10,8 +10,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by ldalzotto on 20/03/2017.
  */
@@ -35,7 +33,7 @@ public class INTCalculEnvironnementTest {
 
         List<Ligne> lignes = intCalculEnvironnement.recuperationEnvironneement().getLignes();
 
-        Assert.assertTrue(lignes.get(1).getBlocs().get(0).getTypeBloc().equals(TypeBloc.PhantomObstacle));
+        Assert.assertTrue(lignes.get(1).getBlocs().get(0).getTypeBloc().equals(TypeBloc.PHANTOM_OBSTACLE));
 
     }
 
@@ -112,7 +110,7 @@ public class INTCalculEnvironnementTest {
         //on remplit avec des blocs de types décors
         IntStream.range(integers.get(0), integers.get(1))
             .forEach(value -> {
-                Assert.assertTrue(ligne1.getBlocs().get(value).getTypeBloc().equals(TypeBloc.Decor));
+                Assert.assertTrue(ligne1.getBlocs().get(value).getTypeBloc().equals(TypeBloc.DECOR));
             });
 
     }
@@ -122,8 +120,6 @@ public class INTCalculEnvironnementTest {
         INTCalculEnvironnement intCalculEnvironnement = new INTCalculEnvironnement();
         intCalculEnvironnement.initialisationEnvironnement();
 
-
-        //TODO lors de la création de la ligne, les phantom blocs initialisés disparaissent
         Ligne ligneAvant = intCalculEnvironnement.creationLigne();
         Ligne ligneApres = intCalculEnvironnement.creationLigne();
 
@@ -144,7 +140,7 @@ public class INTCalculEnvironnementTest {
         IntStream.range(indexMin, indexMax +1)
                 .forEach(value -> {
                     System.out.println("Asserting index "+value+". LigneActuelle : " + ligneActuelle + ". Ligne précédente : " + lignePrecedente );
-                    Assert.assertTrue(ligneActuelle.getBlocs().get(value).getTypeBloc().equals(TypeBloc.Decor));
+                    Assert.assertTrue(ligneActuelle.getBlocs().get(value).getTypeBloc().equals(TypeBloc.DECOR));
                 });
 
     }
@@ -158,8 +154,8 @@ public class INTCalculEnvironnementTest {
 
         Ligne ligne = intCalculEnvironnement.recuperationEnvironneement().getLigneActuelle();
 
-        Assert.assertTrue(ligne.getBlocs().get(0).getTypeBloc().equals(TypeBloc.PhantomObstacle));
-        Assert.assertTrue(ligne.getBlocs().get(ligne.getBlocs().size()-1).getTypeBloc().equals(TypeBloc.PhantomObstacle));
+        Assert.assertTrue(ligne.getBlocs().get(0).getTypeBloc().equals(TypeBloc.PHANTOM_OBSTACLE));
+        Assert.assertTrue(ligne.getBlocs().get(ligne.getBlocs().size()-1).getTypeBloc().equals(TypeBloc.PHANTOM_OBSTACLE));
     }
 
     @Test

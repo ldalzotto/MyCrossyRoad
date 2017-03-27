@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by ldalzotto on 20/03/2017.
  */
@@ -18,14 +16,14 @@ public class LigneTest {
     @Test
     public void getOuvertures() throws Exception {
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Bloc> awaitedOuvertureBloc = Arrays.asList(bloc2, bloc4, bloc7);
@@ -43,14 +41,14 @@ public class LigneTest {
 
     @Test
     public void getOuverturesIndex() throws Exception {
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Integer> awaitedIndex = Arrays.asList(1, 3, 6);
@@ -67,14 +65,14 @@ public class LigneTest {
 
     @Test
     public void getTypeLigne() throws Exception {
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Integer> awaitedIndex = Arrays.asList(1, 3, 6);
@@ -87,14 +85,14 @@ public class LigneTest {
 
     @Test
     public void getBlocs() throws Exception {
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, true);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Integer> awaitedIndex = Arrays.asList(1, 3, 6);

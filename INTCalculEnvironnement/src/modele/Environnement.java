@@ -19,7 +19,7 @@ public class Environnement {
     private int lignesCurseur;
 
     public Environnement(){
-        longueur = Configuration.EnvironnementLongueur.get_valeur();
+        longueur = Configuration.ENVIRONNEMENT_LONGUEUR.getValeur();
         lignes = new ArrayList<>();
         lignesCurseur = 0;
     }

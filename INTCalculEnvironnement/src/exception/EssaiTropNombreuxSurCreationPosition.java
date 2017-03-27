@@ -1,6 +1,5 @@
 package exception;
 
-import exception.absract.CreationLigneException;
 
 /**
  * Created by ldalzotto on 23/02/2017.

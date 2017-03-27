@@ -7,7 +7,6 @@ import enumeration.EnvironnementInit;
 import enumeration.TypeBloc;
 import exception.EnvironnementLigneNonRenseignee;
 import exception.LigneNonCree;
-import exception.PositionNonCree;
 import logging.LoggerCalculEnvironnement;
 import modele.Bloc;
 import modele.Environnement;
@@ -54,11 +53,11 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         TypeLigne typeLigne = TypeLigne.getTypeAleatoire(menace);
 
         //popule bloc
-        List<Bloc> blocs = new ArrayList<>();
+        List<Bloc> blocs;
         if(menace == 0){
-            blocs = populeBlocs(TypeBloc.Obstacle);
-        }else if (menace == 1){
-            blocs = populeBlocs(TypeBloc.Decor);
+            blocs = populeBlocs(TypeBloc.OBSTACLE);
+        }else {
+            blocs = populeBlocs(TypeBloc.DECOR);
         }
 
         try {
@@ -113,31 +112,24 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         Integer minPositionOuverture = positionOuvertures.stream().min(Integer::compare).orElse(null);
         Integer maxPositionOuverture = positionOuvertures.stream().max(Integer::compare).orElse(null);
 
-        //initialisation des positions d'ouvertures
-
-
         //max & min des ouvertures -> ouvertures de l'ancienne ligne
         Integer minOuverture = ouvertures.stream().min(Integer::compare).orElse(null);
         Integer maxOuverture = ouvertures.stream().max(Integer::compare).orElse(null);
 
         //addition sur la valeur min
-        if(minOuverture != null && minPositionOuverture != null){
-            if(minOuverture < minPositionOuverture){
-                IntStream.range(minOuverture, minPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
-            } else if(minOuverture > minPositionOuverture &&
-                    minOuverture-1 > minPositionOuverture){
-                    IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
-            }
+        if(minOuverture < minPositionOuverture){
+            IntStream.range(minOuverture, minPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+         } else if(minOuverture > minPositionOuverture &&
+                minOuverture-1 > minPositionOuverture){
+            IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
         //addition sur la valeur max
-        if(maxOuverture != null && maxPositionOuverture != null){
-            if(maxOuverture < maxPositionOuverture){
-                IntStream.range(maxOuverture, maxPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
-            } else if(maxOuverture > maxPositionOuverture &&
-                    maxOuverture-1 > maxPositionOuverture){
-                    IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
-            }
+        if(maxOuverture < maxPositionOuverture){
+             IntStream.range(maxOuverture, maxPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+        } else if(maxOuverture > maxPositionOuverture &&
+             maxOuverture-1 > maxPositionOuverture){
+             IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
     }
@@ -176,32 +168,26 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
         LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Création de chemin entre %s et %s ", minPositionOuverture, maxPositionOuverture);
 
-        if(minPositionOuverture != null && maxPositionOuverture != null){
             if(!minPositionOuverture.equals(maxPositionOuverture)){
                 IntStream.range(minPositionOuverture, maxPositionOuverture+1)
                         .forEach(INTCalculEnvironnementUtil.creationBlocChemin(minPositionOuverture, maxPositionOuverture, blocs));
             } else {
-                blocs.set(minPositionOuverture, new Bloc(TypeBloc.Decor, true));
+                blocs.set(minPositionOuverture, new Bloc(TypeBloc.DECOR, true));
             }
-        }
     }
 
     /**
      * Calcule la ou les position des ouvertures de la nouvelle ligne à être créé.
      * Les positions créées sont unique parmis l'étendue
      * @param nombreOuverture le nombre d'ouvertures à créer, valeur entre 1 et 2
-     * @param etendue l'étendue permise pour la création d'ouverture, valeurs entre 0 et {@link Configuration} EnvironnementLargeur - 1
+     * @param etendue l'étendue permise pour la création d'ouverture, valeurs entre 0 et {@link Configuration} ENVIRONNEMENT_LARGEUR - 1
      * @return liste des position des cuvertures
      */
-    private List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) throws PositionNonCree{
+    private List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) {
         List<Integer> positionOuvertures = new ArrayList<>();
 
-        try {
-            IntStream.range(0, nombreOuverture)
-                    .forEach(INTCalculEnvironnementUtil.creationPositionUniqueSurEtendue(positionOuvertures, etendue));
-        } catch (RuntimeException e) {
-            throw new PositionNonCree("Les positions n'ont pas pu être calculées.", e);
-        }
+        IntStream.range(0, nombreOuverture)
+                .forEach(INTCalculEnvironnementUtil.creationPositionUniqueSurEtendue(positionOuvertures, etendue));
 
         return positionOuvertures;
     }
@@ -210,14 +196,14 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
      * Calcule l'étendue du paramètre d'ouverture. L'étendue correspond à l'étendue de la liste
      * + l'ajout du delta de distance d'ouverture.
      * Toutefois, les valeurs finales ne peuvent pas être inférieure à 0 ni être
-     * suppérieure à {@link Configuration} EnvironnementLargeur
+     * suppérieure à {@link Configuration} ENVIRONNEMENT_LARGEUR
      * @param ouvertures la liste d'ouverture sur laquelle nous calculons l'étendue
-     * @return l'étendue. valeurs entre 0 et {@link Configuration} EnvironnementLargeur - 1
+     * @return l'étendue. valeurs entre 0 et {@link Configuration} ENVIRONNEMENT_LARGEUR - 1
      */
     private List<Integer> calculEtendue(List<Integer> ouvertures) {
-        Integer positionDebutAleatoire = ThreadLocalRandom.current().nextInt(Configuration.EnvironnementLargeur.get_valeur());
+        Integer positionDebutAleatoire = ThreadLocalRandom.current().nextInt(Configuration.ENVIRONNEMENT_LARGEUR.getValeur());
         Integer positionDistanceAleatoire = ThreadLocalRandom.current().nextInt(1,
-                                Configuration.DistanceDeltaOuverture.get_valeur() + 1);
+                                Configuration.DISTANCE_DELTA_OUVERTURE.getValeur() + 1);
 
         Integer minPosition = ouvertures.stream().min(Integer::compare)
                 .map(i1 -> i1 - positionDistanceAleatoire)
@@ -240,17 +226,17 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
      * @param blocs la liste de blocs sur laquelle on souhaite ajouter les blocs phantom
      */
     private void addPhatomCollisionBlocsAtEnd(List<Bloc> blocs){
-        blocs.add(new Bloc(TypeBloc.PhantomObstacle, false));
-        blocs.add(0, new Bloc(TypeBloc.PhantomObstacle, false));
+        blocs.add(new Bloc(TypeBloc.PHANTOM_OBSTACLE, false));
+        blocs.add(0, new Bloc(TypeBloc.PHANTOM_OBSTACLE, false));
     }
 
     private Ligne removePhatomCollisionBlocsFromLigne(Ligne ligne){
-        ligne.getBlocs().removeIf(bloc -> bloc.getTypeBloc().equals(TypeBloc.PhantomObstacle));
+        ligne.getBlocs().removeIf(bloc -> bloc.getTypeBloc().equals(TypeBloc.PHANTOM_OBSTACLE));
         return ligne;
     }
 
     private List<Bloc> populeBlocs(TypeBloc typeBloc){
-        int environnementLargeur = Configuration.EnvironnementLargeur.get_valeur();
+        int environnementLargeur = Configuration.ENVIRONNEMENT_LARGEUR.getValeur();
         return IntStream.range(0, environnementLargeur)
                 .mapToObj(index -> new Bloc(typeBloc, false))
                 .collect(Collectors.toList());

@@ -1,6 +1,7 @@
 package calcul;
 
 import common.enumeration.TypeLigne;
+import enumeration.Configuration;
 import enumeration.TypeBloc;
 import exception.EssaiTropNombreuxSurCreationPosition;
 import modele.Bloc;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -19,19 +21,23 @@ import java.util.stream.IntStream;
  */
 public class INTCalculEnvironnementUtilTest {
 
+    @Test(expected = InstantiationError.class)
+    public void cannotInstantiate() {
+        INTCalculEnvironnementUtil intCalculEnvironnementUtil = new INTCalculEnvironnementUtil();
+    }
 
     @Test
     public void ajoutLigne() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Bloc> blocs2 = Arrays.asList(bloc2, bloc3, bloc4, bloc4, bloc5, bloc6, bloc7, bloc8);
@@ -54,6 +60,28 @@ public class INTCalculEnvironnementUtilTest {
     }
 
     @Test
+    public void setMaxAsLargeur_valeurReduite() throws Exception {
+        Integer integerTropGrand = Configuration.ENVIRONNEMENT_LARGEUR.getValeur() * 2;
+        List<Integer> integers = Arrays.asList(integerTropGrand)
+                .stream().map(INTCalculEnvironnementUtil.setMaxAsLargeur)
+                .collect(Collectors.toList());
+
+        Assert.assertTrue(integers.size() == 1);
+        Assert.assertTrue(integers.get(0).equals(Configuration.ENVIRONNEMENT_LARGEUR.getValeur()-1));
+    }
+
+    @Test
+    public void setMin0_valeurReduite() throws Exception {
+        Integer integerTropGrand = -3;
+        List<Integer> integers = Arrays.asList(integerTropGrand)
+                .stream().map(INTCalculEnvironnementUtil.SET_MIN_0)
+                .collect(Collectors.toList());
+
+        Assert.assertTrue(integers.size() == 1);
+        Assert.assertTrue(integers.get(0).equals(0));
+    }
+
+    @Test
     public void ajoutLigne_NonRenseignee() throws Exception {
         Environnement environnement = new Environnement();
         List<Ligne> lignes = Arrays.asList(null, null);
@@ -67,14 +95,14 @@ public class INTCalculEnvironnementUtilTest {
         int minPositionOuverture = 2;
         int maxPositionOuverture = 5;
 
-        Bloc bloc1 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Obstacle, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Obstacle, false);
+        Bloc bloc1 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc2 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc3 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc4 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc5 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc6 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc7 = new Bloc(TypeBloc.OBSTACLE, false);
+        Bloc bloc8 = new Bloc(TypeBloc.OBSTACLE, false);
 
         List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
 
@@ -83,12 +111,12 @@ public class INTCalculEnvironnementUtilTest {
                         blocs1));
 
         Assert.assertTrue(blocs1.get(minPositionOuverture).getIsOuverture());
-        Assert.assertTrue(blocs1.get(minPositionOuverture).getTypeBloc().equals(TypeBloc.Decor));
+        Assert.assertTrue(blocs1.get(minPositionOuverture).getTypeBloc().equals(TypeBloc.DECOR));
 
-        Assert.assertTrue(blocs1.get(4).getTypeBloc().equals(TypeBloc.Decor));
+        Assert.assertTrue(blocs1.get(4).getTypeBloc().equals(TypeBloc.DECOR));
 
         Assert.assertTrue(blocs1.get(maxPositionOuverture).getIsOuverture());
-        Assert.assertTrue(blocs1.get(maxPositionOuverture).getTypeBloc().equals(TypeBloc.Decor));
+        Assert.assertTrue(blocs1.get(maxPositionOuverture).getTypeBloc().equals(TypeBloc.DECOR));
     }
 
     @Test

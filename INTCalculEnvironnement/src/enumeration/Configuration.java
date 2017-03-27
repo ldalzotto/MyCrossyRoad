@@ -5,18 +5,18 @@ package enumeration;
  */
 public enum Configuration {
 
-    EnvironnementLargeur(10),
-    EnvironnementLongueur(50),
-    DistanceDeltaOuverture(3);
+    ENVIRONNEMENT_LARGEUR(10),
+    ENVIRONNEMENT_LONGUEUR(50),
+    DISTANCE_DELTA_OUVERTURE(3);
 
-    private int _valeur;
+    private int valeur;
 
     Configuration(int valeur){
-        _valeur = valeur;
+        this.valeur = valeur;
     }
 
-    public int get_valeur(){
-        return _valeur;
+    public int getValeur(){
+        return valeur;
     }
 
 }

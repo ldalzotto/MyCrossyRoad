@@ -4,15 +4,13 @@ import enumeration.TypeBloc;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by ldalzotto on 20/03/2017.
  */
 public class BlocTest {
     @Test
     public void getIsOuverture() throws Exception {
-        Bloc bloc = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc = new Bloc(TypeBloc.DECOR, false);
         Boolean isOuverture = bloc.getIsOuverture();
 
         Assert.assertTrue(!isOuverture);
@@ -20,10 +18,10 @@ public class BlocTest {
 
     @Test
     public void getTypeBloc() throws Exception {
-        Bloc bloc = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc = new Bloc(TypeBloc.DECOR, false);
         TypeBloc typeBloc = bloc.getTypeBloc();
 
-        Assert.assertTrue(typeBloc.equals(TypeBloc.Decor));
+        Assert.assertTrue(typeBloc.equals(TypeBloc.DECOR));
     }
 
 }

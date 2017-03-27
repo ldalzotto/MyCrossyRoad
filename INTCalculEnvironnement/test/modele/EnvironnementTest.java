@@ -23,14 +23,14 @@ public class EnvironnementTest {
     public void ajoutLigne() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
 
@@ -58,20 +58,20 @@ public class EnvironnementTest {
     public void ajoutLigne_RetourCurseur() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
 
         Ligne ligneAAjouter = new Ligne(TypeLigne.ROUTE, blocs);
 
-        Integer longueurConfiguration = Configuration.EnvironnementLongueur.get_valeur();
+        Integer longueurConfiguration = Configuration.ENVIRONNEMENT_LONGUEUR.getValeur();
         IntStream.range(0, longueurConfiguration+1)
                 .forEach(value -> {
                     try {
@@ -90,14 +90,14 @@ public class EnvironnementTest {
     public void getLigneActuelle() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
 
@@ -125,14 +125,14 @@ public class EnvironnementTest {
     public void getLignesDepuisCurseur() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Bloc> blocs2 = Arrays.asList(bloc2, bloc3, bloc4, bloc4, bloc5, bloc6, bloc7, bloc8);
@@ -180,18 +180,18 @@ public class EnvironnementTest {
     public void getLignesDepuisCurseur_LongueurMax() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
 
-        IntStream.range(0, Configuration.EnvironnementLongueur.get_valeur())
+        IntStream.range(0, Configuration.ENVIRONNEMENT_LONGUEUR.getValeur())
             .forEach(value -> {
                 try {
                     environnement.ajoutLigne(new Ligne(TypeLigne.EAU, blocs1));
@@ -200,7 +200,7 @@ public class EnvironnementTest {
                 }
             });
 
-        Assert.assertTrue(environnement.getLignesCurseur() == Configuration.EnvironnementLongueur.get_valeur());
+        Assert.assertTrue(environnement.getLignesCurseur() == Configuration.ENVIRONNEMENT_LONGUEUR.getValeur());
         List<Ligne> lignes = environnement.getLignesDepuisCurseur().collect(Collectors.toList());
         Assert.assertTrue(lignes.size() == 50);
 
@@ -225,14 +225,14 @@ public class EnvironnementTest {
     public void getLignes() throws Exception {
         Environnement environnement = new Environnement();
 
-        Bloc bloc1 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc2 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc3 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc4 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc5 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc6 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc7 = new Bloc(TypeBloc.Decor, false);
-        Bloc bloc8 = new Bloc(TypeBloc.Decor, false);
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
 
         List<Bloc> blocs1 = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
         List<Bloc> blocs2 = Arrays.asList(bloc2, bloc3, bloc4, bloc4, bloc5, bloc6, bloc7, bloc8);

@@ -9,10 +9,6 @@ public abstract class CreationLigneException extends Exception {
         super(message, cause);
     }
 
-    public CreationLigneException(String message){
-        super(message);
-    }
-
     public CreationLigneException(Throwable cause){
         super(cause);
     }

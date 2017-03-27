@@ -25,9 +25,9 @@ class INTCalculEnvironnementUtil {
     private static final Logger LOGGER = Logger.getLogger(INTCalculEnvironnementUtil.class.getSimpleName());
 
     static Function<Integer, Integer> setMaxAsLargeur = integer -> {
-        if(integer >= Configuration.EnvironnementLargeur.get_valeur()){
-            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Valeur %s réduite à la valeur maximale %s", integer, Configuration.EnvironnementLargeur.get_valeur());
-            return Configuration.EnvironnementLargeur.get_valeur()-1;
+        if(integer >= Configuration.ENVIRONNEMENT_LARGEUR.getValeur()){
+            LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Valeur %s réduite à la valeur maximale %s", integer, Configuration.ENVIRONNEMENT_LARGEUR.getValeur());
+            return Configuration.ENVIRONNEMENT_LARGEUR.getValeur()-1;
         } else {
             return integer;
         }
@@ -42,8 +42,8 @@ class INTCalculEnvironnementUtil {
         }
     };
 
-    INTCalculEnvironnementUtil(){
-        throw new IllegalAccessError("Utility class");
+    INTCalculEnvironnementUtil() {
+        throw new InstantiationError("Utility class");
     }
 
     /**
@@ -73,9 +73,9 @@ class INTCalculEnvironnementUtil {
                                           List<Bloc> blocs){
         return i1 -> {
             if(i1 == minPositionOuverture || i1 == maxPositionOuverture){
-                blocs.set(i1, new Bloc(TypeBloc.Decor, true));
+                blocs.set(i1, new Bloc(TypeBloc.DECOR, true));
             } else {
-                blocs.set(i1, new Bloc(TypeBloc.Decor, false));
+                blocs.set(i1, new Bloc(TypeBloc.DECOR, false));
             }
         };
     }
@@ -93,7 +93,7 @@ class INTCalculEnvironnementUtil {
      * @return Lambda expression
      * @throws RuntimeException exception durnant l'exécution de la méthode
      */
-    static IntConsumer creationPositionUniqueSurEtendue(List<Integer> positionOuvertures, List<Integer> etendue) throws EssaiTropNombreuxSurCreationPosition{
+    static IntConsumer creationPositionUniqueSurEtendue(List<Integer> positionOuvertures, List<Integer> etendue) {
         return  value -> {
                     int essaiInitialisationPosition = 1;
                     int position = ThreadLocalRandom.current().nextInt(etendue.get(0), etendue.get(1) + 1);

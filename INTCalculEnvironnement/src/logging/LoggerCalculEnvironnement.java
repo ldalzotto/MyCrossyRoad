@@ -8,13 +8,16 @@ import java.util.logging.Logger;
  */
 public class LoggerCalculEnvironnement {
 
-    private LoggerCalculEnvironnement() throws InstantiationException {
-        throw new InstantiationException("La classe ne peut pas être instanciée !");
+    LoggerCalculEnvironnement() {
+        throw new InstantiationError("La classe ne peut pas être instanciée !");
     }
 
-    public static void log(Logger logger, Level level, String message, Object... parametres){
+    public static boolean log(Logger logger, Level level, String message, Object... parametres){
         if(logger.isLoggable(level)){
             logger.log(level, String.format(message, parametres));
+            return true;
+        } else {
+            return false;
         }
     }
 
