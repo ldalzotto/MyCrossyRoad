@@ -50,7 +50,7 @@ public class INTEnvironnementManager implements IINTEnvironnementManager{
 
     /**
      * Permet de créer une ligne à {@link modele.Environnement} depuis {@link INTEnvironnementManager}
-     * @throws LigneNonCree si la ligne n'a pas pu être créée
+     * @throws CreationLigne si la ligne n'a pas pu être créée
      */
     public LigneAffichage creationLigne() throws CreationLigne{
         try {

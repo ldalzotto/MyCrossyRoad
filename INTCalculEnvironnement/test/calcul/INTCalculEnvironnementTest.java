@@ -117,6 +117,7 @@ public class INTCalculEnvironnementTest {
 
     }
 
+    @Test
     public void creationLigne_lienCheminEntreLigne() throws Exception {
         INTCalculEnvironnement intCalculEnvironnement = new INTCalculEnvironnement();
         intCalculEnvironnement.initialisationEnvironnement();
@@ -127,7 +128,7 @@ public class INTCalculEnvironnementTest {
         Ligne ligneApres = intCalculEnvironnement.creationLigne();
 
         while (ligneApres.getOuverturesIndex().equals(ligneAvant.getOuverturesIndex())
-                && ligneApres.getOuverturesIndex().contains(ligneAvant.getOuverturesIndex().get(0))) {
+                || ligneApres.getOuverturesIndex().contains(ligneAvant.getOuverturesIndex().get(0))) {
             ligneAvant = ligneApres;
             ligneApres = intCalculEnvironnement.creationLigne();
         }
@@ -137,8 +138,12 @@ public class INTCalculEnvironnementTest {
 
         Ligne ligneActuelle = intCalculEnvironnement.recuperationEnvironneement().getLigneActuelle();
 
-        IntStream.range(lignePrecedente.getOuverturesIndex().get(0), ligneApres.getOuverturesIndex().get(0))
+        Integer indexMin = Integer.min(lignePrecedente.getOuverturesIndex().get(0), ligneApres.getOuverturesIndex().get(0));
+        Integer indexMax = Integer.max(lignePrecedente.getOuverturesIndex().get(0), ligneApres.getOuverturesIndex().get(0));
+        //valeurs minimum
+        IntStream.range(indexMin, indexMax +1)
                 .forEach(value -> {
+                    System.out.println("Asserting index "+value+". LigneActuelle : " + ligneActuelle + ". Ligne précédente : " + lignePrecedente );
                     Assert.assertTrue(ligneActuelle.getBlocs().get(value).getTypeBloc().equals(TypeBloc.Decor));
                 });
 

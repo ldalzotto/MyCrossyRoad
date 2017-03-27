@@ -62,7 +62,8 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         }
 
         try {
-            Ligne ligneActuelle = removePhatomCollisionBlocsFromLigne(getLigneActuelle());
+            Ligne ligneActuelle = getLigneActuelle().copy();
+            removePhatomCollisionBlocsFromLigne(ligneActuelle);
 
             //détermine nombre d'ouverture pour la ligne suivante
             int nombreOuverture = calculNombreOuverture(ligneActuelle);
@@ -81,11 +82,10 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             List<Integer> positionOuvertures = calculPositionOverturesSuivantes(nombreOuverture, etendue);
             LoggerCalculEnvironnement.log(LOGGER, Level.FINEST, "Positions calculées : %s" , positionOuvertures);
 
-            //création des blocs
-            creationChemin(blocs, positionOuvertures);
-
             //relier la ligne à créer avec la précedente si nécessaire
             additionCheminEntreLigne(blocs, positionOuvertures, ouvertures);
+            //création des blocs
+            creationChemin(blocs, positionOuvertures);
 
             //ajouter des blocs de collision invisible aux extrémités de la ligne
             addPhatomCollisionBlocsAtEnd(blocs);
@@ -113,6 +113,9 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         Integer minPositionOuverture = positionOuvertures.stream().min(Integer::compare).orElse(null);
         Integer maxPositionOuverture = positionOuvertures.stream().max(Integer::compare).orElse(null);
 
+        //initialisation des positions d'ouvertures
+
+
         //max & min des ouvertures -> ouvertures de l'ancienne ligne
         Integer minOuverture = ouvertures.stream().min(Integer::compare).orElse(null);
         Integer maxOuverture = ouvertures.stream().max(Integer::compare).orElse(null);
@@ -120,7 +123,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         //addition sur la valeur min
         if(minOuverture != null && minPositionOuverture != null){
             if(minOuverture < minPositionOuverture){
-                IntStream.range(minOuverture, minPositionOuverture-1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
+                IntStream.range(minOuverture, minPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
             } else if(minOuverture > minPositionOuverture &&
                     minOuverture-1 > minPositionOuverture){
                     IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
@@ -130,7 +133,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         //addition sur la valeur max
         if(maxOuverture != null && maxPositionOuverture != null){
             if(maxOuverture < maxPositionOuverture){
-                IntStream.range(maxOuverture, maxPositionOuverture-1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
+                IntStream.range(maxOuverture, maxPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
             } else if(maxOuverture > maxPositionOuverture &&
                     maxOuverture-1 > maxPositionOuverture){
                     IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.Decor, false)));
@@ -160,13 +163,11 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     }
 
     private Ligne getLigneActuelle() throws LigneNonCree {
-        Ligne ligneActuelle = null;
         try {
-            ligneActuelle = environnement.getLigneActuelle();
+            return environnement.getLigneActuelle();
         } catch (EnvironnementLigneNonRenseignee environnementLigneNonRenseignee) {
             throw new LigneNonCree(environnementLigneNonRenseignee);
         }
-        return ligneActuelle;
     }
 
     private void creationChemin(List<Bloc> blocs, List<Integer> positionOuvertures) {
@@ -179,7 +180,6 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
             if(!minPositionOuverture.equals(maxPositionOuverture)){
                 IntStream.range(minPositionOuverture, maxPositionOuverture+1)
                         .forEach(INTCalculEnvironnementUtil.creationBlocChemin(minPositionOuverture, maxPositionOuverture, blocs));
-
             } else {
                 blocs.set(minPositionOuverture, new Bloc(TypeBloc.Decor, true));
             }

@@ -86,7 +86,7 @@ public class MainGameScreenUtil {
      * - Index de la ligne
      * - {@link LigneAffichage}
      * - {@link TypeLigne}
-     * - Pour tous les blocs -> List<{@link BlocAffichage}, Position>
+     * - Pour tous les blocs -- List{@link BlocAffichage}, Position
      * @param size la taille des blocs
      * @return la fonction permettant de fournir cette fonctionnalité
      */
@@ -209,7 +209,7 @@ public class MainGameScreenUtil {
      * Permet de retourner la position des dernières entités de l'environnement fournies en entrée de cette méthode
      * @param  listeBloc la liste des entités que l'on souhaite avoir la position max
      * @return la position maximale des lignes de blocs
-     * @throws MaxPositionNonDeterminee
+     * @throws MaxPositionNonDeterminee si la position max n'a pas pu être déterminée
      */
     public static Float getMaxBlocPosition(List<Entity> listeBloc) throws MaxPositionNonDeterminee{
         Optional<Float> position =listeBloc.stream()
