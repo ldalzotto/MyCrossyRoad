@@ -1,7 +1,9 @@
 package modele;
 
 import enumeration.TypeBloc;
+import exception.ObectCopyException;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -21,12 +23,16 @@ public class Bloc {
         return isOuverture;
     }
 
-    public Bloc copy(){
+    public Bloc copy() {
         boolean isOuvertureRetour = this.isOuverture;
-        TypeBloc typeBlocRetour = Stream.of(TypeBloc.values()).filter(typeBloc1 -> typeBloc1.equals(this.getTypeBloc()))
-                .findFirst().get();
+        Optional<TypeBloc> oTypeBlocRetour = Stream.of(TypeBloc.values()).filter(typeBloc1 -> typeBloc1.equals(this.getTypeBloc()))
+                .findFirst();
 
-        return new Bloc(typeBlocRetour, isOuvertureRetour);
+        if(oTypeBlocRetour.isPresent()){
+            return new Bloc(oTypeBlocRetour.get(), isOuvertureRetour);
+        } else {
+            throw new ObectCopyException("This instance cannot be copied !");
+        }
     }
 
     public TypeBloc getTypeBloc() {

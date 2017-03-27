@@ -108,4 +108,43 @@ public class LigneTest {
 
     }
 
+    @Test
+    public void copySuccess() throws Exception {
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
+
+        List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
+
+        Ligne ligne = new Ligne(TypeLigne.EAU, blocs);
+
+        Ligne ligne1 = ligne.copy();
+
+        Assert.assertTrue(ligne1.hashCode() != ligne.hashCode());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void copyFail() throws Exception {
+        Bloc bloc1 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc2 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc3 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc4 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc5 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc6 = new Bloc(TypeBloc.DECOR, false);
+        Bloc bloc7 = new Bloc(TypeBloc.DECOR, true);
+        Bloc bloc8 = new Bloc(TypeBloc.DECOR, false);
+
+        List<Bloc> blocs = Arrays.asList(bloc1, bloc2, bloc3, bloc4, bloc5, bloc6, bloc7, bloc8);
+
+        Ligne ligne = new Ligne(null, blocs);
+
+        ligne.copy();
+
+    }
+
 }

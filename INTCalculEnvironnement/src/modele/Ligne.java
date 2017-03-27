@@ -1,9 +1,11 @@
 package modele;
 
 import common.enumeration.TypeLigne;
+import exception.ObectCopyException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,13 +45,17 @@ public class Ligne {
         return blocs;
     }
 
-    public Ligne copy(){
-        TypeLigne typeLigneRetour = Stream.of(TypeLigne.values()).filter(typeLigne1 -> typeLigne1.equals(this.getTypeLigne()))
-                    .findFirst().get();
-        List<Bloc> blocsRetour = new ArrayList<>();
-        this.getBlocs().forEach(bloc -> blocsRetour.add(bloc.copy()));
+    public Ligne copy() {
+        Optional<TypeLigne> oTypeLigneRetour = Stream.of(TypeLigne.values()).filter(typeLigne1 -> typeLigne1.equals(this.getTypeLigne()))
+                    .findFirst();
+        if(oTypeLigneRetour.isPresent()){
+            List<Bloc> blocsRetour = new ArrayList<>();
+            this.getBlocs().forEach(bloc -> blocsRetour.add(bloc.copy()));
 
-        return new Ligne(typeLigneRetour, blocsRetour);
+            return new Ligne(oTypeLigneRetour.get(), blocsRetour);
+        } else {
+            throw new ObectCopyException("This instance cannot be copied !");
+        }
     }
 
     private int indexOfBloc(Bloc bloc){

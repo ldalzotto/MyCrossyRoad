@@ -24,4 +24,19 @@ public class BlocTest {
         Assert.assertTrue(typeBloc.equals(TypeBloc.DECOR));
     }
 
+    @Test
+    public void copySuccess() throws Exception {
+        Bloc bloc = new Bloc(TypeBloc.DECOR, false);
+
+        Bloc bloc1 = bloc.copy();
+
+        Assert.assertTrue(bloc.hashCode() != bloc1.hashCode());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void copyFail() throws Exception {
+        Bloc bloc = new Bloc(null, false);
+        bloc.copy();
+    }
+
 }

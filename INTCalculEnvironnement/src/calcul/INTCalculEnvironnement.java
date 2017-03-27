@@ -41,7 +41,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     @Override
     public void initialisationEnvironnement() {
             IntStream.range(0, EnvironnementInit.values().length)
-                    .mapToObj(index -> EnvironnementInit.values()[index].get_ligne())
+                    .mapToObj(index -> EnvironnementInit.values()[index].getLigne())
                     .forEach(INTCalculEnvironnementUtil.ajoutLigne(environnement));
     }
 

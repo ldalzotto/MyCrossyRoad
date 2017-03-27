@@ -19,14 +19,14 @@ public enum EnvironnementInit {
     LIGNE_9(EnvironnementInitConfiguration.ligne_9),
     LIGNE_10(EnvironnementInitConfiguration.ligne_10);
 
-    private Ligne _ligne;
+    private Ligne ligne;
 
     EnvironnementInit(Ligne ligne){
-        _ligne = ligne;
+        this.ligne = ligne;
     }
 
-    public Ligne get_ligne(){
-        return _ligne;
+    public Ligne getLigne(){
+        return ligne;
     }
 
 
