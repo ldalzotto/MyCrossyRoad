@@ -1,10 +1,10 @@
 package com.my.crossy.road.screen;
 
-import INTEnvironnementManager.INTEnvironnementManager;
-import INTEnvironnementManager.exception.JoueurNonPlace;
-import INTEnvironnementManager.interfaceManger.IINTEnvironnementManager;
-import INTEnvironnementManager.modele.BlocAffichage;
-import INTEnvironnementManager.modele.LigneAffichage;
+import internal.environnement.manager.INTEnvironnementManager;
+import internal.environnement.manager.exception.JoueurNonPlace;
+import internal.environnement.manager.interfaceclass.manager.IINTEnvironnementManager;
+import internal.environnement.manager.modele.BlocAffichage;
+import internal.environnement.manager.modele.LigneAffichage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -229,15 +229,15 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         try {
             Float position = MainGameScreenUtil.getMaxBlocPosition(_entityList);
             LigneAffichage ligneAffichageCree = _intEnvironnementManager.creationLigne();
-            IntStream.range(0, ligneAffichageCree.get_blocList().size())
+            IntStream.range(0, ligneAffichageCree.getBlocList().size())
                     .forEach(value -> {
-                        BlocAffichage blocToCreate = ligneAffichageCree.get_blocList().get(value);
+                        BlocAffichage blocToCreate = ligneAffichageCree.getBlocList().get(value);
                         Entity entity = MainGameScreenUtil.generateEntity(blocToCreate);
 
                         float widthPlayerPosition = ((value+_playerMovementManager.getPlayerWidthIndex()) * Configuration.TAILLE_BLOC.get_valeur());
                         Vector3 entityPosition = new Vector3(widthPlayerPosition, 0, position);
 
-                        entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(ligneAffichageCree.get_typeLigne()),
+                        entity.sendMessage(Component.MESSAGE.INIT_GRAPHICS, _json.toJson(ligneAffichageCree.getTypeLigne()),
                                 _json.toJson(entityPosition), _json.toJson(size));
                         entity.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(entityPosition), _json.toJson(size));
                         entities.add(entity);

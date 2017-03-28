@@ -1,4 +1,4 @@
-package INTEnvironnementManager.mapper.interfaceMapper;
+package internal.environnement.manager.mapper.interfaceMapper;
 
 /**
  * Created by ldalzotto on 27/02/2017.

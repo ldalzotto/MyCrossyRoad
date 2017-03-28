@@ -1,12 +1,10 @@
 package com.my.crossy.road.screen.util;
 
-import INTEnvironnementManager.enumeration.TypeBlocAffichage;
-import INTEnvironnementManager.modele.BlocAffichage;
+import internal.environnement.manager.enumeration.TypeBlocAffichage;
+import internal.environnement.manager.modele.BlocAffichage;
 import com.my.crossy.road.entity.Entity;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by ldalzotto on 18/03/2017.

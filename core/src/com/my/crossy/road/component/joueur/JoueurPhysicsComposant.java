@@ -1,18 +1,12 @@
 package com.my.crossy.road.component.joueur;
 
-import INTEnvironnementManager.INTEnvironnementManager;
-import INTEnvironnementManager.interfaceManger.IINTEnvironnementManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
-import com.my.crossy.road.configuration.Configuration;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
-
-import java.util.List;
 
 /**
  * Created by ldalzotto on 26/02/2017.

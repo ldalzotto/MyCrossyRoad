@@ -1,7 +1,7 @@
 package com.my.crossy.road.screen.util;
 
-import INTEnvironnementManager.modele.BlocAffichage;
-import INTEnvironnementManager.modele.LigneAffichage;
+import internal.environnement.manager.modele.BlocAffichage;
+import internal.environnement.manager.modele.LigneAffichage;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.my.crossy.road.entity.Entity;
@@ -40,7 +40,7 @@ public class MainGameScreenUtil {
             mapIntFunction = value -> {
                 LigneAffichage currentLigneAffichage = ligneAffichages.get(value);
                 Map<TypeLigne, Integer> typeLigneAffichageLigneAffichageMap = new EnumMap<>(TypeLigne.class);
-                typeLigneAffichageLigneAffichageMap.put(currentLigneAffichage.get_typeLigne(), value);
+                typeLigneAffichageLigneAffichageMap.put(currentLigneAffichage.getTypeLigne(), value);
                 return typeLigneAffichageLigneAffichageMap;
             };
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class MainGameScreenUtil {
             //initialisation de la map
             Map<Integer, Map<LigneAffichage, TypeLigne>> mapIndexToLigneAffichageToTypeLigneAffichage = new HashMap<>();
             Map<LigneAffichage, TypeLigne> mapLigneAffichageToTypeLigneAffichage = new HashMap<>();
-            mapLigneAffichageToTypeLigneAffichage.put(ligneAffichages.get(indexValue), ligneAffichages.get(indexValue).get_typeLigne());
+            mapLigneAffichageToTypeLigneAffichage.put(ligneAffichages.get(indexValue), ligneAffichages.get(indexValue).getTypeLigne());
             mapIndexToLigneAffichageToTypeLigneAffichage.put(indexValue, mapLigneAffichageToTypeLigneAffichage);
             return mapIndexToLigneAffichageToTypeLigneAffichage;
         };
@@ -75,7 +75,7 @@ public class MainGameScreenUtil {
     {
         return indexValue -> {
             Table3D<Integer, LigneAffichage, TypeLigne> table3D = new Table3D<>();
-            table3D.put(indexValue, ligneAffichages.get(indexValue), ligneAffichages.get(indexValue).get_typeLigne());
+            table3D.put(indexValue, ligneAffichages.get(indexValue), ligneAffichages.get(indexValue).getTypeLigne());
             return table3D;
         };
     }
@@ -108,7 +108,7 @@ public class MainGameScreenUtil {
                                     mapInitialisation(ligneIndexToLigneAffichageToTypeLigneAffichageToPosition, index,
                                             ligneAffichage, typeLigneAffichage);
 
-                                    List<BlocAffichage> blocAffichages = ligneAffichage.get_blocList();
+                                    List<BlocAffichage> blocAffichages = ligneAffichage.getBlocList();
                                     IntStream.range(0, blocAffichages.size())
                                             .forEach(blocAffichagesIndex ->
                                                 updatePositions(size, ligneIndexToLigneAffichageToTypeLigneAffichageToPosition,

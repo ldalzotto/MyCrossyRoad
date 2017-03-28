@@ -31,7 +31,7 @@ public class Environnement {
      * @return la position du curseur où la ligne a été insérée
      * @throws LigneNonRenseignee si la ligne ne peut pas être insérée
      */
-    public int ajoutLigne(Ligne ligne) throws LigneNonRenseignee{
+    public int ajoutLigne(Ligne ligne) {
         if(ligne != null){
             if(lignesCurseur >= longueur){
                 lignesCurseur = 0;
@@ -55,7 +55,7 @@ public class Environnement {
      * @return dernière ligne créé
      * @throws EnvironnementLigneNonRenseignee si l'{@link Environnement} n'est pas correctement renseigné
      */
-    public Ligne getLigneActuelle() throws EnvironnementLigneNonRenseignee {
+    public Ligne getLigneActuelle(){
         if(lignesCurseur == 0){
             throw new EnvironnementLigneNonRenseignee("Le curseur de ligne est hors de la liste de ligne !", null);
         } else {
@@ -68,7 +68,7 @@ public class Environnement {
      * à lignesCurseur
      * @return Le stream de ligne ordonné
      */
-    public Stream<Ligne> getLignesDepuisCurseur() throws ConstructionLigneOrdonnee{
+    public Stream<Ligne> getLignesDepuisCurseur(){
         try {
             //dernière ligne renseignée
             Ligne curseurLigne = getLigneActuelle();

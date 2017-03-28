@@ -1,4 +1,4 @@
-package INTEnvironnementManager.exception;
+package internal.environnement.manager.exception;
 
 /**
  * Created by ldalzotto on 27/02/2017.

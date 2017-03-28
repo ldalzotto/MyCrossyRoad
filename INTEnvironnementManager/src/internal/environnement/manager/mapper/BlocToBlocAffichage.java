@@ -1,8 +1,8 @@
-package INTEnvironnementManager.mapper;
+package internal.environnement.manager.mapper;
 
-import INTEnvironnementManager.enumeration.TypeBlocAffichage;
-import INTEnvironnementManager.mapper.interfaceMapper.IConverter;
-import INTEnvironnementManager.modele.BlocAffichage;
+import internal.environnement.manager.enumeration.TypeBlocAffichage;
+import internal.environnement.manager.mapper.interfaceMapper.IConverter;
+import internal.environnement.manager.modele.BlocAffichage;
 import enumeration.TypeBloc;
 import modele.Bloc;
 
@@ -11,13 +11,13 @@ import modele.Bloc;
  */
 public class BlocToBlocAffichage implements IConverter<Bloc, BlocAffichage>{
 
-    private static BlocToBlocAffichage _instance = null;
+    private static BlocToBlocAffichage instance = null;
 
     public static BlocToBlocAffichage getInstance(){
-        if(_instance == null){
-            _instance = new BlocToBlocAffichage();
+        if(instance == null){
+            instance = new BlocToBlocAffichage();
         }
-        return _instance;
+        return instance;
     }
 
     @Override

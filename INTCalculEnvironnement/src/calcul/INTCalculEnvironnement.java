@@ -46,7 +46,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
     }
 
     @Override
-    public Ligne creationLigne() throws LigneNonCree{
+    public Ligne creationLigne() {
         int menace = ThreadLocalRandom.current().nextInt(0,2);
 
         //type de ligne
@@ -119,17 +119,15 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         //addition sur la valeur min
         if(minOuverture < minPositionOuverture){
             IntStream.range(minOuverture, minPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
-         } else if(minOuverture > minPositionOuverture &&
-                minOuverture-1 > minPositionOuverture){
-            IntStream.range(minPositionOuverture+1, minOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+         } else if(minOuverture > minPositionOuverture){
+            IntStream.range(minPositionOuverture, minOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
         //addition sur la valeur max
         if(maxOuverture < maxPositionOuverture){
              IntStream.range(maxOuverture, maxPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
-        } else if(maxOuverture > maxPositionOuverture &&
-             maxOuverture-1 > maxPositionOuverture){
-             IntStream.range(maxPositionOuverture+1, maxOuverture+1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+        } else if(maxOuverture > maxPositionOuverture){
+             IntStream.range(maxPositionOuverture, maxOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
     }
@@ -154,7 +152,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
         return nombreOuverture;
     }
 
-    private Ligne getLigneActuelle() throws LigneNonCree {
+    private Ligne getLigneActuelle(){
         try {
             return environnement.getLigneActuelle();
         } catch (EnvironnementLigneNonRenseignee environnementLigneNonRenseignee) {

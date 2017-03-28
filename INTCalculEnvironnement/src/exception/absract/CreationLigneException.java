@@ -3,7 +3,7 @@ package exception.absract;
 /**
  * Created by ldalzotto on 24/02/2017.
  */
-public abstract class CreationLigneException extends Exception {
+public abstract class CreationLigneException extends RuntimeException {
 
     public CreationLigneException(String message, Throwable cause){
         super(message, cause);

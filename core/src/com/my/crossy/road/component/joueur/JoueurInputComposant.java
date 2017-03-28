@@ -1,8 +1,5 @@
 package com.my.crossy.road.component.joueur;
 
-import INTEnvironnementManager.INTEnvironnementManager;
-import INTEnvironnementManager.exception.CreationLigne;
-import INTEnvironnementManager.interfaceManger.IINTEnvironnementManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;

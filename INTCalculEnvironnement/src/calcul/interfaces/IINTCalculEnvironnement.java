@@ -1,6 +1,5 @@
 package calcul.interfaces;
 
-import exception.LigneNonCree;
 import modele.Environnement;
 import modele.Ligne;
 
@@ -9,7 +8,7 @@ import modele.Ligne;
  */
 public interface IINTCalculEnvironnement {
     public void initialisationEnvironnement();
-    public Ligne creationLigne() throws LigneNonCree;
+    public Ligne creationLigne();
 
     /**
      * Permet de récupérer l'environnement actuel
