@@ -1,6 +1,5 @@
 package internal.environnement.manager.interfaceclass.manager;
 
-import internal.environnement.manager.exception.CreationLigne;
 import internal.environnement.manager.exception.EnvironnementNonAffichable;
 import internal.environnement.manager.exception.JoueurNonPlace;
 import internal.environnement.manager.modele.LigneAffichage;

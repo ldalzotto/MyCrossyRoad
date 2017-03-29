@@ -83,7 +83,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
             //relier la ligne à créer avec la précedente si nécessaire
             additionCheminEntreLigne(blocs, positionOuvertures, ouvertures);
-            //création des blocs
+            //création des blocs d'ouvertures
             creationChemin(blocs, positionOuvertures);
 
             //ajouter des blocs de collision invisible aux extrémités de la ligne
@@ -118,16 +118,16 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
 
         //addition sur la valeur min
         if(minOuverture < minPositionOuverture){
-            IntStream.range(minOuverture, minPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+            IntStream.range(minOuverture, minPositionOuverture + 1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
          } else if(minOuverture > minPositionOuverture){
-            IntStream.range(minPositionOuverture, minOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+            IntStream.range(minPositionOuverture, minOuverture + 1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
         //addition sur la valeur max
         if(maxOuverture < maxPositionOuverture){
-             IntStream.range(maxOuverture, maxPositionOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+             IntStream.range(maxOuverture, maxPositionOuverture + 1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         } else if(maxOuverture > maxPositionOuverture){
-             IntStream.range(maxPositionOuverture, maxOuverture).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
+             IntStream.range(maxPositionOuverture, maxOuverture + 1).forEach(value -> blocs.set(value, new Bloc(TypeBloc.DECOR, false)));
         }
 
     }
@@ -181,7 +181,7 @@ public class INTCalculEnvironnement implements IINTCalculEnvironnement {
      * @param etendue l'étendue permise pour la création d'ouverture, valeurs entre 0 et {@link Configuration} ENVIRONNEMENT_LARGEUR - 1
      * @return liste des position des cuvertures
      */
-    private List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) {
+    protected List<Integer> calculPositionOverturesSuivantes(int nombreOuverture, List<Integer> etendue) {
         List<Integer> positionOuvertures = new ArrayList<>();
 
         IntStream.range(0, nombreOuverture)
