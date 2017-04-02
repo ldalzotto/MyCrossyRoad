@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
+import com.my.crossy.road.component.util.MovePositionHandlerCreator;
 import com.my.crossy.road.configuration.Configuration;
 import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
@@ -25,6 +26,9 @@ public class GenericPhysicComposant extends PhysicsComponent {
 
     @Override
     public void receiveMessage(String message) {
+        if (message == null)
+            return;
+
         String[] messageReceived = message.split(Component.MESSAGE_TOKEN);
 
         if(messageReceived.length > 1){
@@ -43,37 +47,7 @@ public class GenericPhysicComposant extends PhysicsComponent {
                 //si le dernier mouvement est terminé
                 if(_movePositionHandler == null){
                     Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
-                    Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0,
-                            Configuration.ENVIRONNEMENT_SPEED.get_valeur());
-                    //récupération de la position actuelle
-                    Vector2 hitBoxPosition = _hitBox.getPosition(new Vector2());
-                    _endPositionMovement = new Vector3(hitBoxPosition.x, 0 , hitBoxPosition.y);
-                    switch (direction){
-                        case UP:
-                            _displacementVector = new Vector3(0,0, -Configuration.TAILLE_BLOC.get_valeur());
-                            _endPositionMovement.add(_displacementVector);
-                            break;
-                        case DOWN:
-                            _displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
-                            _endPositionMovement.add(_displacementVector);
-                            break;
-                        case LEFT:
-                            _displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(),0, 0);
-                            _endPositionMovement.add(_displacementVector);
-                            break;
-                        case RIGHT:
-                            _displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(),0, 0);
-                            _endPositionMovement.add(_displacementVector);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    //transformation en
-                    Vector2 initialHitbowPosition = _hitBox.getPosition(new Vector2());
-                    Vector3 initial3HitBoxPosition = new Vector3(initialHitbowPosition.x, 0 , initialHitbowPosition.y);
-                    _movePositionHandler = new MovePositionHandler(initial3HitBoxPosition,
-                            _endPositionMovement, speedVector);
+                    _movePositionHandler = MovePositionHandlerCreator.createHandler(direction, _hitBox);
                 }
             }  else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString())){
                 Float positionMin = _json.fromJson(Float.class, messageReceived[1]);

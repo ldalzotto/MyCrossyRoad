@@ -1,5 +1,7 @@
 package common.enumeration;
 
+import com.badlogic.gdx.graphics.Color;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,12 +12,13 @@ import java.util.function.BinaryOperator;
  */
 public enum  TypeLigne {
 
-    ROUTE(1),
-    EAU(1),
-    TRAIN(1),
-    ARBRE(0);
+    ROUTE(1, Color.GRAY),
+    EAU(1, Color.BLUE),
+    TRAIN(1, Color.RED),
+    ARBRE(0, Color.GREEN);
 
     private int menace;
+    private Color couleurCube;
 
     private static BinaryOperator<TypeLigne> randomTypeLigne = (typeLigne, typeLigne2) -> {
         int randomInt = ThreadLocalRandom.current().nextInt(0,2);
@@ -26,12 +29,17 @@ public enum  TypeLigne {
         }
     };
 
-    TypeLigne(int menace){
+    TypeLigne(int menace, Color color){
         this.menace = menace;
+        this.couleurCube = color;
     }
 
     public int getMenace() {
         return menace;
+    }
+
+    public Color getCouleurCube() {
+        return couleurCube;
     }
 
     public static TypeLigne getTypeAleatoire(final int menace){

@@ -1,13 +1,10 @@
 package internal.environnement.manager.mapper;
 
 import enumeration.TypeBloc;
-import internal.environnement.manager.enumeration.TypeBlocAffichage;
 import internal.environnement.manager.modele.BlocAffichage;
 import modele.Bloc;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by ldalzotto on 28/03/2017.

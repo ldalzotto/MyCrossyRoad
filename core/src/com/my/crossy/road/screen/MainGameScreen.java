@@ -1,7 +1,7 @@
 package com.my.crossy.road.screen;
 
 import internal.environnement.manager.INTEnvironnementManager;
-import internal.environnement.manager.exception.JoueurNonPlace;
+import internal.environnement.manager.exception.EnvironnementNonAffichable;
 import internal.environnement.manager.interfaceclass.manager.IINTEnvironnementManager;
 import internal.environnement.manager.modele.BlocAffichage;
 import internal.environnement.manager.modele.LigneAffichage;
@@ -183,8 +183,8 @@ public class MainGameScreen extends GlobalViewport implements Screen{
             joueur.sendMessage(Component.MESSAGE.INIT_HITBOX, _json.toJson(new Vector3(positionJoueur*Configuration.TAILLE_JOUEUR.get_valeur(),
                     Configuration.TAILLE_JOUEUR.get_valeur(),0)), _json.toJson(Configuration.TAILLE_JOUEUR.get_valeur()));
             _joueur = joueur;
-        } catch (JoueurNonPlace joueurNonPlace) {
-            joueurNonPlace.printStackTrace();
+        } catch (EnvironnementNonAffichable environnementNonAffichable) {
+            environnementNonAffichable.printStackTrace();
         }
     }
 

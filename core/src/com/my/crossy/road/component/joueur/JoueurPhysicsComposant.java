@@ -23,6 +23,9 @@ public class JoueurPhysicsComposant extends PhysicsComponent {
 
     @Override
     public void receiveMessage(String message) {
+        if (message == null)
+            return;
+
         String[] messageReceived = message.split(Component.MESSAGE_TOKEN);
         if(messageReceived.length > 1){
             if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){

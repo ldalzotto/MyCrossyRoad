@@ -1,7 +1,6 @@
 package internal.environnement.manager.mapper;
 
 import internal.environnement.manager.enumeration.TypeBlocAffichage;
-import internal.environnement.manager.mapper.interfaceMapper.IConverter;
 import internal.environnement.manager.modele.BlocAffichage;
 import enumeration.TypeBloc;
 import modele.Bloc;

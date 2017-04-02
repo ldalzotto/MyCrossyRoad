@@ -28,6 +28,9 @@ public class JoueurGraphiqueComposant extends GraphicsComponent {
 
     @Override
     public void receiveMessage(String message) {
+        if (message == null)
+            return;
+
         String[] messageReceived = message.split(Component.MESSAGE_TOKEN);
 
         if(messageReceived.length > 1){
