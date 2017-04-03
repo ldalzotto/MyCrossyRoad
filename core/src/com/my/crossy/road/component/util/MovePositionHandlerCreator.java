@@ -25,11 +25,33 @@ public class MovePositionHandlerCreator {
      */
     public static MovePositionHandler createHandler(Direction direction, ModelInstance model3D) {
         Vector3 endPositionMovement;
-        Vector3 displacementVector;
         //récupération de la position actuelle
         endPositionMovement = model3D.transform.getTranslation(new Vector3());
         Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0 ,
                 Configuration.ENVIRONNEMENT_SPEED.get_valeur());
+        initializeEndPositionMovementVector(direction, endPositionMovement);
+
+        return new MovePositionHandler(model3D.transform.getTranslation(new Vector3()),
+                endPositionMovement, speedVector);
+    }
+
+    public static MovePositionHandler createHandler(Direction direction, Rectangle rectangle) {
+        Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0,
+                Configuration.ENVIRONNEMENT_SPEED.get_valeur());
+        //récupération de la position actuelle
+        Vector2 hitBoxPosition = rectangle.getPosition(new Vector2());
+        Vector3 endPositionMovement = new Vector3(hitBoxPosition.x, 0 , hitBoxPosition.y);
+        initializeEndPositionMovementVector(direction, endPositionMovement);
+
+        //transformation en
+        Vector2 initialHitbowPosition = rectangle.getPosition(new Vector2());
+        Vector3 initial3HitBoxPosition = new Vector3(initialHitbowPosition.x, 0 , initialHitbowPosition.y);
+        return new MovePositionHandler(initial3HitBoxPosition,
+                endPositionMovement, speedVector);
+    }
+
+    private static void initializeEndPositionMovementVector(Direction direction, Vector3 endPositionMovement) {
+        Vector3 displacementVector;
         switch (direction){
             case UP:
                 displacementVector = new Vector3(0, 0,-Configuration.TAILLE_BLOC.get_valeur());
@@ -50,45 +72,6 @@ public class MovePositionHandlerCreator {
             default:
                 break;
         }
-
-        return new MovePositionHandler(model3D.transform.getTranslation(new Vector3()),
-                endPositionMovement, speedVector);
     }
-
-    public static MovePositionHandler createHandler(Direction direction, Rectangle rectangle) {
-        Vector3 speedVector = new Vector3(Configuration.ENVIRONNEMENT_SPEED.get_valeur(), 0,
-                Configuration.ENVIRONNEMENT_SPEED.get_valeur());
-        //récupération de la position actuelle
-        Vector2 hitBoxPosition = rectangle.getPosition(new Vector2());
-        Vector3 displacementVector;
-        Vector3 endPositionMovement = new Vector3(hitBoxPosition.x, 0 , hitBoxPosition.y);
-        switch (direction){
-            case UP:
-                displacementVector = new Vector3(0,0, -Configuration.TAILLE_BLOC.get_valeur());
-                endPositionMovement.add(displacementVector);
-                break;
-            case DOWN:
-                displacementVector = new Vector3(0, 0, Configuration.TAILLE_BLOC.get_valeur());
-                endPositionMovement.add(displacementVector);
-                break;
-            case LEFT:
-                displacementVector = new Vector3(-Configuration.TAILLE_BLOC.get_valeur(),0, 0);
-                endPositionMovement.add(displacementVector);
-                break;
-            case RIGHT:
-                displacementVector = new Vector3(Configuration.TAILLE_BLOC.get_valeur(),0, 0);
-                endPositionMovement.add(displacementVector);
-                break;
-            default:
-                break;
-        }
-
-        //transformation en
-        Vector2 initialHitbowPosition = rectangle.getPosition(new Vector2());
-        Vector3 initial3HitBoxPosition = new Vector3(initialHitbowPosition.x, 0 , initialHitbowPosition.y);
-        return new MovePositionHandler(initial3HitBoxPosition,
-                endPositionMovement, speedVector);
-    }
-
 
 }

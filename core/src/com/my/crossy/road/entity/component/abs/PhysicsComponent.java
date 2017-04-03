@@ -17,7 +17,7 @@ public abstract class PhysicsComponent implements Component {
     public abstract void update(Entity entity, float delta);
 
     public Boolean isInCollitionWith(Entity entity){
-        return entity.get_physicsComponent()
+        return entity.getPhysicsComponent()
                 .getHitbox().overlaps(_hitBox);
     }
 

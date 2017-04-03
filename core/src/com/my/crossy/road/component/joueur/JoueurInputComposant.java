@@ -18,16 +18,16 @@ public class JoueurInputComposant extends InputComponent {
             if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
                 //l'entité est en train de se déplacer
                 entity.isMoving();
-                entity.set_direction(Direction.UP);
+                entity.setDirection(Direction.UP);
             } else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
                 entity.isMoving();
-                entity.set_direction(Direction.DOWN);
+                entity.setDirection(Direction.DOWN);
             } else if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 entity.isMoving();
-                entity.set_direction(Direction.LEFT);
+                entity.setDirection(Direction.LEFT);
             } else if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
                 entity.isMoving();
-                entity.set_direction(Direction.RIGHT);
+                entity.setDirection(Direction.RIGHT);
             }
     }
 

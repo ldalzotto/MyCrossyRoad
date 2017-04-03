@@ -11,7 +11,6 @@ import com.my.crossy.road.constants.enumeration.Direction;
 import com.my.crossy.road.entity.Entity;
 import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
-import com.my.crossy.road.screen.util.MovePositionHandler;
 
 /**
  * Created by ldalzotto on 27/02/2017.
@@ -19,10 +18,7 @@ import com.my.crossy.road.screen.util.MovePositionHandler;
 public class GenericPhysicComposant extends PhysicsComponent {
 
     private static final String TAG = GenericPhysicComposant.class.getSimpleName();
-    private Json _json = new Json();
-
-    private Vector3 _endPositionMovement = null;
-    private Vector3 _displacementVector = null;
+    private Json json = new Json();
 
     @Override
     public void receiveMessage(String message) {
@@ -33,27 +29,18 @@ public class GenericPhysicComposant extends PhysicsComponent {
 
         if(messageReceived.length > 1){
             if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){
-                Vector3 vector3 = _json.fromJson(Vector3.class, messageReceived[1]);
-                Float size = _json.fromJson(Float.class, messageReceived[2]);
-                //Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_HITBOX.toString() + " reveived with " +
-                  //      "vector3" + vector3.toString() + ", size" + size);
+                Vector3 vector3 = json.fromJson(Vector3.class, messageReceived[1]);
+                Float size = json.fromJson(Float.class, messageReceived[2]);
                 _hitBox = new Rectangle(vector3.x, vector3.z, size, size);
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
-                Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
-                //Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
-                  //      ", direction : " + direction.toString());
-
+                Direction direction = json.fromJson(Direction.class, messageReceived[2]);
                 //si le dernier mouvement est terminé
                 if(_movePositionHandler == null){
                     Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
                     _movePositionHandler = MovePositionHandlerCreator.createHandler(direction, _hitBox);
                 }
             }  else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString())){
-                Float positionMin = _json.fromJson(Float.class, messageReceived[1]);
-                Direction direction = _json.fromJson(Direction.class, messageReceived[2]);
-                //Gdx.app.debug(TAG, "Message " + MESSAGE.ENVIRONNEMENT_MOVE.toString() + " reveived with positionMin : " + positionMin +
-                  //      ", direction : " + direction.toString());
+                Direction direction = json.fromJson(Direction.class, messageReceived[2]);
 
                 Vector2 position = _hitBox.getPosition(new Vector2());
                 switch (direction){

@@ -68,7 +68,7 @@ public class GraphicsShaderSphereComponent extends GraphicsComponent {
     }
 
     @Override
-    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
+    public void update(Entity entity, ModelBatch batch, Camera camera, float delta) {
         batch.begin(camera);
         _shader.begin(camera, _renderContext);
         batch.render(_cubeInstance, _shader);

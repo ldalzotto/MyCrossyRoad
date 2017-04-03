@@ -42,7 +42,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
     @Override
     public Boolean isAbleToCreateNewBlocs(List<Entity> blocs, Entity joueur) {
 
-        Vector2 positionJoueur = joueur.get_physicsComponent().getHitbox().getPosition(new Vector2());
+        Vector2 positionJoueur = joueur.getPhysicsComponent().getHitbox().getPosition(new Vector2());
 
         //récupération de la valeur max
         Float maxPosition = null;
@@ -56,7 +56,7 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         }
 
         Optional<Rectangle> minRectangle = blocs.stream()
-                .map(Entity::get_physicsComponent)
+                .map(Entity::getPhysicsComponent)
                 .filter(Objects::nonNull)
                 .map(PhysicsComponent::getHitbox)
                 .filter(Objects::nonNull)

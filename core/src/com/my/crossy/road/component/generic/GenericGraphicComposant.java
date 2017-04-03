@@ -53,7 +53,7 @@ public class GenericGraphicComposant extends GraphicsComponent {
     }
 
     @Override
-    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
+    public void update(Entity entity, ModelBatch batch, Camera camera, float delta) {
 
         if(movePositionHandler != null){
             entity.isMoving();
@@ -69,10 +69,10 @@ public class GenericGraphicComposant extends GraphicsComponent {
 
         Vector3 position = model3D.transform.getTranslation(new Vector3());
         if (position.z < Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()){
-            entity.set_isDetroyable();
+            entity.setIsDetroyable();
         }
 
-        entity.set_position(position);
+        entity.setPosition(position);
 
     }
 }

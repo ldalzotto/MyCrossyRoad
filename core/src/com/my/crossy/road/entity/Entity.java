@@ -1,7 +1,6 @@
 package com.my.crossy.road.entity;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.my.crossy.road.constants.enumeration.Direction;
@@ -9,13 +8,10 @@ import com.my.crossy.road.entity.component.Component;
 import com.my.crossy.road.entity.component.abs.GraphicsComponent;
 import com.my.crossy.road.entity.component.abs.InputComponent;
 import com.my.crossy.road.entity.component.abs.PhysicsComponent;
-import com.my.crossy.road.screen.util.MovePositionHandler;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Created by ldalzotto on 12/11/2016.
@@ -29,109 +25,111 @@ public class Entity {
         BLOC_OBSTACLE_INVISIBLE;
     }
 
-    protected Vector3 _position;
-    protected Boolean _isMoving = false;
-    protected Direction _direction = null;
-    protected Boolean _isDetroyable = false;
+    protected Vector3 position;
+    protected Boolean isMoving = false;
+    protected Direction direction = null;
+    protected Boolean isDetroyable = false;
 
-    private InputComponent _inputComponent;
-    private GraphicsComponent _graphicsComponent;
-    private PhysicsComponent _physicsComponent;
+    private InputComponent inputComponent;
+    private GraphicsComponent graphicsComponent;
+    private PhysicsComponent physicsComponent;
 
-    private List<Component> _componentList;
+    private List<Component> componentList;
 
     public Entity(InputComponent inputComponent, GraphicsComponent graphicsComponent, PhysicsComponent physicsComponent
                   ){
 
-        _componentList = new ArrayList<>();
+        componentList = new ArrayList<>();
 
-        _inputComponent = inputComponent;
-        _graphicsComponent = graphicsComponent;
-        _physicsComponent = physicsComponent;
+        this.inputComponent = inputComponent;
+        this.graphicsComponent = graphicsComponent;
+        this.physicsComponent = physicsComponent;
 
-        if(_inputComponent != null){
-            _componentList.add(_inputComponent);
+        if(this.inputComponent != null){
+            componentList.add(this.inputComponent);
         }
-        if(_graphicsComponent != null){
-            _componentList.add(_graphicsComponent);
+        if(this.graphicsComponent != null){
+            componentList.add(this.graphicsComponent);
         }
-        if(_physicsComponent != null){
-            _componentList.add(_physicsComponent);
+        if(this.physicsComponent != null){
+            componentList.add(this.physicsComponent);
         }
     }
 
-    public void update(ModelBatch batch, Camera camera, Environment environment, float delta){
-        if(_inputComponent != null){
-            _inputComponent.update(this, camera, delta);
+    public void update(ModelBatch batch, Camera camera, float delta){
+        if(inputComponent != null){
+            inputComponent.update(this, camera, delta);
         }
-        if(_graphicsComponent != null){
-            _graphicsComponent.update(this, batch, camera, environment, delta);
+        if(graphicsComponent != null){
+            graphicsComponent.update(this, batch, camera, delta);
         }
-        if(_physicsComponent != null){
-            _physicsComponent.update(this, delta);
+        if(physicsComponent != null){
+            physicsComponent.update(this, delta);
         }
 
     }
     
     public void sendMessage(Component.MESSAGE messageType, String... args){
 
-        String fullMessage = messageType.toString();
+        StringBuilder fullMessage = new StringBuilder();
+        fullMessage.append(messageType.toString());
 
         for(String string :
                 args){
-            fullMessage += Component.MESSAGE_TOKEN + string;
+            fullMessage.append(Component.MESSAGE_TOKEN);
+            fullMessage.append(string);
         }
 
         for (Component component :
-                _componentList) {
-            component.receiveMessage(fullMessage);
+                componentList) {
+            component.receiveMessage(fullMessage.toString());
         }
     }
 
-    public Vector3 get_position() {
-        return _position;
+    public Vector3 getPosition() {
+        return position;
     }
 
-    public void set_position(Vector3 _position) {
-        this._position = _position;
+    public void setPosition(Vector3 position) {
+        this.position = position;
     }
 
     /**
      * Permet de dire que l'entité est en train de se déplacer
      */
     public void isMoving(){
-        _isMoving = true;
+        isMoving = true;
     }
 
     public void hasMoved(){
-        _isMoving = false;
+        isMoving = false;
     }
 
     /**
      * Permet de dire si l'entité est en train de se déplacer ou pas
      * @return booleen
      */
-    public Boolean get_isMoving(){
-        return _isMoving;
+    public Boolean getIsMoving(){
+        return isMoving;
     }
 
-    public void set_isDetroyable(){
-        _isDetroyable = true;
+    public void setIsDetroyable(){
+        isDetroyable = true;
     }
 
-    public Boolean get_isDetroyable(){
-        return _isDetroyable;
+    public Boolean getIsDetroyable(){
+        return isDetroyable;
     }
 
-    public PhysicsComponent get_physicsComponent() {
-        return _physicsComponent;
+    public PhysicsComponent getPhysicsComponent() {
+        return physicsComponent;
     }
 
-    public Direction get_direction() {
-        return _direction;
+    public Direction getDirection() {
+        return direction;
     }
 
-    public void set_direction(Direction _direction) {
-        this._direction = _direction;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

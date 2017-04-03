@@ -100,14 +100,14 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         Gdx.gl.glViewport(0, 0, (int)VIEWPORT.viewportWidth, (int)VIEWPORT.viewportHeight);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        _entityList.forEach(entity -> entity.update(_batch, _camera, _environment, delta));
-        _joueur.update(_batch, _camera, _environment, delta);
+        _entityList.forEach(entity -> entity.update(_batch, _camera, delta));
+        _joueur.update(_batch, _camera, delta);
 
         //on vérifie si le joueur a effectué un mouvement
-        if(_joueur.get_isMoving()){
+        if(_joueur.getIsMoving()){
 
             //si les composants de l'environnement ne bougent pas
-            if(!_entityList.stream().findFirst().get().get_isMoving()) {
+            if(!_entityList.stream().findFirst().get().getIsMoving()) {
 
                 List<Entity> entityToCompare = _entityList.stream().collect(Collectors.toList());
 
@@ -118,11 +118,11 @@ public class MainGameScreen extends GlobalViewport implements Screen{
                  */
                 entityToCompare.forEach(entity1 ->
                         entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                                _json.toJson(_joueur.get_direction())));
+                                _json.toJson(_joueur.getDirection())));
                 Boolean isCollision = MainGameScreenUtil.checkCollision(_joueur, entityToCompare);
                 entityToCompare.forEach(entity1 ->
                         entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                                _json.toJson(Direction.getOpposite(_joueur.get_direction()))));
+                                _json.toJson(Direction.getOpposite(_joueur.getDirection()))));
                 if(!isCollision) {
                     //si le déplacement est accepté (pas de collision)
                     executeMove();
@@ -136,7 +136,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
         }
 
         //Entity garbage collector
-        List<Entity> entitiesToDestroy = _entityList.stream().filter(Entity::get_isDetroyable).collect(Collectors.toList());
+        List<Entity> entitiesToDestroy = _entityList.stream().filter(Entity::getIsDetroyable).collect(Collectors.toList());
         entitiesToDestroy.forEach(_entityList::remove);
     }
 
@@ -147,10 +147,10 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private void executeMove() {
         //le déplacement est accepté
         //mise à jour de l'index width du joueur
-        _playerMovementManager.updatePlayerWidthIndex(_joueur.get_direction());
+        _playerMovementManager.updatePlayerWidthIndex(_joueur.getDirection());
         _entityList.forEach(entity1 ->
                 entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_MOVE, _json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
-                        _json.toJson(_joueur.get_direction())));
+                        _json.toJson(_joueur.getDirection())));
         List<Entity> entityToCreate = createNewBlocsIfAvailable();
         _entityList.addAll(entityToCreate);
     }
@@ -158,7 +158,7 @@ public class MainGameScreen extends GlobalViewport implements Screen{
     private List<Entity> createNewBlocsIfAvailable() {
         List<Entity> entities = new ArrayList<>();
         try {
-            if(_joueur.get_direction().equals(Direction.UP) && _playerMovementManager.isAbleToCreateNewBlocs(_entityList, _joueur)){
+            if(_joueur.getDirection().equals(Direction.UP) && _playerMovementManager.isAbleToCreateNewBlocs(_entityList, _joueur)){
                 entities = createBlocsToLastPosition(Configuration.TAILLE_BLOC.get_valeur());
             }
             return entities;

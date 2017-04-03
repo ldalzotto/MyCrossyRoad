@@ -197,7 +197,7 @@ public class MainGameScreenUtil {
      */
     public static Boolean checkCollision(Entity entityATester, List<Entity> listeEntiteAComparer){
         return listeEntiteAComparer.stream()
-                .map(Entity::get_physicsComponent)
+                .map(Entity::getPhysicsComponent)
                 .filter(Objects::nonNull)
                 .map(physicsComponent -> physicsComponent.isInCollitionWith(entityATester))
                 .filter(aBoolean -> aBoolean)
@@ -213,15 +213,15 @@ public class MainGameScreenUtil {
      */
     public static Float getMaxBlocPosition(List<Entity> listeBloc) throws MaxPositionNonDeterminee{
         Optional<Float> position =listeBloc.stream()
-                .filter(entity -> entity.get_position() != null)
+                .filter(entity -> entity.getPosition() != null)
                 .max((o1, o2) -> {
-                    Float value = o1.get_position().z - o2.get_position().z;
+                    Float value = o1.getPosition().z - o2.getPosition().z;
                     if(value >= 0){
                         return 1;
                     }else{
                         return -1;
                     }
-                }).map(entity -> entity.get_position().z);
+                }).map(entity -> entity.getPosition().z);
         if(position.isPresent()){
             return position.get();
         } else {

@@ -46,7 +46,7 @@ public class SkyGraphicsComponent extends GraphicsComponent {
     }
 
     @Override
-    public void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta) {
+    public void update(Entity entity, ModelBatch batch, Camera camera, float delta) {
         batch.begin(camera);
         batch.render(_cubeInstance);
         batch.end();

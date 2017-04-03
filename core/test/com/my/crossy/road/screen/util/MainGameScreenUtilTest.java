@@ -16,7 +16,7 @@ public class MainGameScreenUtilTest {
         Entity entity = MainGameScreenUtil.generateEntity(blocAffichage);
 
         Assert.assertTrue(entity != null);
-        Assert.assertTrue(entity.get_physicsComponent() == null);
+        Assert.assertTrue(entity.getPhysicsComponent() == null);
 
         Assert.assertTrue(true);
     }

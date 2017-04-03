@@ -17,7 +17,7 @@ public abstract class GraphicsComponent implements Component {
     protected MovePositionHandler movePositionHandler = null;
     protected ModelInstance model3D = null;
 
-    public abstract void update(Entity entity, ModelBatch batch, Camera camera, Environment environment, float delta);
+    public abstract void update(Entity entity, ModelBatch batch, Camera camera, float delta);
 
     public ModelInstance getModel3D() {
         return model3D;
