@@ -33,7 +33,7 @@ public class JoueurInputComposant extends InputComponent {
 
     @Override
     public void receiveMessage(String message) {
-
+        //no need to update. Only one direction at a time
     }
 
 }

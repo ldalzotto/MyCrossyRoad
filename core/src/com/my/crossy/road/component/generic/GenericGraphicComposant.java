@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
-import com.my.crossy.road.assetManager.ModelManager;
+import com.my.crossy.road.asset.manager.ModelManager;
 import com.my.crossy.road.component.util.MovePositionHandlerCreator;
 import com.my.crossy.road.configuration.Configuration;
 import com.my.crossy.road.constants.enumeration.Direction;

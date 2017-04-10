@@ -11,18 +11,21 @@ import com.my.crossy.road.screen.util.MovePositionHandler;
  */
 public abstract class PhysicsComponent implements Component {
 
-    protected Rectangle _hitBox;
-    protected MovePositionHandler _movePositionHandler = null;
+    protected Rectangle hitBox;
+    protected MovePositionHandler movePositionHandler = null;
 
     public abstract void update(Entity entity, float delta);
 
     public Boolean isInCollitionWith(Entity entity){
         return entity.getPhysicsComponent()
-                .getHitbox().overlaps(_hitBox);
+                .getHitbox().overlaps(hitBox);
     }
 
     public Rectangle getHitbox(){
-        return _hitBox;
+        return hitBox;
     }
 
+    public MovePositionHandler getMovePositionHandler() {
+        return movePositionHandler;
+    }
 }

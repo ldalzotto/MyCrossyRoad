@@ -12,7 +12,7 @@ import com.my.crossy.road.component.joueur.JoueurPhysicsComposant;
  */
 public class EntityFactory {
 
-    private EntityFactory(){
+    EntityFactory(){
         throw new InstantiationError("This class cannot be instantiated !");
     }
 
@@ -31,8 +31,6 @@ public class EntityFactory {
                 break;
             case BLOC_OBSTACLE_INVISIBLE:
                 entity = new Entity(null, null, new GenericPhysicComposant());
-                break;
-            default:
                 break;
         }
 

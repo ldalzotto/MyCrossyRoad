@@ -1,5 +1,7 @@
 package com.my.crossy.road.screen.util;
 
+import com.my.crossy.road.configuration.Configuration;
+import com.my.crossy.road.constants.enumeration.Direction;
 import internal.environnement.manager.modele.BlocAffichage;
 import internal.environnement.manager.modele.LigneAffichage;
 import com.badlogic.gdx.math.Vector3;
@@ -222,12 +224,19 @@ public class MainGameScreenUtil {
                         return -1;
                     }
                 }).map(entity -> entity.getPosition().z);
-        if(position.isPresent()){
-            return position.get();
-        } else {
-            throw new MaxPositionNonDeterminee("La position maximale des entités n'a pas pu être déterminé", null);
-        }
+        return position.orElseThrow(() ->
+                new MaxPositionNonDeterminee("La position maximale des entités n'a pas pu être déterminé", null));
     }
 
+    public static Boolean chekCollisionWithFutureMove(List<Entity> entityToCompare, Json json, Entity entityThatMove) {
+        entityToCompare.forEach(entity1 ->
+                entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                        json.toJson(entityThatMove.getDirection())));
+        Boolean isCollision = MainGameScreenUtil.checkCollision(entityThatMove, entityToCompare);
+        entityToCompare.forEach(entity1 ->
+                entity1.sendMessage(Component.MESSAGE.ENVIRONNEMENT_FUTURE_MOVE, json.toJson(Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()),
+                        json.toJson(Direction.getOpposite(entityThatMove.getDirection()))));
+        return isCollision;
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.my.crossy.road.assetManager;
+package com.my.crossy.road.asset.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector3;
 
 import java.util.List;
 
@@ -21,17 +19,17 @@ public class ModelManager extends AssetManager {
 
     private static final String TAG = ModelManager.class.getSimpleName();
 
-    private static ModelManager _instance = null;
+    private static ModelManager instance = null;
 
     private ModelManager(){
         super();
     }
 
     public static ModelManager getInstance(){
-        if(_instance == null){
-            _instance = new ModelManager();
+        if(instance == null){
+            instance = new ModelManager();
         }
-        return _instance;
+        return instance;
     }
 
     public void loadModels(List<String> path){
@@ -40,12 +38,6 @@ public class ModelManager extends AssetManager {
             this.load(pathString, Model.class);
         });
         finishLoading();
-    }
-
-    public ModelInstance createInstance(String path, Vector3 position){
-        Model model = this.get(path, Model.class);
-        ModelInstance instance = new ModelInstance(model, position);
-        return instance;
     }
 
     public ModelInstance getCubeFromColor(Color color, Float taille){

@@ -23,20 +23,20 @@ public class PlayerMovementManager implements IPlayerMovementManager {
 
     private static final String TAG = PlayerMovementManager.class.getSimpleName();
 
-    private static PlayerMovementManager _instance = null;
+    private static PlayerMovementManager instance = null;
 
-    private Float _lastMaxBlocPosition = null;
+    private Float lastMaxBlocPosition = null;
 
     /**
      * Le nombre de bloc de largeur décalé par le joueur
      */
-    private Integer _playerBlocWidthIndex = 0;
+    private Integer playerBlocWidthIndex = 0;
 
-    public static PlayerMovementManager get_instance(){
-        if(_instance == null){
-            _instance = new PlayerMovementManager();
+    public static PlayerMovementManager getInstance(){
+        if(instance == null){
+            instance = new PlayerMovementManager();
         }
-        return _instance;
+        return instance;
     }
 
     @Override
@@ -49,10 +49,12 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         try {
             maxPosition = MainGameScreenUtil.getMaxBlocPosition(blocs);
         } catch (MaxPositionNonDeterminee maxPositionNonDeterminee) {
-            Gdx.app.debug(TAG, maxPositionNonDeterminee.getMessage());
+            Gdx.app.debug(TAG, maxPositionNonDeterminee.getMessage(), maxPositionNonDeterminee);
+            return false;
         }
-        if(_lastMaxBlocPosition == null){
-            _lastMaxBlocPosition = maxPosition;
+
+        if(lastMaxBlocPosition == null){
+            lastMaxBlocPosition = maxPosition;
         }
 
         Optional<Rectangle> minRectangle = blocs.stream()
@@ -80,13 +82,13 @@ public class PlayerMovementManager implements IPlayerMovementManager {
         }
 
         //vérification si la position max actuelle est supérieur à celle du dernier mouvement éligible
-        if(maxPosition > _lastMaxBlocPosition){
+        if(maxPosition > lastMaxBlocPosition){
             isElligibleToCreate = false;
         }
 
         if(isElligibleToCreate){
             Gdx.app.debug(TAG, "Création de blocs pour ce mouvement.");
-            _lastMaxBlocPosition = maxPosition;
+            lastMaxBlocPosition = maxPosition;
         }
 
         return isElligibleToCreate;
@@ -95,15 +97,15 @@ public class PlayerMovementManager implements IPlayerMovementManager {
     @Override
     public void updatePlayerWidthIndex(Direction direction){
         if(direction.equals(Direction.LEFT)){
-            _playerBlocWidthIndex--;
+            playerBlocWidthIndex--;
         } else if(direction.equals(Direction.RIGHT)){
-            _playerBlocWidthIndex++;
+            playerBlocWidthIndex++;
         }
     }
 
     @Override
     public Integer getPlayerWidthIndex(){
-        return _playerBlocWidthIndex;
+        return playerBlocWidthIndex;
     }
 
     private Comparator<Rectangle> minRectangleCompoarator() {

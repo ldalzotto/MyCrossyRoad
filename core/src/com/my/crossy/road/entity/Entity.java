@@ -132,4 +132,8 @@ public class Entity {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
+    public GraphicsComponent getGraphicsComponent() {
+        return graphicsComponent;
+    }
 }

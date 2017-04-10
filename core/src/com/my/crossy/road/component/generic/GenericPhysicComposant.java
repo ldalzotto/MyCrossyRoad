@@ -31,18 +31,18 @@ public class GenericPhysicComposant extends PhysicsComponent {
             if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){
                 Vector3 vector3 = json.fromJson(Vector3.class, messageReceived[1]);
                 Float size = json.fromJson(Float.class, messageReceived[2]);
-                _hitBox = new Rectangle(vector3.x, vector3.z, size, size);
+                hitBox = new Rectangle(vector3.x, vector3.z, size, size);
             } else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_MOVE.toString())){
                 Direction direction = json.fromJson(Direction.class, messageReceived[2]);
                 //si le dernier mouvement est terminé
-                if(_movePositionHandler == null){
+                if(movePositionHandler == null){
                     Gdx.app.debug(TAG, "The last movement is terminated, start another one.");
-                    _movePositionHandler = MovePositionHandlerCreator.createHandler(direction, _hitBox);
+                    movePositionHandler = MovePositionHandlerCreator.createHandler(direction, hitBox);
                 }
             }  else if(messageReceived[0].equalsIgnoreCase(MESSAGE.ENVIRONNEMENT_FUTURE_MOVE.toString())){
                 Direction direction = json.fromJson(Direction.class, messageReceived[2]);
 
-                Vector2 position = _hitBox.getPosition(new Vector2());
+                Vector2 position = hitBox.getPosition(new Vector2());
                 switch (direction){
                     case UP:
                         position.add(0, -Configuration.TAILLE_BLOC.get_valeur()/2);
@@ -56,11 +56,9 @@ public class GenericPhysicComposant extends PhysicsComponent {
                     case RIGHT:
                         position.add(Configuration.TAILLE_BLOC.get_valeur()/2, 0);
                         break;
-                    default:
-                        break;
                 }
 
-                _hitBox.setPosition(position);
+                hitBox.setPosition(position);
             }
         }
     }
@@ -69,13 +67,21 @@ public class GenericPhysicComposant extends PhysicsComponent {
     @Override
     public void update(Entity entity, float delta) {
 
-        if(_movePositionHandler != null){
+        if(movePositionHandler != null){
             entity.isMoving();
-            Vector3 actualPosition = _movePositionHandler.updatePosition(delta);
-            _hitBox.setPosition(actualPosition.x, actualPosition.z);
-            _movePositionHandler = _movePositionHandler.reEvaluate();
+            Vector3 actualPosition = movePositionHandler.updatePosition(delta);
+            hitBox.setPosition(actualPosition.x, actualPosition.z);
+            movePositionHandler = movePositionHandler.reEvaluate();
         } else {
             entity.hasMoved();
+        }
+
+        Vector2 position = hitBox.getPosition(new Vector2());
+        Vector3 entityPosition = new Vector3(position.x, 0f, position.y);
+        entity.setPosition(entityPosition);
+
+        if(position.y < Configuration.POSITION_MIN_ENVIRONNEMENT.get_valeur()){
+            entity.setIsDetroyable();
         }
 
     }

@@ -2,76 +2,47 @@ package com.my.crossy.road.screen.util;
 
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by ldalzotto on 13/03/2017.
  */
 public class MovePositionHandler {
 
-    private Vector3 _initialPosition;
-    private Vector3 _finalPosition;
-    private Vector3 _speed;
+    private Vector3 initialPosition;
+    private Vector3 finalPosition;
+    private Vector3 speed;
 
-    private List<Boolean> _diffPositionIncrease = Arrays.asList(false, false, false);
+    private Vector3 currentPosition;
 
-    private Vector3 _currentPosition;
+    private Float lastDistance;
 
-    private Float _maxDistance;
-    private Float _lastDistance;
+    private Vector3 directionVector;
 
-    private Vector3 _directionVector;
-
-    private Boolean _isRuning;
+    private Boolean isRuning;
 
     public MovePositionHandler(Vector3 initialPosition, Vector3 finalPosition, Vector3 speed){
-        _initialPosition = initialPosition.cpy();
-        _currentPosition = initialPosition.cpy();
-        _finalPosition = finalPosition;
-        _speed = speed;
+        this.initialPosition = initialPosition.cpy();
+        currentPosition = initialPosition.cpy();
+        this.finalPosition = finalPosition;
+        this.speed = speed;
 
-        _directionVector = new Vector3(_finalPosition.x - _initialPosition.x,
-                _finalPosition.y - _initialPosition.y,
-                _finalPosition.z - _initialPosition.z);
-        _directionVector.nor();
+        directionVector = new Vector3(this.finalPosition.x - this.initialPosition.x,
+                this.finalPosition.y - this.initialPosition.y,
+                this.finalPosition.z - this.initialPosition.z);
+        directionVector.nor();
 
-        _maxDistance = _initialPosition.dst(_finalPosition);
-
-
-        if(_finalPosition.x >= _initialPosition.x){
-            _diffPositionIncrease.set(0, true);
-        }
-        if(_finalPosition.y >= _initialPosition.y){
-            _diffPositionIncrease.set(1, true);
-        }
-        if(_finalPosition.z >= _initialPosition.z){
-            _diffPositionIncrease.set(2, true);
-        }
-
-        _lastDistance = _currentPosition.dst(_finalPosition);
-        _isRuning = true;
+        lastDistance = currentPosition.dst(this.finalPosition);
+        isRuning = true;
     }
 
     public Vector3 updatePosition(Float delta){
-        if(_isRuning){
+        if(isRuning){
 
-            Boolean isMoveAllowed = true;
+            Vector3 localSpeed = speed.cpy();
+            Vector3 localDirectionVector = directionVector.cpy();
 
-            Vector3 localSpeed = _speed.cpy();
-            Vector3 localDirectionVector = _directionVector.cpy();
+            Float currentDistance = currentPosition.dst(finalPosition);
+            lastDistance = currentDistance;
 
-            Float currentDistance = _currentPosition.dst(_finalPosition);
-            if(currentDistance > _lastDistance){
-                isMoveAllowed = false;
-            } else {
-                _lastDistance = currentDistance;
-            }
-
-            if(!isMoveAllowed){
-                _currentPosition = _finalPosition;
-                _isRuning = false;
-            } else {
                 localSpeed.scl(delta);
                 Vector3 distanceParcoured = new Vector3();
 
@@ -79,16 +50,21 @@ public class MovePositionHandler {
                 distanceParcoured.y = localDirectionVector.y * localSpeed.y;
                 distanceParcoured.z = localDirectionVector.z * localSpeed.z;
 
-                _currentPosition = _currentPosition.add(distanceParcoured);
-            }
+                currentPosition = currentPosition.add(distanceParcoured);
 
+            //clamp distance at the end
+            currentDistance = currentPosition.dst(finalPosition);
+            if(currentDistance > lastDistance){
+                currentPosition = finalPosition;
+                isRuning = false;
+            }
         }
 
-        return _currentPosition;
+        return currentPosition;
     }
 
     public MovePositionHandler reEvaluate(){
-        if(_currentPosition.equals(_finalPosition)){
+        if(currentPosition.equals(finalPosition)){
             return null;
         }else {
             return this;

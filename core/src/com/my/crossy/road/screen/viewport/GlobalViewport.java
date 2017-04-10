@@ -10,16 +10,29 @@ public abstract class GlobalViewport {
     private static final String TAG = GlobalViewport.class.getSimpleName();
 
     public static class VIEWPORT {
-        public static float viewportWidth;
-        public static float viewportHeight;
-        public static float virtualWidth;
-        public static float virtualHeight;
-        public static float physicalWidth;
-        public static float physicalHeight;
-        public static float aspectRation;
+        static float viewportWidth;
+        static float viewportHeight;
+        static float virtualWidth;
+        static float virtualHeight;
+        static float physicalWidth;
+        static float physicalHeight;
+        static float aspectRation;
+
+        VIEWPORT(){
+            throw new InstantiationError("This class cannot be instantiated !");
+        }
+
+        public static float getViewportWidth() {
+            return viewportWidth;
+        }
+
+        public static float getViewportHeight() {
+            return viewportHeight;
+        }
+
     }
 
-    public void setupViewport(int width, int height){
+    public static void setupViewport(int width, int height){
         //Makethe viewport a percentage of the total display area
         VIEWPORT.virtualWidth = width;
         VIEWPORT.virtualHeight = height;
@@ -33,7 +46,7 @@ public abstract class GlobalViewport {
         VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
 
         //aspect ratio for current viewport
-        VIEWPORT.aspectRation = (VIEWPORT.virtualWidth/ VIEWPORT.virtualHeight);
+        VIEWPORT.aspectRation = VIEWPORT.virtualWidth/ VIEWPORT.virtualHeight;
 
         //update viewport if there could be skewing
         if(VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRation) {

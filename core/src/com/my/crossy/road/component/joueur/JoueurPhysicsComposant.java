@@ -14,11 +14,11 @@ import com.my.crossy.road.entity.component.abs.PhysicsComponent;
 public class JoueurPhysicsComposant extends PhysicsComponent {
 
     private static final String TAG = JoueurPhysicsComposant.class.getSimpleName();
-    private Json _json = new Json();
+    private Json json = new Json();
 
     @Override
     public void update(Entity entity, float delta) {
-
+        //ne rien faire, la hitbox du joueur ne change pas et ne bouge pas
     }
 
     @Override
@@ -27,14 +27,13 @@ public class JoueurPhysicsComposant extends PhysicsComponent {
             return;
 
         String[] messageReceived = message.split(Component.MESSAGE_TOKEN);
-        if(messageReceived.length > 1){
-            if(messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){
-                Vector3 vector3 = _json.fromJson(Vector3.class, messageReceived[1]);
-                Float size = _json.fromJson(Float.class, messageReceived[2]);
-                Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_HITBOX.toString() + " reveived with " +
-                        "vector3" + vector3.toString() + ", size" + size);
-                _hitBox = new Rectangle(vector3.x, vector3.z, size, size);
-            }
+        if(messageReceived.length > 1 &&
+                messageReceived[0].equalsIgnoreCase(MESSAGE.INIT_HITBOX.toString())){
+            Vector3 vector3 = json.fromJson(Vector3.class, messageReceived[1]);
+            Float size = json.fromJson(Float.class, messageReceived[2]);
+            Gdx.app.debug(TAG, "Message " + MESSAGE.INIT_HITBOX.toString() + " reveived with " +
+                  "vector3" + vector3.toString() + ", size" + size);
+            hitBox = new Rectangle(vector3.x, vector3.z, size, size);
         }
 
     }
